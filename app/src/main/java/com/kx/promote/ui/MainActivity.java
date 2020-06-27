@@ -1,4 +1,4 @@
-package com.kx.promote;
+package com.kx.promote.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,8 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.kx.promote.ui.CommonTabActivity;
-import com.kx.promote.ui.SlidingTabActivity;
+import com.kx.promote.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,6 +29,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, SlidingTabActivity.class);
+                startActivity(intent);
+            }
+        });
+        Button doButton = (Button)findViewById(R.id.main_do_button);
+        doButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, DoActivity.class);
                 startActivity(intent);
             }
         });

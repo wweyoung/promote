@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui._do.OverviewFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/shape_white_frame"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:padding="1dp"
+                android:text="组号"
+                android:textSize="20sp" />
+
+            <View
+                android:layout_width="1dip"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:background="#EEEFFF" />
+
+            <EditText
+                android:id="@+id/group_id"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+
+                android:layout_marginLeft="2dp"
+                android:enabled="false"
+                android:padding="1dp"
+                android:text="1234"
+                android:textColorHighlight="#FFFFFF"
+                android:textSize="22sp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:padding="1dp"
+                android:text="任务日期"
+                android:textSize="20sp" />
+
+            <View
+                android:layout_width="1dip"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:background="#EEEFFF" />
+
+            <EditText
+                android:id="@+id/group_time"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="2dp"
+                android:enabled="false"
+                android:inputType="date"
+                android:text="2020/06/01"
+                android:textColorHighlight="#FFFFFF"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:padding="1dp"
+                android:text="任务单数"
+                android:textSize="20sp" />
+
+            <View
+                android:layout_width="1dip"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:background="#EEEFFF" />
+
+            <EditText
+                android:id="@+id/group_preprice"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="2dp"
+                android:enabled="false"
+                android:text="5单"
+                android:textColorHighlight="#FFFFFF"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:padding="1dp"
+                android:text="总预付款"
+                android:textSize="20sp" />
+
+            <View
+                android:layout_width="1dip"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:background="#EEEFFF" />
+
+            <EditText
+                android:id="@+id/group_number"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="2dp"
+                android:enabled="false"
+                android:text="120元"
+                android:textColorHighlight="#FFFFFF"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:padding="1dp"
+                android:text="任务状态"
+                android:textSize="20sp" />
+
+            <View
+                android:layout_width="1dip"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:background="#EEEFFF" />
+
+            <EditText
+                android:id="@+id/group_state"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="2dp"
+                android:enabled="false"
+                android:text="进行中"
+                android:textColorHighlight="#FFFFFF"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

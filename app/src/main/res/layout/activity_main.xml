@@ -24,4 +24,13 @@
         android:text="进入做单导航样式"
         tl:layout_constraintEnd_toEndOf="@+id/button"
         tl:layout_constraintTop_toBottomOf="@+id/button" />
+
+    <Button
+        android:id="@+id/main_do_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="做任务界面"
+        tl:layout_constraintEnd_toEndOf="@+id/button2"
+        tl:layout_constraintStart_toStartOf="@+id/button2"
+        tl:layout_constraintTop_toBottomOf="@+id/button2" />
 </androidx.constraintlayout.widget.ConstraintLayout>
