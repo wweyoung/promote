@@ -46,24 +46,24 @@ import java.util.Random;
         public Bitmap createBitmap() {
             mPaddingLeft = 0; //每次生成验证码图片时初始化
             mPaddingTop = 0;
-
+            //创建一个指定大小的bitmap  用于保存 canvas 绘制的一系列操作
             Bitmap bitmap = Bitmap.createBitmap(DEFAULT_WIDTH, DEFAULT_HEIGHT, Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bitmap);
-            code = createCode();
+            Canvas canvas = new Canvas(bitmap);//将bitmap 设置给canvas
+            code = createCode(); //得到验证码
             canvas.drawARGB(0, 0, 0, 0);
-            canvas.drawColor(DEFAULT_COLOR);
+            canvas.drawColor(DEFAULT_COLOR);// 执行canvas 绘制颜色的操作  【会保存到创建的bitmap中】
             Paint paint = new Paint();
-            paint.setTextSize(DEFAULT_FONT_SIZE);
+            paint.setTextSize(DEFAULT_FONT_SIZE);//设置字体大小
 
             for (int i = 0; i < code.length(); i++) {
-                randomTextStyle(paint);
-                randomPadding();
+                randomTextStyle(paint);//随机文本样式
+                randomPadding();//随机间距
                 canvas.drawText(code.charAt(i) + "", mPaddingLeft, mPaddingTop, paint);
             }
 
             //干扰线
             for (int i = 0; i < DEFAULT_LINE_NUMBER; i++) {
-                drawLine(canvas, paint);
+                drawLine(canvas, paint);//生成干扰线
             }
 
             canvas.save();//保存
@@ -91,7 +91,7 @@ import java.util.Random;
 
         //生成干扰线
         private void drawLine(Canvas canvas, Paint paint) {
-            int color = randomColor();
+            int color = randomColor(); //随机颜色
             int startX = mRandom.nextInt(DEFAULT_WIDTH);
             int startY = mRandom.nextInt(DEFAULT_HEIGHT);
             int stopX = mRandom.nextInt(DEFAULT_WIDTH);
@@ -106,7 +106,7 @@ import java.util.Random;
             mBuilder.delete(0, mBuilder.length()); //使用之前首先清空内容
             String haxString;
             for (int i = 0; i < 3; i++) {
-                haxString = Integer.toHexString(mRandom.nextInt(0xEE));
+                haxString = Integer.toHexString(mRandom.nextInt(0xEE));//十进制转成十六进制
                 if (haxString.length() == 1) {
                     haxString = "0" + haxString;
                 }
