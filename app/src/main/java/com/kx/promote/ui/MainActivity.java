@@ -68,5 +68,13 @@ public class MainActivity extends AppCompatActivity {
                 },MainActivity.this);
             }
         });
+        Button loginButton = (Button)findViewById(R.id.main_login_button);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
