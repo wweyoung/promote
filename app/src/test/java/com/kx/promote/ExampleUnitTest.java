@@ -26,22 +26,4 @@ public class ExampleUnitTest {
         assertEquals(4, 2 + 2);
     }
 
-    @Test
-    public void okHttpTest(){
-        Log.d(TAG,"开始测试okhttp");
-        System.out.println("开始测试okhttp");
-        HttpUtil.sendOkHttpRequest("http://baidu.com", new okhttp3.Callback() {
-             @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Log.d(TAG,"访问失败啦！");
-                System.out.println("访问失败啦！");
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                Log.d(TAG,response.body().string());
-                System.out.println(response.body().string());
-            }
-        }, editor);
-    }
 }
