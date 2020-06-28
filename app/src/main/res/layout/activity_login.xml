@@ -7,7 +7,6 @@
     tools:context=".ui.LoginActivity">
 
     <TextView
-        android:id="@+id/textView_tao"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -23,7 +22,6 @@
         app:layout_constraintVertical_bias="0.056" />
 
     <TextView
-        android:id="@+id/textView_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="用户登录"
@@ -37,7 +35,6 @@
         app:layout_constraintVertical_bias="0.134" />
 
     <View
-        android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="?android:attr/listDivider"
@@ -49,7 +46,6 @@
         app:layout_constraintVertical_bias="0.173" />
 
     <ImageView
-        android:id="@+id/imageView_usermark"
         android:layout_width="51dp"
         android:layout_height="68dp"
         android:src="@drawable/login_usemark"
@@ -61,7 +57,6 @@
         app:layout_constraintVertical_bias="0.248" />
 
     <ImageView
-        android:id="@+id/imageView_passwordmark"
         android:layout_width="33dp"
         android:layout_height="124dp"
         android:src="@drawable/login_passwordmark"
@@ -85,7 +80,6 @@
         app:layout_constraintVertical_bias="0.526" />
 
     <TextView
-        android:id="@+id/textView_userName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="用户名"
@@ -98,7 +92,6 @@
         app:layout_constraintVertical_bias="0.268" />
 
     <TextView
-        android:id="@+id/textView_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="密 码"
@@ -111,7 +104,6 @@
         app:layout_constraintVertical_bias="0.404" />
 
     <TextView
-        android:id="@+id/textView_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="验证码"
@@ -185,7 +177,7 @@
         android:id="@+id/imageView_showCode"
         android:layout_width="84dp"
         android:layout_height="50dp"
-        android:background="#6DD371"
+        android:background="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.883"

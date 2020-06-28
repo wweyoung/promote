@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 SharedPreferences.Editor editor = getSharedPreferences("cookies",MODE_PRIVATE).edit();
-                HttpUtil.sendOkHttpRequest(getString(R.string.app_path), new okhttp3.Callback() {
+                HttpUtil.get(getString(R.string.app_path), new okhttp3.Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         Log.d("okhttp","访问失败！");
