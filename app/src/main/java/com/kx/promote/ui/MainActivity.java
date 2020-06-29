@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                         String responseData = response.body().string();
                         Log.d("okhttp",responseData);
                     }
-                },MainActivity.this);
+                });
             }
         });
         Button loginButton = (Button)findViewById(R.id.main_login_button);

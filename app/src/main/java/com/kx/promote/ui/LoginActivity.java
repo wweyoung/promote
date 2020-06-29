@@ -84,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
                                 String result = response.body().string();
                                 Log.d("login",result);
                             }
-                        },LoginActivity.this);
+                        });
             }
         });
 
@@ -108,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "加载验证码失败",
                         Toast.LENGTH_SHORT).show();
             }
-        },LoginActivity.this);
+        });
     }
     static class MyHandler extends Handler {
         private WeakReference<LoginActivity> mOuter;
