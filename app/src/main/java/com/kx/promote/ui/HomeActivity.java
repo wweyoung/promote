@@ -22,35 +22,21 @@ import com.kx.promote.utils.ViewFindUtils;
 import java.util.ArrayList;
 import java.util.Random;
 
-
-
-
-
-//已废弃，被DoFragment取代 ，可以留着参考学习用
-
-
-
-
-
-
-public class DoActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
     private Context mContext = this;
     private ArrayList<Fragment> mFragments = new ArrayList<>();
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
-    private String[] mTitles = {"纵览", "1", "2", "3", "4", "5", "提交"};
+
+    private String[] mTitles = {"任务中心", "当前任务", "我"};
     private int[] mIconUnselectIds = {
             R.mipmap.tab_home_unselect, R.mipmap.tab_speech_unselect,
-            R.mipmap.tab_contact_unselect, R.mipmap.tab_more_unselect
-            , R.mipmap.tab_more_unselect, R.mipmap.tab_more_unselect
-            , R.mipmap.tab_more_unselect};
+            R.mipmap.tab_contact_unselect};
     private int[] mIconSelectIds = {
             R.mipmap.tab_home_select, R.mipmap.tab_speech_select,
-            R.mipmap.tab_contact_select, R.mipmap.tab_more_select
-            , R.mipmap.tab_more_select, R.mipmap.tab_more_select
-            , R.mipmap.tab_more_select};
+            R.mipmap.tab_contact_select};
 
     private CommonTabLayout header;
-    private DoActivity.MyPagerAdapter mAdapter;
+    private HomeActivity.MyPagerAdapter mAdapter;
     private ViewPager mViewPager;
     private View mDecorView;
     Random mRandom = new Random();
@@ -58,8 +44,9 @@ public class DoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_do);
+        setContentView(R.layout.activity_home);
         mFragments.add(new OverviewFragment());
+        mFragments.add(new DoFragment());
         for (int i =1;i<mTitles.length;i++) {
             mFragments.add(new TaskFragment());
 //            mFragments.add(SimpleCardFragment.getInstance("Switch ViewPager " + title));
@@ -75,8 +62,8 @@ public class DoActivity extends AppCompatActivity {
         mViewPager = ViewFindUtils.find(mDecorView, R.id.home_body);
         mViewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         /** with ViewPager */
-        header = ViewFindUtils.find(mDecorView, R.id.do_header);
-        tl_2();
+        header = ViewFindUtils.find(mDecorView, R.id.home_footer);
+        initFooterBar();
 
     }
     private class MyPagerAdapter extends FragmentPagerAdapter {
@@ -104,7 +91,7 @@ public class DoActivity extends AppCompatActivity {
         final float scale = mContext.getResources().getDisplayMetrics().density;
         return (int) (dp * scale + 0.5f);
     }
-    private void tl_2() {
+    private void initFooterBar() {
         header.setTabData(mTabEntities);
         header.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
