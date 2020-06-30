@@ -1,12 +1,13 @@
 package com.kx.promote.bean;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
-public class Order {
+public class Order implements Serializable {
     @Override
 	public String toString() {
 		return "Order [id=" + id + ", groupid=" + groupid + ", needid=" + needid + ", state=" + state + ", price="

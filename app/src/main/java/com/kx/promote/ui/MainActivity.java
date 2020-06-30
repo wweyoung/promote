@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 SharedPreferences.Editor editor = getSharedPreferences("cookies",MODE_PRIVATE).edit();
-                HttpUtil.sendOkHttpRequest(getString(R.string.app_path), new okhttp3.Callback() {
+                HttpUtil.get(getString(R.string.app_path), new okhttp3.Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         Log.d("okhttp","访问失败！");
@@ -65,7 +65,23 @@ public class MainActivity extends AppCompatActivity {
                         String responseData = response.body().string();
                         Log.d("okhttp",responseData);
                     }
-                },MainActivity.this);
+                });
+            }
+        });
+        Button loginButton = (Button)findViewById(R.id.main_login_button);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+        Button homeButton = (Button)findViewById(R.id.main_home_button);
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                startActivity(intent);
             }
         });
     }
