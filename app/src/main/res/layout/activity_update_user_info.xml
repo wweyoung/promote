@@ -92,7 +92,6 @@
                 android:id="@+id/editText_personName"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:editable="false"
                 android:ems="10"
                 android:inputType="textPersonName" />
 

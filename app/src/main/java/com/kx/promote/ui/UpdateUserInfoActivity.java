@@ -35,6 +35,8 @@ public class UpdateUserInfoActivity extends AppCompatActivity implements View.On
     private EditText newPasswordEdit;
     private EditText confirmPasswordEdit;
     private String appPath;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +46,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity implements View.On
 
         userNameEdit=(EditText)findViewById(R.id.editText_userName);
         personNameEdit=(EditText)findViewById(R.id.editText_personName);
+        personNameEdit.setFocusableInTouchMode(false);
         userPhoneEdit=(EditText)findViewById(R.id.editText_userPhone);
         userMailEdit=(EditText)findViewById(R.id.editText_mail);
         newPasswordEdit=(EditText)findViewById(R.id.editText_newPassword);
@@ -65,6 +68,20 @@ public class UpdateUserInfoActivity extends AppCompatActivity implements View.On
                 break;
             case R.id.btn_save:
                 Toast.makeText(UpdateUserInfoActivity.this, "点击了完成", Toast.LENGTH_SHORT).show();
+                //获取登录用户信息
+                HttpUtil.get(appPath+"/interface/user",new okhttp3.Callback(){
+
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        String result = response.body().string();
+                        Log.d("获取成功",result);
+                    }
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        Toast.makeText(UpdateUserInfoActivity.this, "获取失败", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
                 MediaType mediaType = MediaType.parse("application/json;charset=UTF-8");
                 Map<String,String> user = new HashMap<>();
                 user.put("userNameEdit",userNameEdit.getText().toString());
@@ -73,35 +90,19 @@ public class UpdateUserInfoActivity extends AppCompatActivity implements View.On
                 user.put("newPasswordEdit",newPasswordEdit.getText().toString());
                 user.put("confirmPasswordEdit",confirmPasswordEdit.getText().toString());
                 RequestBody body = RequestBody.create(JSON.toJSONString(user),mediaType);
-                //获取登录用户信息
-                HttpUtil.get(appPath+"/interface/user",new okhttp3.Callback(){
 
-                    @Override
-                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                        String result = response.body().string();
-                        personNameEdit.setText(result);
-                        Log.d("获取成功",result);
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                        Toast.makeText(UpdateUserInfoActivity.this, "获取失败", Toast.LENGTH_SHORT).show();
-                    }
-                });
-//                HttpUtil.post(appPath+"/interface/user,
-//                        body, new okhttp3.Callback() {
-//                            @Override
-//                            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-//                                Toast.makeText(UpdateUserInfoActivity.this, "修改失败",
-//                                        Toast.LENGTH_SHORT).show();
-//                            }
-//
-//                            @Override
-//                            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-//                                String result = response.body().string();
-//                                Log.d("修改成果",result);
-//                            }
-//                        });
+                HttpUtil.post(appPath+"/interface/user",body, new okhttp3.Callback() {
+                            @Override
+                            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                                Toast.makeText(UpdateUserInfoActivity.this, "修改失败",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                            @Override
+                            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                String result = response.body().string();
+                                Log.d("修改成功",result);
+                            }
+                        });
                 break;
             default:
                 break;
