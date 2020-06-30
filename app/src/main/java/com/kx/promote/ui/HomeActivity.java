@@ -29,6 +29,7 @@ import java.util.Random;
 
 public class HomeActivity extends AppCompatActivity {
     private DoFragment doFragment;
+    private TaskCenterFragment taskCenterFragment;
     private ArrayList<Fragment> mFragments = new ArrayList<>();
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
 
@@ -44,8 +45,8 @@ public class HomeActivity extends AppCompatActivity {
             R.mipmap.tab_home_select, R.mipmap.tab_speech_select,
             R.mipmap.tab_contact_select};
 
-    private CommonTabLayout header;
-    private HomeActivity.MyPagerAdapter mAdapter;
+    private CommonTabLayout footer;
+    private MyPagerAdapter mAdapter;
     private ViewPager mViewPager;
     private View mDecorView;
     Random mRandom = new Random();
@@ -57,13 +58,11 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        mFragments.add(new OverviewFragment());
+        taskCenterFragment = new TaskCenterFragment();
         doFragment = new DoFragment();
+        mFragments.add(taskCenterFragment);
         mFragments.add(doFragment);
-        for (int i =2;i<mTitles.length;i++) {
-            mFragments.add(new TaskFragment());
-//            mFragments.add(SimpleCardFragment.getInstance("Switch ViewPager " + title));
-        }
+        mFragments.add(new SimpleCardFragment());
 
 
         for (int i = 0; i < mTitles.length; i++) {
@@ -73,10 +72,11 @@ public class HomeActivity extends AppCompatActivity {
 
         mDecorView = getWindow().getDecorView();
         mViewPager = ViewFindUtils.find(mDecorView, R.id.home_body);
+        mViewPager.setOffscreenPageLimit(3);//设置缓存3个
         mAdapter = new MyPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);
         /** with ViewPager */
-        header = ViewFindUtils.find(mDecorView, R.id.home_footer);
+        footer = ViewFindUtils.find(mDecorView, R.id.home_footer);
         initFooterBar();
 
     }
@@ -106,8 +106,8 @@ public class HomeActivity extends AppCompatActivity {
         return (int) (dp * scale + 0.5f);
     }
     private void initFooterBar() {
-        header.setTabData(mTabEntities);
-        header.setOnTabSelectListener(new OnTabSelectListener() {
+        footer.setTabData(mTabEntities);
+        footer.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
                 mViewPager.setCurrentItem(position);
@@ -116,7 +116,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onTabReselect(int position) {
                 if (position == 0) {
-                    header.showMsg(0, mRandom.nextInt(100) + 1);
+                    footer.showMsg(0, mRandom.nextInt(100) + 1);
 //                    UnreadMsgUtils.show(header.getMsgView(0), mRandom.nextInt(100) + 1);
                 }
             }
@@ -130,7 +130,7 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                header.setCurrentTab(position);
+                footer.setCurrentTab(position);
             }
 
             @Override

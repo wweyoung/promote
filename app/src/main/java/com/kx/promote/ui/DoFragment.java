@@ -118,6 +118,7 @@ public class DoFragment extends Fragment {
         this.homeActivity = (HomeActivity) getActivity();
 
         mViewPager = ViewFindUtils.find(view, R.id.do_body);//在view中寻找do_body
+        mViewPager.setOffscreenPageLimit(100);
         mAdapter = new MyPagerAdapter(getFragmentManager());
         mViewPager.setAdapter(mAdapter);
         /** with ViewPager */
