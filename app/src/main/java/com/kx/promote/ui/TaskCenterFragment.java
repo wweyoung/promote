@@ -117,7 +117,7 @@ public class TaskCenterFragment extends Fragment {
         mFragments.clear();
         mTabEntities.clear();
 
-        mFragments.add(new SimpleCardFragment());
+        mFragments.add(new GroupListFragment());
         mTabEntities.add(new TabEntity("今日任务", 0,0));
         mFragments.add(new SimpleCardFragment());
         mTabEntities.add(new TabEntity("历史任务", 0,0));

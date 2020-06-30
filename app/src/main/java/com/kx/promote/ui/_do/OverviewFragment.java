@@ -75,17 +75,7 @@ public class OverviewFragment extends Fragment {
         DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
         dateET.setText(df.format(group.getTime()));
         orderNumberET.setText(group.getOrderlist().size()+"单");
-        prepriceET.setText(getPrePrice().floatValue()+"元");
+        prepriceET.setText(group.getPreprice().floatValue()+"元");
         stateET.setText(group.getStateString());
     }
-    public BigDecimal getPrePrice(){
-        BigDecimal preprice = new BigDecimal(0);
-        if(group==null || group.getOrderlist()==null)
-            return preprice;
-        for(Order order:group.getOrderlist()){
-            preprice = preprice.add(order.getNeed().getPrice());
-        }
-        return preprice;
-    }
-
 }

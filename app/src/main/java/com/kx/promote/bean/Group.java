@@ -1,6 +1,7 @@
 package com.kx.promote.bean;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -130,6 +131,14 @@ public class Group implements Serializable {
 		}
 		this.setImagelist(imagelist);
 	}
-
+    public BigDecimal getPreprice(){
+        BigDecimal preprice = new BigDecimal(0);
+        if(this.getOrderlist()==null)
+            return preprice;
+        for(Order order:this.getOrderlist()){
+            preprice = preprice.add(order.getNeed().getPrice());
+        }
+        return preprice;
+    }
 
 }
