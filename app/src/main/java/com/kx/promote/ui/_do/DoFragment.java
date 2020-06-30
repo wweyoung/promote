@@ -227,13 +227,8 @@ public class DoFragment extends Fragment {
                 Log.d("doFragment", json);
                 Msg msg = JSON.parseObject(json,Msg.class);
                 group = JSONObject.toJavaObject((JSON) msg.get("group"),Group.class);
-                Message message = new Message();
-                message.what = homeActivity.SHOW_MESSAGE;
-                message.obj = msg.getMsg();
-                homeActivity.handler.sendMessage(message);
-                message = new Message();
-                message.what = UPDATE_UI;
-                handler.sendMessage(message);
+                Message.obtain(homeActivity.handler,homeActivity.SHOW_MESSAGE,msg.getMsg()).sendToTarget();//通知打印Toast
+                Message.obtain(handler,UPDATE_UI).sendToTarget();//通知主线程更新界面
             }
         });
     }

@@ -69,6 +69,19 @@ public class LoginActivity extends AppCompatActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(userEdit.getText().toString().isEmpty()){
+                    Toast.makeText(LoginActivity.this, "请输入用户名",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(passwordEdit.getText().toString().isEmpty()){
+                    Toast.makeText(LoginActivity.this, "请输入密码",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(verificationEdit.getText().toString().isEmpty()) {
+                    Toast.makeText(LoginActivity.this, "请输入验证码空", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 MediaType mediaType = MediaType.parse("application/json;charset=UTF-8");
                 Map<String,String> user = new HashMap<>();
                 user.put("user",userEdit.getText().toString());
