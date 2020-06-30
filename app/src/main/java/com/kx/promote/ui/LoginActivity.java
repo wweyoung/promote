@@ -84,6 +84,9 @@ public class LoginActivity extends AppCompatActivity {
                             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                                 String result = response.body().string();
                                 Log.d("login",result);
+
+                                Intent intent=new Intent(LoginActivity.this,HomeActivity.class);
+                                startActivity(intent);
                             }
                         });
             }
