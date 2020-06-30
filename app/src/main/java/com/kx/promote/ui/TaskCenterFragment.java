@@ -1,13 +1,10 @@
 package com.kx.promote.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,19 +12,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.kx.promote.R;
+import com.kx.promote.bean.Group;
 import com.kx.promote.entity.TabEntity;
-import com.kx.promote.ui._do.OverviewFragment;
-import com.kx.promote.ui._do.TaskFragment;
+import com.kx.promote.ui.task_center.GroupListFragment;
+import com.kx.promote.ui.task_center.TodayTaskFragment;
 import com.kx.promote.utils.ViewFindUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class TaskCenterFragment extends Fragment {
@@ -116,8 +114,7 @@ public class TaskCenterFragment extends Fragment {
     private void updateUI(){
         mFragments.clear();
         mTabEntities.clear();
-
-        mFragments.add(new GroupListFragment());
+        mFragments.add(new TodayTaskFragment());
         mTabEntities.add(new TabEntity("今日任务", 0,0));
         mFragments.add(new SimpleCardFragment());
         mTabEntities.add(new TabEntity("历史任务", 0,0));

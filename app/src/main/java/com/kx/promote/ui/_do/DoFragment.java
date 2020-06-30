@@ -1,6 +1,5 @@
-package com.kx.promote.ui;
+package com.kx.promote.ui._do;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -25,8 +23,7 @@ import com.kx.promote.R;
 import com.kx.promote.bean.Group;
 import com.kx.promote.bean.Order;
 import com.kx.promote.entity.TabEntity;
-import com.kx.promote.ui._do.OverviewFragment;
-import com.kx.promote.ui._do.TaskFragment;
+import com.kx.promote.ui.HomeActivity;
 import com.kx.promote.utils.HttpUtil;
 import com.kx.promote.utils.Msg;
 import com.kx.promote.utils.MyApplication;
@@ -42,7 +39,6 @@ import java.util.Random;
 
 import okhttp3.Call;
 import okhttp3.Response;
-import okhttp3.internal.concurrent.Task;
 
 /**
  * A simple {@link Fragment} subclass.

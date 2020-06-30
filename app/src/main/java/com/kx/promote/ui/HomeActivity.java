@@ -6,8 +6,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,8 +17,7 @@ import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.kx.promote.R;
 import com.kx.promote.entity.TabEntity;
-import com.kx.promote.ui._do.OverviewFragment;
-import com.kx.promote.ui._do.TaskFragment;
+import com.kx.promote.ui._do.DoFragment;
 import com.kx.promote.utils.ViewFindUtils;
 
 import java.lang.ref.WeakReference;

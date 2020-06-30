@@ -1,4 +1,4 @@
-package com.kx.promote.ui;
+package com.kx.promote.ui.task_center;
 
 import android.content.Context;
 import android.view.LayoutInflater;
