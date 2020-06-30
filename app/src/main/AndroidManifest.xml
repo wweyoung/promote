@@ -12,12 +12,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.HomeActivity"></activity>
+        <activity android:name=".ui.UpdateUserInfoActivity"></activity>
+        <activity android:name=".ui.HomeActivity" />
         <activity android:name=".ui.LoginActivity" />
         <activity android:name=".ui.DoActivity" />
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
