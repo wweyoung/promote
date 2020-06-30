@@ -20,6 +20,9 @@ import com.kx.promote.R;
 import com.kx.promote.utils.HttpUtil;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -63,36 +66,63 @@ public class LoginActivity extends AppCompatActivity {
         passwordEdit = (EditText)findViewById(R.id.editText_password);
         verificationEdit = (EditText)findViewById(R.id.editText_code);
         Button btn_login=(Button)findViewById(R.id.btn_login);
+
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(LoginActivity.this, "点击了登录", Toast.LENGTH_SHORT).show();
-                MediaType mediaType = MediaType.parse("application/json;charset=UTF-8");
-                Map<String,String> user = new HashMap<>();
-                user.put("user",userEdit.getText().toString());
-                user.put("password",passwordEdit.getText().toString());
-                RequestBody body = RequestBody.create(JSON.toJSONString(user),mediaType);
-                HttpUtil.post(appPath+"/interface/login?rememberMe=true&verificationCode="+verificationEdit.getText().toString(),
-                        body, new okhttp3.Callback() {
-                            @Override
-                            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                                Toast.makeText(LoginActivity.this, "请求失败",
-                                        Toast.LENGTH_SHORT).show();
-                            }
+                if(userEdit.getText().toString().isEmpty()){
+                    Toast.makeText(LoginActivity.this, "请输入用户名",Toast.LENGTH_SHORT).show();
+                }else if(passwordEdit.getText().toString().isEmpty()){
+                    Toast.makeText(LoginActivity.this, "请输入密码",Toast.LENGTH_SHORT).show();
+                }else if(verificationEdit.getText().toString().isEmpty()){
+                    Toast.makeText(LoginActivity.this, "请输入验证码空", Toast.LENGTH_SHORT).show();
+                }else{
+                        final MediaType mediaType = MediaType.parse("application/json;charset=UTF-8");
+                        Map<String, String> user = new HashMap<>();
+                        user.put("user", userEdit.getText().toString());
+                        user.put("password", passwordEdit.getText().toString());
+                        RequestBody body = RequestBody.create(JSON.toJSONString(user), mediaType);
+                        HttpUtil.post(appPath + "/interface/login?rememberMe=true&verificationCode=" + verificationEdit.getText().toString(),
+                                body, new okhttp3.Callback() {
+                                    @Override
+                                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                                        Toast.makeText(LoginActivity.this, "请求失败",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
 
-                            @Override
-                            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                                String result = response.body().string();
-                                Log.d("login",result);
+                                    @Override
+                                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                                        String result = response.body().string();
+                                        Log.d("login+++", result);
+//                                        Message message=new Message(JSON.format(result,Message.class));
+//                                        Message jsonObject= JSON.format(result, Message.class);
 
-                                Intent intent=new Intent(LoginActivity.this,HomeActivity.class);
-                                startActivity(intent);
-                            }
-                        });
-            }
+//                                        parseJSONWithJSONObject(result);
+                                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                        startActivity(intent);
+
+                                    }
+                                });
+                    }
+
+                }
         });
-
     }
+
+//    private void parseJSONWithJSONObject(String result) {
+//        try {
+//            JSONObject jsonObject = new JSONObject(result);
+//            Message message=new Message();
+//            message.obj=jsonObject;
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+
+
+
     private void loadVerificationImage(){
         HttpUtil.get(appPath+"/verificationCode",new okhttp3.Callback(){
 
