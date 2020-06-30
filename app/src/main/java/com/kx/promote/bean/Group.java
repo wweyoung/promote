@@ -1,12 +1,13 @@
 package com.kx.promote.bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
-public class Group {
+public class Group implements Serializable {
     private Integer id;
 
     private Integer userid;

@@ -56,17 +56,6 @@ public class DoFragment extends Fragment {
     private ArrayList<Fragment> mFragments = new ArrayList<>();
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
 
-    private int[] mIconUnselectIds = {
-            R.mipmap.tab_home_unselect, R.mipmap.tab_speech_unselect,
-            R.mipmap.tab_contact_unselect, R.mipmap.tab_more_unselect
-            , R.mipmap.tab_more_unselect, R.mipmap.tab_more_unselect
-            , R.mipmap.tab_more_unselect};
-    private int[] mIconSelectIds = {
-            R.mipmap.tab_home_select, R.mipmap.tab_speech_select,
-            R.mipmap.tab_contact_select, R.mipmap.tab_more_select
-            , R.mipmap.tab_more_select, R.mipmap.tab_more_select
-            , R.mipmap.tab_more_select};
-
     private CommonTabLayout header;
     private MyPagerAdapter mAdapter;
     private ViewPager mViewPager;
@@ -134,6 +123,9 @@ public class DoFragment extends Fragment {
         /** with ViewPager */
         header = ViewFindUtils.find(view, R.id.do_header);
         initHeaderBar();
+        if(group==null){
+            getGroup(3390);
+        }
         updateUI();
         return view;
     }
@@ -207,7 +199,7 @@ public class DoFragment extends Fragment {
         mTabEntities.clear();
         if(group==null || group.getOrderlist()==null)
             return;
-        overviewFragment = new OverviewFragment();
+        overviewFragment = OverviewFragment.newInstance(group);
         mFragments.add(overviewFragment);
         mTabEntities.add(new TabEntity("概览", 0,0));
         for(Order order:group.getOrderlist()){

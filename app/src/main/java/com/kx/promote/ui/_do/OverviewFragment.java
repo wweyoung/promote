@@ -7,8 +7,18 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.kx.promote.R;
+import com.kx.promote.bean.Group;
+import com.kx.promote.bean.Order;
+import com.kx.promote.utils.HttpUtil;
+import com.kx.promote.utils.ViewFindUtils;
+
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,33 +26,23 @@ import com.kx.promote.R;
  * create an instance of this fragment.
  */
 public class OverviewFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private Group group;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private EditText idET;
+    private EditText dateET;
+    private EditText orderNumberET;
+    private EditText prepriceET;
+    private EditText stateET;
 
     public OverviewFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment OverviewFragment.
-     */
     // TODO: Rename and change types and number of parameters
-    public static OverviewFragment newInstance(String param1, String param2) {
+    public static OverviewFragment newInstance(Group group) {
         OverviewFragment fragment = new OverviewFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable("group",group);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,8 +51,7 @@ public class OverviewFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            group = (Group) getArguments().getSerializable("group");
         }
     }
 
@@ -60,6 +59,33 @@ public class OverviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_do_overview, container, false);
+        View view = inflater.inflate(R.layout.fragment_do_overview, container, false);
+        idET  = ViewFindUtils.find(view,R.id.group_id);
+        dateET  = ViewFindUtils.find(view,R.id.group_time);
+        orderNumberET  = ViewFindUtils.find(view,R.id.group_number);
+        prepriceET  = ViewFindUtils.find(view,R.id.group_preprice);
+        stateET  = ViewFindUtils.find(view,R.id.group_state);
+        updateUI();
+        return view;
     }
+    public void updateUI(){
+        if(group==null)
+            return;
+        idET.setText(""+group.getId());
+        DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+        dateET.setText(df.format(group.getTime()));
+        orderNumberET.setText(group.getOrderlist().size()+"单");
+        prepriceET.setText(getPrePrice().floatValue()+"元");
+        stateET.setText(group.getStateString());
+    }
+    public BigDecimal getPrePrice(){
+        BigDecimal preprice = new BigDecimal(0);
+        if(group==null || group.getOrderlist()==null)
+            return preprice;
+        for(Order order:group.getOrderlist()){
+            preprice = preprice.add(order.getNeed().getPrice());
+        }
+        return preprice;
+    }
+
 }

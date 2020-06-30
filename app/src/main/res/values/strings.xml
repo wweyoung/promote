@@ -6,4 +6,6 @@
     <string name="input_height">40</string>
     <string name="app_path">http://newview.top:8080</string>
     <string name="site_name">淘动力网络</string>
+    <string name="image_small">-200.200.75</string>
+    <string name="image_original">-original</string>
 </resources>

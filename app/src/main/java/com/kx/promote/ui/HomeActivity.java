@@ -110,9 +110,6 @@ public class HomeActivity extends AppCompatActivity {
         header.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
-                if(position==DO_TASK){
-                    doFragment.getGroup(3390);
-                }
                 mViewPager.setCurrentItem(position);
             }
 
@@ -142,7 +139,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        mViewPager.setCurrentItem(1);
+        mViewPager.setCurrentItem(0);
     }
     static class MyHandler extends Handler {
         private WeakReference<HomeActivity> mOuter;

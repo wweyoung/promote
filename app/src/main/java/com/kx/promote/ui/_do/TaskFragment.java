@@ -1,17 +1,26 @@
 package com.kx.promote.ui._do;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.kx.promote.R;
 import com.kx.promote.bean.Order;
+import com.kx.promote.ui.LoginActivity;
+import com.kx.promote.utils.HttpUtil;
 import com.kx.promote.utils.ViewFindUtils;
+
+import java.lang.ref.WeakReference;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +32,7 @@ public class TaskFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private ImageView imageView;
     private EditText idET;
     private EditText keywordET;
     private EditText shopNameET;
@@ -34,6 +44,9 @@ public class TaskFragment extends Fragment {
 
     // TODO: Rename and change types of parameters
     private Order order;
+    protected static final int IMAGE_UPDATE = 1;
+    protected static final int ERROR = 2;
+    private Handler handler = new MyHandler(this);
 
     public TaskFragment() {
         // Required empty public constructor
@@ -60,6 +73,7 @@ public class TaskFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_do_task, container, false);
+        imageView = ViewFindUtils.find(view,R.id.order_image);
         idET = ViewFindUtils.find(view,R.id.order_id);
         keywordET = ViewFindUtils.find(view,R.id.order_keyword);
         actpriceET  = ViewFindUtils.find(view,R.id.order_actprice);
@@ -82,5 +96,24 @@ public class TaskFragment extends Fragment {
         prepriceET.setText(""+order.getNeed().getPrice());
         shopNameET.setText(order.getNeed().getShop().getName());
         stateET.setText(order.getStateString());
+        HttpUtil.getImage(order.getNeed().getImage().getUrl()+getString(R.string.image_small),handler,IMAGE_UPDATE);
+    }
+    static class MyHandler extends Handler {
+        private WeakReference<TaskFragment> mOuter;
+
+        public MyHandler(TaskFragment activity) {
+            mOuter = new WeakReference<TaskFragment>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            TaskFragment outer = mOuter.get();
+            if (outer != null) {
+                if (msg.what == IMAGE_UPDATE) {
+                    Bitmap bitmap = (Bitmap) msg.obj;
+                    outer.imageView.setImageBitmap(bitmap);
+                }
+            }
+        }
     }
 }
