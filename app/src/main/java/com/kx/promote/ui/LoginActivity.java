@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.kx.promote.R;
 import com.kx.promote.utils.HttpUtil;
+import com.kx.promote.utils.Msg;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -40,7 +41,9 @@ public class LoginActivity extends AppCompatActivity {
     private EditText passwordEdit;
     private EditText verificationEdit;
     // 主线程创建消息处理器
+    protected static final int SHOW_TOAST = 0;
     protected static final int IMAGE_UPDATE = 1;
+    protected static final int CLEAR_VERIFIACTION = 3;//清空验证码输入框
     protected static final int ERROR = 2;
     private Handler handler = new MyHandler(this);
     private String appPath;
@@ -66,7 +69,6 @@ public class LoginActivity extends AppCompatActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(LoginActivity.this, "点击了登录", Toast.LENGTH_SHORT).show();
                 MediaType mediaType = MediaType.parse("application/json;charset=UTF-8");
                 Map<String,String> user = new HashMap<>();
                 user.put("user",userEdit.getText().toString());
@@ -76,17 +78,26 @@ public class LoginActivity extends AppCompatActivity {
                         body, new okhttp3.Callback() {
                             @Override
                             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                                Toast.makeText(LoginActivity.this, "请求失败",
-                                        Toast.LENGTH_SHORT).show();
+                                Message.obtain(handler,SHOW_TOAST,"请求失败！").sendToTarget();
                             }
 
                             @Override
                             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                                String result = response.body().string();
-                                Log.d("login",result);
+                                String json = response.body().string();
+                                Log.d("login",json);
+                                Msg msg =  JSON.parseObject(json,Msg.class);//json转Msg对象
+                                if(msg.getCode()==0){//判断是否成功
+                                    Intent intent=new Intent(LoginActivity.this,HomeActivity.class);
+                                    startActivity(intent);
+                                }
+                                else{//登录失败
+                                    Message.obtain(handler,CLEAR_VERIFIACTION).sendToTarget();//给主线程发送信息，让主线程清空输入框
+                                    if(msg.getCode()==1){//需要刷新验证码
+                                        loadVerificationImage();//重新加载验证码
+                                    }
+                                    Message.obtain(handler,SHOW_TOAST,msg.getMsg()).sendToTarget();//给主线程发送信息，让主线程弹出Toast
+                                }
 
-                                Intent intent=new Intent(LoginActivity.this,HomeActivity.class);
-                                startActivity(intent);
                             }
                         });
             }
@@ -94,25 +105,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
     private void loadVerificationImage(){
-        HttpUtil.get(appPath+"/verificationCode",new okhttp3.Callback(){
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                byte[] bytes = response.body().bytes();
-                //使用BitmapFactory工厂，把字节数组转化为bitmap
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                Message message = handler.obtainMessage();
-                message.what = IMAGE_UPDATE;
-                message.obj = bitmap;
-                handler.sendMessage(message);
-            }
-
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Toast.makeText(LoginActivity.this, "加载验证码失败",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+        HttpUtil.getImage(appPath+"/verificationCode",handler,IMAGE_UPDATE);
     }
     static class MyHandler extends Handler {
         private WeakReference<LoginActivity> mOuter;
@@ -125,10 +118,18 @@ public class LoginActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             LoginActivity outer = mOuter.get();
             if (outer != null) {
-                if (msg.what == IMAGE_UPDATE) {
+                if(msg.what == SHOW_TOAST){
+                    String text = (String) msg.obj;
+                    Toast.makeText(outer,text,Toast.LENGTH_SHORT).show();
+                }
+                else if (msg.what == IMAGE_UPDATE) {
                     Bitmap bitmap = (Bitmap) msg.obj;
                     outer.verificationImage.setImageBitmap(bitmap);
-                } else if (msg.what == ERROR) {
+                }
+                else if (msg.what == CLEAR_VERIFIACTION) {
+                    outer.verificationEdit.setText("");
+                }
+                else if (msg.what == ERROR) {
                     Toast.makeText(outer, "显示图片错误",
                             Toast.LENGTH_SHORT).show();
                 }
