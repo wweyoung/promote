@@ -8,6 +8,8 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.renderscript.ScriptGroup;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -64,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
         });
         userEdit = (EditText)findViewById(R.id.editText_userName);
         passwordEdit = (EditText)findViewById(R.id.editText_password);
+        passwordEdit.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         verificationEdit = (EditText)findViewById(R.id.editText_code);
         Button btn_login=(Button)findViewById(R.id.btn_login);
         btn_login.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 MediaType mediaType = MediaType.parse("application/json;charset=UTF-8");
-                Map<String,String> user = new HashMap<>();
+                final Map<String,String> user = new HashMap<>();
                 user.put("user",userEdit.getText().toString());
                 user.put("password",passwordEdit.getText().toString());
                 RequestBody body = RequestBody.create(JSON.toJSONString(user),mediaType);
@@ -99,9 +102,12 @@ public class LoginActivity extends AppCompatActivity {
                                 String json = response.body().string();
                                 Log.d("login",json);
                                 Msg msg =  JSON.parseObject(json,Msg.class);//json转Msg对象
+                                Log.d("user123",msg.getMsg());
                                 if(msg.getCode()==0){//判断是否成功
-                                    Intent intent=new Intent(LoginActivity.this,HomeActivity.class);
-                                    startActivity(intent);
+                                    Intent intent=new Intent(LoginActivity.this,UpdateUserInfoActivity.class);
+                                    intent.putExtra("userName",userEdit.getText().toString());
+//                                    startActivity(intent);
+                                    startActivityForResult(intent, 1);
                                 }
                                 else{//登录失败
                                     Message.obtain(handler,CLEAR_VERIFIACTION).sendToTarget();//给主线程发送信息，让主线程清空输入框
