@@ -47,11 +47,26 @@ public class HttpUtil {
                 byte[] bytes = response.body().bytes();
                 //使用BitmapFactory工厂，把字节数组转化为bitmap
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                Message message = handler.obtainMessage();
-                message.what = successMess;
-                message.obj = bitmap;
-                handler.sendMessage(message);
+                Message.obtain(handler,successMess,bitmap).sendToTarget();
             }
         });
     }
+    public static void getImage(String url, final MyCallback callback){
+        get(url, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                callback.failed(Msg.fail(e.getMessage()));
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                byte[] bytes = response.body().bytes();
+                //使用BitmapFactory工厂，把字节数组转化为bitmap
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                Msg msg = Msg.success().add("bitmap",bitmap);
+                callback.success(msg);
+            }
+        });
+    }
+
 }

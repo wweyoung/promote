@@ -8,10 +8,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kx.promote.R;
 import com.kx.promote.bean.Group;
+import com.kx.promote.utils.MyApplication;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -44,6 +46,11 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
         DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
         holder.timeView.setText(df.format(group.getTime()));
         holder.stateView.setText(group.getStateString());
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(MyApplication.getContext());
+        holder.orderRecyclerView.setLayoutManager(mLayoutManager);
+        OrderRecyclerViewAdapter adapter = new OrderRecyclerViewAdapter(group.getOrderlist());
+        holder.orderRecyclerView.setAdapter(adapter);
+
         if(group.getState()==Group.FINISHED || group.getState()==Group.FILLIN){
             holder.customerView.setText(group.getCustomer());
             holder.actpriceView.setText("实付"+group.getActprice().toString()+"元");
@@ -66,6 +73,7 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
         private TextView customerView;
         private TextView stateView;
         private LinearLayout submitInfoLayout;
+        private RecyclerView orderRecyclerView;
         public ViewHolder(View itemView) {
             super(itemView);
             idView = (TextView) itemView.findViewById(R.id.group_id);
@@ -76,6 +84,7 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
             customerView = (TextView) itemView.findViewById(R.id.group_customer);
             stateView = (TextView) itemView.findViewById(R.id.group_state);
             submitInfoLayout = itemView.findViewById(R.id.submit_info_layout);
+            orderRecyclerView = itemView.findViewById(R.id.group_order);
         }
     }
 }
