@@ -102,7 +102,8 @@ public class LoginActivity extends AppCompatActivity {
                                 String json = response.body().string();
                                 Log.d("login",json);
                                 Msg msg =  JSON.parseObject(json,Msg.class);//json转Msg对象
-                                Log.d("user123",msg.getMsg());
+                                Log.d("user123", String.valueOf(msg));
+
                                 if(msg.getCode()==0){//判断是否成功
                                     Intent intent=new Intent(LoginActivity.this,UpdateUserInfoActivity.class);
                                     intent.putExtra("userName",userEdit.getText().toString());

@@ -1,10 +1,7 @@
 package com.kx.promote.utils;
-
 import java.util.HashMap;
 import java.util.Map;
-
 public class Msg {
-
     //状态码  0-成功  非0-失败
     private int code;
     //提示信息
@@ -96,11 +93,11 @@ public class Msg {
     		this.msg = msg;
     	}
     	else {
-        	this.msg += msg+"\n";    		
+        	this.msg += msg+"\n";
     	}
     	return this;
     }
-    
+
     public Map<String, Object> getData() {
         return data;
     }
