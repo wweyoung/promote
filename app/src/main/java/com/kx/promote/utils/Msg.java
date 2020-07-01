@@ -55,7 +55,10 @@ public class Msg {
         this.getData().put(key,value);
         return this;
     }
-
+    public Msg put(String key,Object value){
+        this.add(key,value);
+        return this;
+    }
 
     public int getCode() {
         return code;

@@ -140,5 +140,16 @@ public class Group implements Serializable {
         }
         return preprice;
     }
+    public BigDecimal getActprice(){
+        BigDecimal actprice = new BigDecimal(0);
+        if(this.getOrderlist()==null)
+            return actprice;
+        for(Order order:this.getOrderlist()){
+            if(order.getPrice()==null)
+                continue;
+            actprice = actprice.add(order.getPrice());
+        }
+        return actprice;
+    }
 
 }

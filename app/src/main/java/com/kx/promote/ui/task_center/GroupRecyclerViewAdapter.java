@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kx.promote.R;
 import com.kx.promote.bean.Group;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,12 +39,22 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
         if(group==null)
             return;
         holder.idView.setText(""+group.getId());
-        //holder.orderNumberView.setText(group.getOrderlist().size());
-
+        holder.orderNumberView.setText(group.getOrderlist().size()+"连");
+        holder.prepriceView.setText("预付"+group.getPreprice().toString()+"元");
+        DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+        holder.timeView.setText(df.format(group.getTime()));
+        holder.stateView.setText(group.getStateString());
+        if(group.getState()==Group.FINISHED || group.getState()==Group.FILLIN){
+            holder.customerView.setText(group.getCustomer());
+            holder.actpriceView.setText("实付"+group.getActprice().toString()+"元");
+            holder.submitInfoLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public int getItemCount() {
+        if(groupList==null)
+            return 0;
         return this.groupList.size();
     }
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -52,6 +65,7 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
         private TextView timeView;
         private TextView customerView;
         private TextView stateView;
+        private LinearLayout submitInfoLayout;
         public ViewHolder(View itemView) {
             super(itemView);
             idView = (TextView) itemView.findViewById(R.id.group_id);
@@ -61,6 +75,7 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
             timeView = (TextView) itemView.findViewById(R.id.group_time);
             customerView = (TextView) itemView.findViewById(R.id.group_customer);
             stateView = (TextView) itemView.findViewById(R.id.group_state);
+            submitInfoLayout = itemView.findViewById(R.id.submit_info_layout);
         }
     }
 }
