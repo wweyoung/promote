@@ -80,18 +80,6 @@ public class UpdateUserInfoActivity extends AppCompatActivity implements View.On
         personNameEdit.setText(user.getName());
         userPhoneEdit.setText(user.getPhone());
 
-        //获取登录用户信息
-        HttpUtil.get(appPath+"/interface/user?name="+userNameEdit.getText().toString(),new okhttp3.Callback(){
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String result = response.body().string();
-                Log.d("update++",result);
-            }
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Toast.makeText(UpdateUserInfoActivity.this, "获取失败", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override
@@ -122,14 +110,15 @@ public class UpdateUserInfoActivity extends AppCompatActivity implements View.On
                 Toast.makeText(UpdateUserInfoActivity.this, "点击了完成", Toast.LENGTH_SHORT).show();
 
                 MediaType mediaType = MediaType.parse("application/json;charset=UTF-8");
-                Map<String,String> user = new HashMap<>();
-                user.put("userNameEdit",userNameEdit.getText().toString());
-                user.put("personNameEdit",personNameEdit.getText().toString());
-                user.put("userPhoneEdit",userPhoneEdit.getText().toString());
-                user.put("userMailEdit",userMailEdit.getText().toString());
-                user.put("newPasswordEdit",newPasswordEdit.getText().toString());
-                user.put("confirmPasswordEdit",confirmPasswordEdit.getText().toString());
-                RequestBody body = RequestBody.create(JSON.toJSONString(user),mediaType);
+                Map<String,String> userMap = new HashMap<>();
+                userMap.put("userNameEdit",userNameEdit.getText().toString());
+                userMap.put("personNameEdit",personNameEdit.getText().toString());
+                userMap.put("userPhoneEdit",userPhoneEdit.getText().toString());
+                userMap.put("userMailEdit",userMailEdit.getText().toString());
+                userMap.put("newPasswordEdit",newPasswordEdit.getText().toString());
+                userMap.put("confirmPasswordEdit",confirmPasswordEdit.getText().toString());
+                RequestBody body = RequestBody.create(JSON.toJSONString(userMap),mediaType);
+
                 HttpUtil.post(appPath+"/interface/user",body, new okhttp3.Callback() {
                             @Override
                             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -138,28 +127,14 @@ public class UpdateUserInfoActivity extends AppCompatActivity implements View.On
                             }
                             @Override
                             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-
                                 String result = response.body().string();
-                                parseJSONWithJSONObject(result);
                                 Toast.makeText(UpdateUserInfoActivity.this,"result="+result,Toast.LENGTH_SHORT).show();
-                                Log.d("修改成功++",result);
+                                Log.d("result",result);
                             }
                         });
                 break;
             default:
                 break;
         }
-    }
-    private void parseJSONWithJSONObject(String jsonDate){
-//        try {
-//            JSONArray jsonArray = new JSONArray(jsonDate);
-//            for(int i=0;i<jsonArray.length();i++){
-//
-//            }
-//
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-
     }
 }

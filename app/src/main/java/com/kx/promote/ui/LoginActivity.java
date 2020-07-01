@@ -2,6 +2,7 @@ package com.kx.promote.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,7 +11,9 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Parcelable;
+
+import android.os.UserManager;
+import android.preference.PreferenceManager;
 import android.renderscript.ScriptGroup;
 import android.text.InputType;
 import android.util.Log;
@@ -25,6 +28,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.kx.promote.R;
 import com.kx.promote.bean.User;
+import com.kx.promote.bean.UserManage;
 import com.kx.promote.utils.HttpUtil;
 import com.kx.promote.utils.Msg;
 
@@ -60,9 +64,38 @@ public class LoginActivity extends AppCompatActivity {
     private CheckBox btn_auto;
     private CheckBox btn_rem;
     User user;
+
+    private static final int GO_HOME = 0;//去主页
+    private static final int GO_LOGIN = 1;//去登录页
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case GO_HOME://去主页
+//                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+//                    Log.d("message", String.valueOf(user));
+//                    startActivity(intent);
+//                    finish();
+                    break;
+                case GO_LOGIN://去登录页
+                    Intent intent2 = new Intent(LoginActivity.this, LoginActivity.class);
+                    startActivity(intent2);
+                    finish();
+                    break;
+            }
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (UserManage.getInstance().hasUserInfo(this))//自动登录判断，SharePrefences中有数据，则跳转到主页，没数据则跳转到登录页
+        {
+            mHandler.sendEmptyMessageDelayed(GO_HOME, 500);
+            Toast.makeText(LoginActivity.this,"正在登录",Toast.LENGTH_SHORT).show();
+        } else {
+            mHandler.sendEmptyMessageAtTime(GO_LOGIN, 2000);
+        }
         setContentView(R.layout.activity_login);
         appPath = getString(R.string.app_path);
         //获取需要展示图片验证码的ImageView
@@ -83,31 +116,11 @@ public class LoginActivity extends AppCompatActivity {
         passwordEdit.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         verificationEdit = (EditText)findViewById(R.id.editText_code);
         Button btn_login=(Button)findViewById(R.id.btn_login);
-        btn_auto=(CheckBox) findViewById(R.id.btn_auto);
-        btn_rem=(CheckBox) findViewById(R.id.btn_rem);
+//        btn_auto=(CheckBox) findViewById(R.id.btn_auto);
+//        btn_auto.setChecked(true);
+//        btn_rem=(CheckBox) findViewById(R.id.btn_rem);
+//        btn_rem.setChecked(true);
 
-        if (btn_rem.isChecked()) {
-
-            userEdit.setText(sp.getString("userName", ""));
-            passwordEdit.setText(sp.getString("password", ""));
-            btn_rem.setChecked(true);
-
-            if (btn_auto.isChecked()) {
-
-//                btn_auto.setChecked(true);
-                Intent intent1 = new Intent();
-                intent1.setClass(getApplicationContext(), UpdateUserInfoActivity.class);
-
-                intent1.putExtra("user",user);
-                startActivityForResult(intent1,1);
-            }
-            else {
-                btn_auto.setChecked(false);
-            }
-        }
-        else {
-            btn_rem.setChecked(false);
-        }
 
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,14 +162,12 @@ public class LoginActivity extends AppCompatActivity {
                                 String userString= String.valueOf(data.get("user"));
                                 user= JSON.parseObject(userString,User.class);
 
-
-
                                 if(msg.getCode()==0){//判断是否成功
                                     //保存用户名和密码
-                                    editor.putString("userName", userEdit.getText().toString());
-                                    editor.putString("password", passwordEdit.getText().toString());
-                                    editor.commit();
-
+//                                    editor.putString("userName", userEdit.getText().toString());
+//                                    editor.putString("password", passwordEdit.getText().toString());
+//                                    editor.commit();
+//                                    UserManage.getInstance().saveUserInfo(LoginActivity.this, userEdit.getText().toString(), passwordEdit.getText().toString());
                                     Intent intent2=new Intent();
                                     intent2.setClass(getApplicationContext(), UpdateUserInfoActivity.class);
                                     intent2.putExtra("user",user);
