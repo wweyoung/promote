@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.kx.promote.R;
 import com.kx.promote.bean.Group;
+import com.kx.promote.ui.HomeActivity;
 import com.kx.promote.utils.MyApplication;
 
 import java.text.DateFormat;
@@ -37,7 +39,7 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Group group = groupList.get(position);
+        final Group group = groupList.get(position);
         if(group==null)
             return;
         holder.idView.setText(""+group.getId());
@@ -56,6 +58,14 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
             holder.actpriceView.setText("实付"+group.getActprice().toString()+"元");
             holder.submitInfoLayout.setVisibility(View.VISIBLE);
         }
+        holder.goButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HomeActivity homeActivity = MyApplication.getHomeActivity();
+                homeActivity.getDoFragment().getGroup(group.getId());
+                homeActivity.getViewPager().setCurrentItem(HomeActivity.DO_TASK);
+            }
+        });
     }
 
     @Override
@@ -74,6 +84,7 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
         private TextView stateView;
         private LinearLayout submitInfoLayout;
         private RecyclerView orderRecyclerView;
+        private Button goButton;
         public ViewHolder(View itemView) {
             super(itemView);
             idView = (TextView) itemView.findViewById(R.id.group_id);
@@ -85,6 +96,7 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
             stateView = (TextView) itemView.findViewById(R.id.group_state);
             submitInfoLayout = itemView.findViewById(R.id.submit_info_layout);
             orderRecyclerView = itemView.findViewById(R.id.group_order);
+            goButton = itemView.findViewById(R.id.group_go_button);
         }
     }
 }

@@ -120,9 +120,6 @@ public class DoFragment extends Fragment {
         /** with ViewPager */
         header = ViewFindUtils.find(view, R.id.do_header);
         initHeaderBar();
-        if(group==null){
-            getGroup(3390);
-        }
         updateUI();
         return view;
     }
@@ -207,7 +204,6 @@ public class DoFragment extends Fragment {
         }
         mFragments.add(new TaskFragment());
         mTabEntities.add(new TabEntity("提交", 0,0));
-
         header.setTabData(mTabEntities);
         mAdapter.notifyDataSetChanged();
     }

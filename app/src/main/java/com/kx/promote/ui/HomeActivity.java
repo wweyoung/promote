@@ -18,6 +18,7 @@ import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.kx.promote.R;
 import com.kx.promote.entity.TabEntity;
 import com.kx.promote.ui._do.DoFragment;
+import com.kx.promote.utils.MyApplication;
 import com.kx.promote.utils.ViewFindUtils;
 
 import java.lang.ref.WeakReference;
@@ -31,9 +32,9 @@ public class HomeActivity extends AppCompatActivity {
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
 
     private String[] mTitles = {"任务中心", "当前任务", "我"};
-    private final static int TASK_LIST = 0;
-    private final static int DO_TASK = 1;
-    private final static int USER_CENTER = 2;
+    public final static int TASK_LIST = 0;
+    public final static int DO_TASK = 1;
+    public final static int USER_CENTER = 2;
 
     private int[] mIconUnselectIds = {
             R.mipmap.tab_home_unselect, R.mipmap.tab_speech_unselect,
@@ -55,6 +56,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        MyApplication.setHomeActivity(this);
         taskCenterFragment = new TaskCenterFragment();
         doFragment = new DoFragment();
         mFragments.add(taskCenterFragment);
@@ -136,7 +138,13 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        mViewPager.setCurrentItem(0);
+        mViewPager.setCurrentItem(HomeActivity.TASK_LIST);
+    }
+    public DoFragment getDoFragment(){
+        return doFragment;
+    }
+    public ViewPager getViewPager(){
+        return mViewPager;
     }
     static class MyHandler extends Handler {
         private WeakReference<HomeActivity> mOuter;

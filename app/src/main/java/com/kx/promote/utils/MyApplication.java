@@ -3,8 +3,11 @@ package com.kx.promote.utils;
 import android.app.Application;
 import android.content.Context;
 import com.kx.promote.R;
+import com.kx.promote.ui.HomeActivity;
+
 public class MyApplication extends Application {
     private static Context context;
+    private static HomeActivity homeActivity;
     private static String appPath;
     private static String imageSmall;
     @Override
@@ -22,5 +25,13 @@ public class MyApplication extends Application {
     }
     public static String getImageSmall(){
         return imageSmall;
+    }
+
+    public static HomeActivity getHomeActivity() {
+        return homeActivity;
+    }
+
+    public static void setHomeActivity(HomeActivity homeActivity) {
+        MyApplication.homeActivity = homeActivity;
     }
 }
