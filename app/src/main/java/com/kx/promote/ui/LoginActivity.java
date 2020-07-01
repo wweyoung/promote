@@ -2,7 +2,9 @@ package com.kx.promote.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -13,12 +15,15 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.kx.promote.R;
+import com.kx.promote.bean.User;
 import com.kx.promote.utils.HttpUtil;
 import com.kx.promote.utils.Msg;
 
@@ -26,6 +31,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +55,9 @@ public class LoginActivity extends AppCompatActivity {
     protected static final int ERROR = 2;
     private Handler handler = new MyHandler(this);
     private String appPath;
+    SharedPreferences sp;
+    private CheckBox btn_auto;
+    private CheckBox btn_rem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,14 +73,37 @@ public class LoginActivity extends AppCompatActivity {
                 loadVerificationImage();
             }
         });
+
+        sp=getSharedPreferences("userInfo", 0);
+
         userEdit = (EditText)findViewById(R.id.editText_userName);
         passwordEdit = (EditText)findViewById(R.id.editText_password);
         passwordEdit.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         verificationEdit = (EditText)findViewById(R.id.editText_code);
         Button btn_login=(Button)findViewById(R.id.btn_login);
+        btn_auto=(CheckBox) findViewById(R.id.btn_auto);
+        btn_rem=(CheckBox) findViewById(R.id.btn_rem);
+
+        if (btn_rem.isChecked()) {
+
+            userEdit.setText(sp.getString("userName", ""));
+            passwordEdit.setText(sp.getString("password", ""));
+//            btn_rem.setChecked(true);
+
+            if (btn_auto.isChecked()) {
+
+//                btn_auto.setChecked(true);
+                Intent intent1 = new Intent();
+                intent1.setClass(getApplicationContext(), UpdateUserInfoActivity.class);
+                startActivity(intent1);
+            }
+        }
+
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                final SharedPreferences.Editor editor =sp.edit();
+
                 if(userEdit.getText().toString().isEmpty()){
                     Toast.makeText(LoginActivity.this, "请输入用户名",Toast.LENGTH_SHORT).show();
                     return;
@@ -102,13 +134,32 @@ public class LoginActivity extends AppCompatActivity {
                                 String json = response.body().string();
                                 Log.d("login",json);
                                 Msg msg =  JSON.parseObject(json,Msg.class);//json转Msg对象
-                                Log.d("user123", String.valueOf(msg));
+
+                                Map<String,Object> data=msg.getData();
+
+//                                Map<String,Object> data=msg.getData();
+//                                User user= JSON.parseObject(String.valueOf(data),User.class);
+//                                Log.d("user555", String.valueOf(data.containsKey("user")));
+//                                Log.d("user66", String.valueOf(data.values()));
+                                Log.d("user123", String.valueOf(data));
+
 
                                 if(msg.getCode()==0){//判断是否成功
-                                    Intent intent=new Intent(LoginActivity.this,UpdateUserInfoActivity.class);
-                                    intent.putExtra("userName",userEdit.getText().toString());
-//                                    startActivity(intent);
-                                    startActivityForResult(intent, 1);
+                                    //保存用户名和密码
+                                    editor.putString("userName", userEdit.getText().toString());
+                                    editor.putString("password", passwordEdit.getText().toString());
+                                    editor.commit();
+
+                                    Intent intent2=new Intent();
+                                    intent2.setClass(getApplicationContext(), UpdateUserInfoActivity.class);
+                                    startActivity(intent2);
+
+////                                    Intent intent=new Intent(LoginActivity.this,UpdateUserInfoActivity.class);
+//                                    Intent intent=new Intent();
+//                                    intent.setClass(getApplicationContext(), UpdateUserInfoActivity.class);
+//                                    intent.putExtra("userName",userEdit.getText().toString());
+////                                    startActivity(intent);
+//                                    startActivityForResult(intent, 1);
                                 }
                                 else{//登录失败
                                     Message.obtain(handler,CLEAR_VERIFIACTION).sendToTarget();//给主线程发送信息，让主线程清空输入框
