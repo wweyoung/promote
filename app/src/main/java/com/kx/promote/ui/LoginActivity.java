@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.renderscript.ScriptGroup;
 import android.text.InputType;
 import android.util.Log;
@@ -55,9 +56,10 @@ public class LoginActivity extends AppCompatActivity {
     protected static final int ERROR = 2;
     private Handler handler = new MyHandler(this);
     private String appPath;
-    SharedPreferences sp;
+    private SharedPreferences sp;
     private CheckBox btn_auto;
     private CheckBox btn_rem;
+    User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,15 +90,23 @@ public class LoginActivity extends AppCompatActivity {
 
             userEdit.setText(sp.getString("userName", ""));
             passwordEdit.setText(sp.getString("password", ""));
-//            btn_rem.setChecked(true);
+            btn_rem.setChecked(true);
 
             if (btn_auto.isChecked()) {
 
 //                btn_auto.setChecked(true);
                 Intent intent1 = new Intent();
                 intent1.setClass(getApplicationContext(), UpdateUserInfoActivity.class);
-                startActivity(intent1);
+
+                intent1.putExtra("user",user);
+                startActivityForResult(intent1,1);
             }
+            else {
+                btn_auto.setChecked(false);
+            }
+        }
+        else {
+            btn_rem.setChecked(false);
         }
 
         btn_login.setOnClickListener(new View.OnClickListener() {
@@ -118,10 +128,10 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 MediaType mediaType = MediaType.parse("application/json;charset=UTF-8");
-                final Map<String,String> user = new HashMap<>();
-                user.put("user",userEdit.getText().toString());
-                user.put("password",passwordEdit.getText().toString());
-                RequestBody body = RequestBody.create(JSON.toJSONString(user),mediaType);
+                final Map<String,String> userMap = new HashMap<>();
+                userMap.put("user",userEdit.getText().toString());
+                userMap.put("password",passwordEdit.getText().toString());
+                RequestBody body = RequestBody.create(JSON.toJSONString(userMap),mediaType);
                 HttpUtil.post(appPath+"/interface/login?rememberMe=true&verificationCode="+verificationEdit.getText().toString(),
                         body, new okhttp3.Callback() {
                             @Override
@@ -136,12 +146,9 @@ public class LoginActivity extends AppCompatActivity {
                                 Msg msg =  JSON.parseObject(json,Msg.class);//json转Msg对象
 
                                 Map<String,Object> data=msg.getData();
+                                String userString= String.valueOf(data.get("user"));
+                                user= JSON.parseObject(userString,User.class);
 
-//                                Map<String,Object> data=msg.getData();
-//                                User user= JSON.parseObject(String.valueOf(data),User.class);
-//                                Log.d("user555", String.valueOf(data.containsKey("user")));
-//                                Log.d("user66", String.valueOf(data.values()));
-                                Log.d("user123", String.valueOf(data));
 
 
                                 if(msg.getCode()==0){//判断是否成功
@@ -152,7 +159,8 @@ public class LoginActivity extends AppCompatActivity {
 
                                     Intent intent2=new Intent();
                                     intent2.setClass(getApplicationContext(), UpdateUserInfoActivity.class);
-                                    startActivity(intent2);
+                                    intent2.putExtra("user",user);
+                                    startActivityForResult(intent2,1);
 
 ////                                    Intent intent=new Intent(LoginActivity.this,UpdateUserInfoActivity.class);
 //                                    Intent intent=new Intent();

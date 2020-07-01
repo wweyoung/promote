@@ -1,11 +1,12 @@
 package com.kx.promote.bean;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
-public class User {
+public class User implements Serializable {
     @Override
 	public String toString() {
 		return "User [id=" + id + ", user=" + user + ", name=" + name + ", phone=" + phone + ", email=" + email

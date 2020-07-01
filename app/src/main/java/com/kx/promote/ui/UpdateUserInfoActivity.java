@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.kx.promote.R;
+import com.kx.promote.bean.User;
 import com.kx.promote.utils.HttpUtil;
 
 import org.jetbrains.annotations.NotNull;
@@ -73,8 +74,11 @@ public class UpdateUserInfoActivity extends AppCompatActivity implements View.On
         btn_save.setOnClickListener(this);
 
         Intent intent=getIntent();
-        String userName=intent.getStringExtra("userName");
-        userNameEdit.setText(userName);
+        User user = (User) intent.getSerializableExtra("user");
+
+        userNameEdit.setText(user.getUser());
+        personNameEdit.setText(user.getName());
+        userPhoneEdit.setText(user.getPhone());
 
         //获取登录用户信息
         HttpUtil.get(appPath+"/interface/user?name="+userNameEdit.getText().toString(),new okhttp3.Callback(){
