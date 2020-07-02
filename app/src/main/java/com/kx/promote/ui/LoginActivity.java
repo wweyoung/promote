@@ -1,5 +1,6 @@
 package com.kx.promote.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ComponentName;
@@ -17,6 +18,7 @@ import android.preference.PreferenceManager;
 import android.renderscript.ScriptGroup;
 import android.text.InputType;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -47,8 +49,6 @@ import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private Bitmap bitmap;
-    private String code;
     private ImageView verificationImage;
     private EditText userEdit;
     private EditText passwordEdit;
@@ -60,42 +60,46 @@ public class LoginActivity extends AppCompatActivity {
     protected static final int ERROR = 2;
     private Handler handler = new MyHandler(this);
     private String appPath;
-    private SharedPreferences sp;
-    private CheckBox btn_auto;
-    private CheckBox btn_rem;
+
     User user;
+    UserManage userManage;
 
     private static final int GO_HOME = 0;//去主页
     private static final int GO_LOGIN = 1;//去登录页
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            Intent intent = new Intent();
             switch (msg.what) {
                 case GO_HOME://去主页
-//                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-//                    Log.d("message", String.valueOf(user));
-//                    startActivity(intent);
-//                    finish();
+                    intent = new Intent(LoginActivity.this, UpdateUserInfoActivity.class);
+                    startActivity(intent);
+                    finish();
                     break;
                 case GO_LOGIN://去登录页
-                    Intent intent2 = new Intent(LoginActivity.this, LoginActivity.class);
-                    startActivity(intent2);
+                    intent = new Intent(LoginActivity.this, LoginActivity.class);
+                    startActivity(intent);
                     finish();
+                    break;
+                default:
                     break;
             }
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (UserManage.getInstance().hasUserInfo(this))//自动登录判断，SharePrefences中有数据，则跳转到主页，没数据则跳转到登录页
+        if (userManage.getInstance().hasUserInfo(this))//自动登录判断，SharePrefences中有数据，则跳转到主页，没数据则跳转到登录页
         {
             mHandler.sendEmptyMessageDelayed(GO_HOME, 500);
             Toast.makeText(LoginActivity.this,"正在登录",Toast.LENGTH_SHORT).show();
+
         } else {
             mHandler.sendEmptyMessageAtTime(GO_LOGIN, 2000);
         }
+
         setContentView(R.layout.activity_login);
         appPath = getString(R.string.app_path);
         //获取需要展示图片验证码的ImageView
@@ -109,24 +113,15 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        sp=getSharedPreferences("userInfo", 0);
-
         userEdit = (EditText)findViewById(R.id.editText_userName);
         passwordEdit = (EditText)findViewById(R.id.editText_password);
         passwordEdit.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         verificationEdit = (EditText)findViewById(R.id.editText_code);
         Button btn_login=(Button)findViewById(R.id.btn_login);
-//        btn_auto=(CheckBox) findViewById(R.id.btn_auto);
-//        btn_auto.setChecked(true);
-//        btn_rem=(CheckBox) findViewById(R.id.btn_rem);
-//        btn_rem.setChecked(true);
-
 
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final SharedPreferences.Editor editor =sp.edit();
-
                 if(userEdit.getText().toString().isEmpty()){
                     Toast.makeText(LoginActivity.this, "请输入用户名",Toast.LENGTH_SHORT).show();
                     return;
@@ -151,7 +146,6 @@ public class LoginActivity extends AppCompatActivity {
                             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                                 Message.obtain(handler,SHOW_TOAST,"请求失败！").sendToTarget();
                             }
-
                             @Override
                             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                                 String json = response.body().string();
@@ -160,25 +154,16 @@ public class LoginActivity extends AppCompatActivity {
 
                                 Map<String,Object> data=msg.getData();
                                 String userString= String.valueOf(data.get("user"));
-                                user= JSON.parseObject(userString,User.class);
+                                user= JSON.parseObject(userString,User.class);//json转User对象
 
                                 if(msg.getCode()==0){//判断是否成功
-                                    //保存用户名和密码
-//                                    editor.putString("userName", userEdit.getText().toString());
-//                                    editor.putString("password", passwordEdit.getText().toString());
-//                                    editor.commit();
 //                                    UserManage.getInstance().saveUserInfo(LoginActivity.this, userEdit.getText().toString(), passwordEdit.getText().toString());
+                                    userManage.getInstance().saveUserInfo(LoginActivity.this, user);
                                     Intent intent2=new Intent();
                                     intent2.setClass(getApplicationContext(), UpdateUserInfoActivity.class);
-                                    intent2.putExtra("user",user);
+                                    intent2.putExtra("User",user);
                                     startActivityForResult(intent2,1);
-
-////                                    Intent intent=new Intent(LoginActivity.this,UpdateUserInfoActivity.class);
-//                                    Intent intent=new Intent();
-//                                    intent.setClass(getApplicationContext(), UpdateUserInfoActivity.class);
-//                                    intent.putExtra("userName",userEdit.getText().toString());
-////                                    startActivity(intent);
-//                                    startActivityForResult(intent, 1);
+                                    startActivity(intent2);
                                 }
                                 else{//登录失败
                                     Message.obtain(handler,CLEAR_VERIFIACTION).sendToTarget();//给主线程发送信息，让主线程清空输入框
