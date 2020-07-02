@@ -2,18 +2,12 @@ package com.kx.promote.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
@@ -23,10 +17,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.kx.promote.R;
-import com.kx.promote.bean.User;
-import com.kx.promote.bean.UserManage;
 import com.kx.promote.utils.HttpUtil;
 
 import org.jetbrains.annotations.NotNull;

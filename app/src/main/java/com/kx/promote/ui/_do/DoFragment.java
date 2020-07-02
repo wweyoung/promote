@@ -212,7 +212,7 @@ public class DoFragment extends Fragment {
             TabEntity tabEntity = new TabEntity(String.valueOf(mTabEntities.size()), R.mipmap.tab_speech_select, R.mipmap.tab_speech_unselect);
             mTabEntities.add(tabEntity);
         }
-        mFragments.add(new TaskFragment());
+        mFragments.add(SubmitFragment.newInstance(group));
         mTabEntities.add(new TabEntity("提交", 0,0));
         header.setTabData(mTabEntities);
         mAdapter.notifyDataSetChanged();

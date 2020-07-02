@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui._do.SubmitFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:padding="1dp"
+                android:text="总实付款"
+                android:textSize="20sp" />
+
+            <View
+                android:layout_width="1dip"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:background="#EEEFFF" />
+
+            <EditText
+                android:id="@+id/group_actprice"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+
+                android:layout_marginLeft="2dp"
+                android:enabled="false"
+                android:padding="1dp"
+                android:text="100元"
+                android:textColorHighlight="#FFFFFF"
+                android:textSize="22sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:padding="1dp"
+                android:text="会员名"
+                android:textSize="20sp" />
+
+            <View
+                android:layout_width="1dip"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:background="#EEEFFF" />
+
+            <EditText
+                android:id="@+id/group_customer"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+
+                android:layout_marginLeft="2dp"
+                android:padding="1dp"
+                android:text="100元"
+                android:textColorHighlight="#FFFFFF"
+                android:textSize="22sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:padding="1dp"
+                android:text="附加信息"
+                android:textSize="20sp" />
+
+            <View
+                android:layout_width="1dip"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:background="#EEEFFF" />
+
+            <EditText
+                android:id="@+id/group_note"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+
+                android:layout_marginLeft="2dp"
+                android:padding="1dp"
+                android:text="100元"
+                android:textColorHighlight="#FFFFFF"
+                android:textSize="22sp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/group_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#00BCD4"
+            android:letterSpacing="1.5"
+            android:text="提交"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+
+
+    </LinearLayout>
+
+</FrameLayout>
