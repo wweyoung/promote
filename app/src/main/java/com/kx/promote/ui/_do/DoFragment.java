@@ -2,9 +2,11 @@ package com.kx.promote.ui._do;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Handler;
@@ -112,18 +114,15 @@ public class DoFragment extends Fragment {
         appPath = getString(R.string.app_path);
         this.view = view;
         this.homeActivity = (HomeActivity) getActivity();
-
         mViewPager = ViewFindUtils.find(view, R.id.do_body);//在view中寻找do_body
-        mViewPager.setOffscreenPageLimit(100);
-        mAdapter = new MyPagerAdapter(getFragmentManager());
-        mViewPager.setAdapter(mAdapter);
         /** with ViewPager */
         header = ViewFindUtils.find(view, R.id.do_header);
+
         initHeaderBar();
         updateUI();
         return view;
     }
-    private class MyPagerAdapter extends FragmentPagerAdapter {
+    private class MyPagerAdapter extends FragmentStatePagerAdapter {
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -141,6 +140,14 @@ public class DoFragment extends Fragment {
         @Override
         public Fragment getItem(int position) {
             return mFragments.get(position);
+        }
+        public int getItemPosition(Object object) {
+            int index = mFragments.indexOf (object);
+
+            if (index == -1)
+                return POSITION_NONE;
+            else
+                return index;
         }
     }
 
@@ -189,7 +196,10 @@ public class DoFragment extends Fragment {
 
     }
     public void updateUI(){
-        mFragments.clear();
+        mFragments= new ArrayList<>();
+        mAdapter = new MyPagerAdapter(getFragmentManager());
+        mViewPager.setAdapter(mAdapter);
+
         mTabEntities.clear();
         if(group==null || group.getOrderlist()==null)
             return;
@@ -206,6 +216,7 @@ public class DoFragment extends Fragment {
         mTabEntities.add(new TabEntity("提交", 0,0));
         header.setTabData(mTabEntities);
         mAdapter.notifyDataSetChanged();
+        header.setCurrentTab(0);
     }
     public void getGroup(Integer groupId){
         String url = appPath+"/interface/worker/do";
