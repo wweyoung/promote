@@ -49,9 +49,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final int GO_HOME = 4;//去主页
     protected static final int ERROR = 2;
     private Handler handler = new MyHandler(this);
-
     User user;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +121,6 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d("login",json);
                         Msg msg =  JSON.parseObject(json,Msg.class);//json转Msg对象
 
-
                         if(msg.getCode()==0){//判断是否成功
                             user= JSONObject.toJavaObject((JSONObject) msg.get("user"),User.class);//json转User对象
                             user.setPassword(password);
@@ -155,7 +152,6 @@ public class LoginActivity extends AppCompatActivity {
                 String json = response.body().string();
                 Msg msg =  JSON.parseObject(json,Msg.class);//json转Msg对象
 
-
                 if(msg.getCode()==0){//判断是否成功
                     user= JSONObject.toJavaObject((JSONObject) msg.get("user"),User.class);//json转User对象
                     Message.obtain(handler,GO_HOME,user).sendToTarget();
@@ -167,8 +163,9 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
     private void goHome(User user){
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent = new Intent(this, UpdateUserInfoActivity.class);
         intent.putExtra("user",user);
+
         startActivity(intent);
         finish();
     }
