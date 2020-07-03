@@ -69,6 +69,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:background="@drawable/translucent"
                 android:inputType="textPersonName" />
 
         </LinearLayout>
@@ -84,7 +85,7 @@
                 android:id="@+id/textView_personName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="姓名："
+                android:text="姓\u3000名："
                 android:textColor="#1C1C1C"
                 android:textSize="21sp" />
 
@@ -93,6 +94,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:background="@drawable/translucent"
                 android:cursorVisible="false"
                 android:focusable="false"
                 android:textIsSelectable="false"
@@ -120,6 +122,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:background="@drawable/translucent"
                 android:inputType="textPersonName" />
         </LinearLayout>
 
@@ -143,6 +146,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:background="@drawable/translucent"
                 android:inputType="textPersonName" />
         </LinearLayout>
 
@@ -166,6 +170,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:background="@drawable/translucent"
                 android:hint="填写新密码"
                 android:inputType="textPersonName"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -197,6 +202,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:background="@drawable/translucent"
                 android:hint="再次填写确认"
                 android:inputType="textPersonName"
                 app:layout_constraintBottom_toBottomOf="parent"
