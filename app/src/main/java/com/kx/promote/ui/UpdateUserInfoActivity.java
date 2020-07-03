@@ -95,13 +95,18 @@ public class UpdateUserInfoActivity extends AppCompatActivity implements View.On
         btn_back.setOnClickListener(this);
         btn_save.setOnClickListener(this);
 
-        Intent intent=getIntent();
-        user = (User) intent.getSerializableExtra("user");
+//        Intent intent=getIntent();
+//        user = (User) intent.getSerializableExtra("user");
+//        userNameEdit.setText(user.getUser());
+//        personNameEdit.setText(user.getName());
+//        userPhoneEdit.setText(user.getPhone());
+//        userMailEdit.setText(user.getEmail());
+
+        user=MyApplication.getUser();
         userNameEdit.setText(user.getUser());
         personNameEdit.setText(user.getName());
         userPhoneEdit.setText(user.getPhone());
         userMailEdit.setText(user.getEmail());
-
     }
 
     @Override
@@ -163,7 +168,11 @@ public class UpdateUserInfoActivity extends AppCompatActivity implements View.On
                             Msg msg = JSON.parseObject(json, Msg.class);//json转Msg对象
                             Log.d("result", json);
                             if (msg.getCode() == 0) {//判断是否成功
-
+                                user.setPassword(newPasswordEdit.getText().toString());
+                                user.setPhone(userPhoneEdit.getText().toString());
+                                user.setUser(userNameEdit.getText().toString());
+                                user.setEmail(userMailEdit.getText().toString());
+                                MyApplication.setUser(user);
                                 Message message = new Message();
                                 message.what = SUCCESS;
                                 handler.sendMessage(message);

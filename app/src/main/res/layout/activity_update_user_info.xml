@@ -68,9 +68,10 @@
                 android:id="@+id/editText_userName"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:ems="10"
                 android:background="@drawable/translucent"
-                android:inputType="textPersonName" />
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textColor="#292828" />
 
         </LinearLayout>
 
@@ -94,6 +95,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:textColor="#292828"
                 android:background="@drawable/translucent"
                 android:cursorVisible="false"
                 android:focusable="false"
@@ -122,6 +124,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:textColor="#292828"
                 android:background="@drawable/translucent"
                 android:inputType="textPersonName" />
         </LinearLayout>
@@ -146,6 +149,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:textColor="#292828"
                 android:background="@drawable/translucent"
                 android:inputType="textPersonName" />
         </LinearLayout>
@@ -170,6 +174,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:textColor="#292828"
                 android:background="@drawable/translucent"
                 android:hint="填写新密码"
                 android:inputType="textPersonName"
@@ -202,6 +207,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:textColor="#292828"
                 android:background="@drawable/translucent"
                 android:hint="再次填写确认"
                 android:inputType="textPersonName"
