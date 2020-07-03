@@ -4,9 +4,12 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,6 +27,7 @@ import com.kx.promote.utils.MyApplication;
 import com.kx.promote.utils.MyCallback;
 
 import java.lang.ref.WeakReference;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,7 +53,7 @@ public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<OrderRecycler
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        Order order = orderList.get(position);
+        final Order order = orderList.get(position);
         if(order==null)
             return;
         HttpUtil.getImage(order.getNeed().getImage().getUrl() + MyApplication.getImageSmall(), new MyCallback() {
@@ -88,12 +92,12 @@ public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<OrderRecycler
         private ImageView imageView;
         public ViewHolder(View itemView) {
             super(itemView);
-            keywordView = (TextView) itemView.findViewById(R.id.order_keyword);
-            shopView = (TextView) itemView.findViewById(R.id.order_shop);
-            prepriceView = (TextView) itemView.findViewById(R.id.order_preprice);
-            actpriceView = (TextView) itemView.findViewById(R.id.order_actprice);
-            stateView = (TextView) itemView.findViewById(R.id.order_state);
-            imageView = (ImageView) itemView.findViewById(R.id.order_image);
+            keywordView = itemView.findViewById(R.id.order_keyword);
+            shopView =  itemView.findViewById(R.id.order_shop);
+            prepriceView =  itemView.findViewById(R.id.order_preprice);
+            actpriceView =  itemView.findViewById(R.id.order_actprice);
+            stateView = itemView.findViewById(R.id.order_state);
+            imageView =  itemView.findViewById(R.id.order_image);
         }
     }
     public void setImage(){

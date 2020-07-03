@@ -18,6 +18,7 @@ import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.kx.promote.R;
 import com.kx.promote.entity.TabEntity;
 import com.kx.promote.ui._do.DoFragment;
+import com.kx.promote.ui.task_center.TaskCenterFragment;
 import com.kx.promote.utils.MyApplication;
 import com.kx.promote.utils.ViewFindUtils;
 
@@ -32,7 +33,7 @@ public class HomeActivity extends AppCompatActivity {
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
 
     private String[] mTitles = {"任务中心", "当前任务", "我"};
-    public final static int TASK_LIST = 0;
+    public final static int TASK_CENTER = 0;
     public final static int DO_TASK = 1;
     public final static int USER_CENTER = 2;
 
@@ -138,10 +139,13 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        mViewPager.setCurrentItem(HomeActivity.TASK_LIST);
+        mViewPager.setCurrentItem(HomeActivity.TASK_CENTER);
     }
     public DoFragment getDoFragment(){
         return doFragment;
+    }
+    public TaskCenterFragment getTaskCenterFragment(){
+        return taskCenterFragment;
     }
     public ViewPager getViewPager(){
         return mViewPager;

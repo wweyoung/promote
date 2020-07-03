@@ -225,7 +225,7 @@ public class DoFragment extends Fragment {
         HttpUtil.get(url, new okhttp3.Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-
+                Message.obtain(homeActivity.handler,homeActivity.SHOW_MESSAGE,"请求失败！").sendToTarget();//通知打印Toast
             }
 
             @Override

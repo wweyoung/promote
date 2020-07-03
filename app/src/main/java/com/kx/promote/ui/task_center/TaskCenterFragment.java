@@ -1,4 +1,4 @@
-package com.kx.promote.ui;
+package com.kx.promote.ui.task_center;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -17,15 +17,13 @@ import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.kx.promote.R;
-import com.kx.promote.bean.Group;
 import com.kx.promote.entity.TabEntity;
-import com.kx.promote.ui.task_center.GroupListFragment;
-import com.kx.promote.ui.task_center.TodayTaskFragment;
+import com.kx.promote.ui.HomeActivity;
+import com.kx.promote.ui.SimpleCardFragment;
 import com.kx.promote.utils.ViewFindUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class TaskCenterFragment extends Fragment {
@@ -41,7 +39,7 @@ public class TaskCenterFragment extends Fragment {
     public Handler handler = new MyHandler(this);
     private HomeActivity homeActivity;
     private View view;
-
+    private TodayTaskFragment todayTaskFragment;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +51,11 @@ public class TaskCenterFragment extends Fragment {
         }
 
     }
+
+    public TodayTaskFragment getTodayTaskFragment() {
+        return todayTaskFragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -114,7 +117,8 @@ public class TaskCenterFragment extends Fragment {
     private void updateUI(){
         mFragments.clear();
         mTabEntities.clear();
-        mFragments.add(new TodayTaskFragment());
+        todayTaskFragment = new TodayTaskFragment();
+        mFragments.add(todayTaskFragment);
         mTabEntities.add(new TabEntity("今日任务", 0,0));
         mFragments.add(new SimpleCardFragment());
         mTabEntities.add(new TabEntity("历史任务", 0,0));

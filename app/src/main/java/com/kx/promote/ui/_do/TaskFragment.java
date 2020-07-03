@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ import com.kx.promote.utils.HttpUtil;
 import com.kx.promote.utils.ViewFindUtils;
 
 import java.lang.ref.WeakReference;
+import java.math.BigDecimal;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -82,6 +85,44 @@ public class TaskFragment extends Fragment {
         prepriceET = ViewFindUtils.find(view,R.id.order_preprice);
         shopNameET = ViewFindUtils.find(view,R.id.order_shop);
         stateET = ViewFindUtils.find(view,R.id.order_state);
+        noET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                order.setNo(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        actpriceET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String text = charSequence.toString();
+                BigDecimal price = null;
+                if(!text.isEmpty()){
+                    price = new BigDecimal(text);
+                }
+                order.setPrice(price);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
         this.updateUI();
         return view;
     }

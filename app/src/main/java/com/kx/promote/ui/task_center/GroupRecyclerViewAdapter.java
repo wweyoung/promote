@@ -66,6 +66,7 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
                 homeActivity.getViewPager().setCurrentItem(HomeActivity.DO_TASK);
             }
         });
+
     }
 
     @Override
@@ -85,6 +86,8 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
         private LinearLayout submitInfoLayout;
         private RecyclerView orderRecyclerView;
         private Button goButton;
+        private View header;
+        private View body;
         public ViewHolder(View itemView) {
             super(itemView);
             idView = (TextView) itemView.findViewById(R.id.group_id);
@@ -97,6 +100,17 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
             submitInfoLayout = itemView.findViewById(R.id.submit_info_layout);
             orderRecyclerView = itemView.findViewById(R.id.group_order);
             goButton = itemView.findViewById(R.id.group_go_button);
+            header = itemView.findViewById(R.id.group_header);
+            body = itemView.findViewById(R.id.group_body);
+            header.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(body.getVisibility()==View.GONE)
+                        body.setVisibility(View.VISIBLE);
+                    else
+                        body.setVisibility(View.GONE);
+                }
+            });
         }
     }
 }

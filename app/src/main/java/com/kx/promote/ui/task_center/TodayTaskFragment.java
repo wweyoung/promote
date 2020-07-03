@@ -95,7 +95,7 @@ public class TodayTaskFragment extends Fragment {
 
             @Override
             public void failed(Msg msg) {
-
+                Message.obtain(handler,SHOW_TOAST,"请求失败！").sendToTarget();
             }
         });
     }

@@ -8,6 +8,7 @@
     android:padding="8dp">
 
     <LinearLayout
+        android:id="@+id/group_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/background_card"
@@ -88,16 +89,18 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/group_body"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:visibility="gone">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/group_order"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp" />
+            android:layout_height="match_parent" />
 
         <Button
             android:id="@+id/group_go_button"

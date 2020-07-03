@@ -25,6 +25,10 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class HttpUtil {
+    public static void get(String url,MyCallback callback){
+
+    }
+
     public static void get(String url, Callback callback){
         OkHttpClient client = new OkHttpClient().newBuilder().cookieJar(new MyCookieJar(MyApplication.getContext())).build();
         Request request = new Request.Builder().url(url).build();

@@ -22,7 +22,17 @@ public class Group implements Serializable {
     private Date time;
     
     private Date protecttime;
-    
+
+    private Date submittime;
+
+    public Date getSubmittime() {
+        return submittime;
+    }
+
+    public void setSubmittime(Date submittime) {
+        this.submittime = submittime;
+    }
+
     private User user;
     
     private List<Order> orderlist;

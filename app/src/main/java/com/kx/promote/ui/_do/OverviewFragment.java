@@ -33,6 +33,8 @@ public class OverviewFragment extends Fragment {
     private EditText orderNumberET;
     private EditText prepriceET;
     private EditText stateET;
+    private EditText submitTimeET;
+    private View submitTimeLine;
 
     public OverviewFragment() {
         // Required empty public constructor
@@ -65,6 +67,8 @@ public class OverviewFragment extends Fragment {
         orderNumberET  = ViewFindUtils.find(view,R.id.group_number);
         prepriceET  = ViewFindUtils.find(view,R.id.group_preprice);
         stateET  = ViewFindUtils.find(view,R.id.group_state);
+        submitTimeET = ViewFindUtils.find(view,R.id.group_submit_time);
+        submitTimeLine = ViewFindUtils.find(view,R.id.group_submit_time_line);
         updateUI();
         return view;
     }
@@ -72,10 +76,18 @@ public class OverviewFragment extends Fragment {
         if(group==null)
             return;
         idET.setText(""+group.getId());
-        DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
-        dateET.setText(df.format(group.getTime()));
+        DateFormat dateDf = new SimpleDateFormat("yyyy/MM/dd");
+        dateET.setText(dateDf.format(group.getTime()));
         orderNumberET.setText(group.getOrderlist().size()+"单");
         prepriceET.setText(group.getPreprice().floatValue()+"元");
         stateET.setText(group.getStateString());
+        if(group.getState()==Group.FINISHED){
+            DateFormat dateTimeDf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            String text = "";
+            if(group.getSubmittime()!=null)
+                text = dateTimeDf.format(group.getSubmittime());
+            submitTimeET.setText(text);
+            submitTimeLine.setVisibility(View.VISIBLE);
+        }
     }
 }
