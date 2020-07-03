@@ -37,6 +37,10 @@
 
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000"/>
     <Button
         android:id="@+id/modifyMyInfo"
         android:layout_width="match_parent"
@@ -46,7 +50,10 @@
         android:text="修改我的信息"
         android:textColor="#1C77A1"
         android:textSize="30sp" />
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000"/>
     <Button
         android:id="@+id/btn_finish"
         android:layout_width="match_parent"
@@ -56,4 +63,8 @@
         android:text="退出登录"
         android:textColor="#1C77A1"
         android:textSize="30sp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000"/>
 </LinearLayout>

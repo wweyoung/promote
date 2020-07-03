@@ -9,10 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kx.promote.R;
+import com.kx.promote.bean.User;
 import com.kx.promote.utils.MyApplication;
+
+import okhttp3.internal.concurrent.Task;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,6 +24,9 @@ import com.kx.promote.utils.MyApplication;
  * create an instance of this fragment.
  */
 public class UserCenterFragment extends Fragment {
+    private User user;
+    private TextView userInfo;
+    private TextView userPhone;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -66,18 +73,43 @@ public class UserCenterFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user_center, container, false);
 
+        //设置用户信息
+        user = MyApplication.getUser();
+        String userInfoString=user.getName();
+        String userPhoneString = user.getPhone();
+        userInfo = view.findViewById(R.id.userInfo);
+        userPhone = view.findViewById(R.id.userPhone);
+        userInfo.setText(userInfoString);
+        userPhone.setText(userPhoneString);
 
+        Button btn_finishLogin = (Button)view.findViewById(R.id.btn_finish);
+        btn_finishLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String a = user.getName();
+                if (a ==null){
+                    a ="空";
+                }
+                Toast.makeText(getActivity(),a,Toast.LENGTH_SHORT).show();
+            }
+        });
         Button btn_modifyMyInfo = (Button)view.findViewById(R.id.modifyMyInfo);
         btn_modifyMyInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),LoginActivity.class);
+                HomeActivity homeActivity = (HomeActivity)getActivity();
+                Intent intent = new Intent(homeActivity,UpdateUserInfoActivity.class);
                 startActivity(intent);
-                //MyApplication.getUser();
                 Toast.makeText(getActivity(),"点击了修改信息按钮",Toast.LENGTH_SHORT).show();
             }
         });
 
         return view;
+    }
+    private void OutLogin(){
+        if(user!=null){
+            user = null;
+        }
     }
 }
