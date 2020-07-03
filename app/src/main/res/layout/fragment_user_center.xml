@@ -25,7 +25,7 @@
             android:layout_height="51dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="TextView"
+            android:text="用户信息"
             android:textSize="36sp" />
 
         <TextView
