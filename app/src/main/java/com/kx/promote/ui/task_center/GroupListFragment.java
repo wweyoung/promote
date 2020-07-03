@@ -58,13 +58,13 @@ public class GroupListFragment extends Fragment {
         recyclerView = (RecyclerView)view.findViewById(R.id.group_list);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
-
+        adapter = new GroupRecyclerViewAdapter(groupList);
+        recyclerView.setAdapter(adapter);
         setGroupList(groupList);
         return view;
     }
     public void setGroupList(List<Group> groupList){
         this.groupList = groupList;
-        adapter = new GroupRecyclerViewAdapter(groupList);
-        recyclerView.setAdapter(adapter);
+        adapter.setGroupList(this.groupList);//更新数据源
     }
 }

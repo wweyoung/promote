@@ -34,6 +34,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<OrderRecyclerViewAdapter.ViewHolder> {
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
+        notifyDataSetChanged();
+    }
+
     private List<Order> orderList = new ArrayList<>();
     private Context mContext;
     private Handler handler = new MyHandler(this);

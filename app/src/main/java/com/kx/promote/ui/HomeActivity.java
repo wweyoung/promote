@@ -29,6 +29,7 @@ import java.util.Random;
 public class HomeActivity extends AppCompatActivity {
     private DoFragment doFragment;
     private TaskCenterFragment taskCenterFragment;
+    private UserCenterFragment userCenterFragment;
     private ArrayList<Fragment> mFragments = new ArrayList<>();
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
 
@@ -60,9 +61,10 @@ public class HomeActivity extends AppCompatActivity {
         MyApplication.setHomeActivity(this);
         taskCenterFragment = new TaskCenterFragment();
         doFragment = new DoFragment();
+        userCenterFragment = new UserCenterFragment();
         mFragments.add(taskCenterFragment);
         mFragments.add(doFragment);
-        mFragments.add(new SimpleCardFragment());
+        mFragments.add(userCenterFragment);
 
 
         for (int i = 0; i < mTitles.length; i++) {

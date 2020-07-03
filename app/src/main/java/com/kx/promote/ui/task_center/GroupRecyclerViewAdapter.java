@@ -23,6 +23,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecyclerViewAdapter.ViewHolder> {
+    public List<Group> getGroupList() {
+        return groupList;
+    }
+
+    public void setGroupList(List<Group> groupList) {
+        this.groupList = groupList;
+        notifyDataSetChanged();//更新数据源自动刷新
+    }
+
     private List<Group> groupList = new ArrayList<>();
     private Context mContext;
 
