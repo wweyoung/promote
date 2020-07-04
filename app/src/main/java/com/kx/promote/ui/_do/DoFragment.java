@@ -225,7 +225,7 @@ public class DoFragment extends Fragment {
         HttpUtil.get(url, new okhttp3.Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Message.obtain(homeActivity.handler,homeActivity.SHOW_MESSAGE,"请求失败！").sendToTarget();//通知打印Toast
+                Message.obtain(homeActivity.getHandler(),homeActivity.SHOW_MESSAGE,"请求失败！").sendToTarget();//通知打印Toast
             }
 
             @Override
@@ -234,7 +234,7 @@ public class DoFragment extends Fragment {
                 Log.d("doFragment", json);
                 Msg msg = JSON.parseObject(json,Msg.class);
                 group = JSONObject.toJavaObject((JSON) msg.get("group"),Group.class);
-                Message.obtain(homeActivity.handler,homeActivity.SHOW_MESSAGE,msg.getMsg()).sendToTarget();//通知打印Toast
+                Message.obtain(homeActivity.getHandler(),homeActivity.SHOW_MESSAGE,msg.getMsg()).sendToTarget();//通知打印Toast
                 Message.obtain(handler,UPDATE_UI).sendToTarget();//通知主线程更新界面
             }
         });

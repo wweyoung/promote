@@ -185,7 +185,6 @@
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:lines="1"
                     android:padding="1dp"
                     android:text="任务备注"
                     android:textSize="20sp" />
@@ -201,9 +200,10 @@
                 <EditText
                     android:id="@+id/order_note"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"
                     android:enabled="false"
+                    android:minLines="1"
                     android:textColorHighlight="#FFFFFF"
                     android:textSize="20sp" />
 
@@ -250,6 +250,37 @@
                     android:layout_height="wrap_content"
                     android:lines="1"
                     android:padding="1dp"
+                    android:text="实付款"
+                    android:textSize="20sp" />
+
+                <View
+                    android:layout_width="1dip"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:background="#EEEFFF" />
+
+                <EditText
+                    android:id="@+id/order_actprice"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="2dp"
+                    android:inputType="numberDecimal"
+                    android:textColorHighlight="#FFFFFF"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:lines="1"
+                    android:padding="1dp"
                     android:text="订单编号"
                     android:textSize="20sp" />
 
@@ -278,10 +309,10 @@
 
                 <TextView
                     android:layout_width="100dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:lines="1"
                     android:padding="1dp"
-                    android:text="实付款"
+                    android:text="任务凭证"
                     android:textSize="20sp" />
 
                 <View
@@ -292,14 +323,12 @@
                     android:layout_marginRight="2dp"
                     android:background="#EEEFFF" />
 
-                <EditText
-                    android:id="@+id/order_actprice"
+                <fragment
+                    android:id="@+id/order_submit_image"
+                    android:name="com.kx.promote.ui._do.ImageUploaderFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_marginLeft="2dp"
-                    android:inputType="numberDecimal"
-                    android:textColorHighlight="#FFFFFF"
-                    android:textSize="20sp" />
+                    android:layout_height="wrap_content"
+                    tools:layout="@layout/fragment_image_uploader" />
 
             </LinearLayout>
         </LinearLayout>

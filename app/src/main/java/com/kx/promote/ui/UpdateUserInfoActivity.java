@@ -121,10 +121,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity implements View.On
                     dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            //返回上一个上一个界面
-                            Intent intent = new Intent(UpdateUserInfoActivity.this, HomeActivity.class);
-//                            intent.putExtra("user",user);
-                            startActivity(intent);
+                            finish();
                         }
                     });
                     dialog.setNegativeButton("关闭", new DialogInterface.OnClickListener() {

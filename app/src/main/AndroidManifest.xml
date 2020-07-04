@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.UpdateUserInfoActivity"></activity>
+        <activity android:name=".ui.ImageUploaderTestActivity"></activity>
+        <activity android:name=".ui.UpdateUserInfoActivity" />
         <activity android:name=".ui.HomeActivity" />
         <activity android:name=".ui.LoginActivity" />
         <activity android:name=".ui.DoActivity" />

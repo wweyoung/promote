@@ -62,4 +62,13 @@
         tl:layout_constraintEnd_toEndOf="parent"
         tl:layout_constraintStart_toStartOf="parent"
         tl:layout_constraintTop_toBottomOf="@+id/main_login_button" />
+
+    <Button
+        android:id="@+id/go_to_image_uploader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="去图片上传"
+        tl:layout_constraintEnd_toEndOf="parent"
+        tl:layout_constraintStart_toStartOf="parent"
+        tl:layout_constraintTop_toBottomOf="@+id/main_home_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>

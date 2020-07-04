@@ -51,6 +51,7 @@ public class SubmitFragment extends Fragment {
     private EditText actpriceET;
     private EditText customerET;
     private EditText noteET;
+    private ImageUploaderFragment submitImageFragment;
     private Button submitButton;
 
     private Group group;
@@ -130,10 +131,14 @@ public class SubmitFragment extends Fragment {
 
             }
         });
+        submitImageFragment = (ImageUploaderFragment) getChildFragmentManager().findFragmentById(R.id.group_submit_image);
         updateUI();
         return view;
     }
     private void updateUI(){
+        if(group==null)
+            return;
+        submitImageFragment.set(group.getImagelist(), MyApplication.getOrderImageMaxNumber());
         actpriceET.setText(group.getActprice()+"元");
         customerET.setText(group.getCustomer());
         noteET.setText(group.getNote());

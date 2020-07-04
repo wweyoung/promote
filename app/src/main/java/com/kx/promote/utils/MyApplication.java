@@ -15,12 +15,14 @@ public class MyApplication extends Application {
     private static String appPath;
     private static String imageSmall;
     private static User user;
+    private static Integer orderImageMaxNumber;
     @Override
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
         appPath = context.getString(R.string.app_path);
         imageSmall = getString(R.string.image_small);
+        orderImageMaxNumber = Integer.valueOf(getString(R.string.order_image_max_number));
     }
     public static Context getContext(){
         return context;
@@ -31,7 +33,7 @@ public class MyApplication extends Application {
     public static String getImageSmall(){
         return imageSmall;
     }
-
+    public static Integer getOrderImageMaxNumber(){return orderImageMaxNumber;}
     public static HomeActivity getHomeActivity() {
         return homeActivity;
     }

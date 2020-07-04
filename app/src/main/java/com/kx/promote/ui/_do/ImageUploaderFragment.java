@@ -24,7 +24,7 @@ public class ImageUploaderFragment extends Fragment {
     private List<String> urlList;
     private Integer max;
     private GridView imageView;
-
+    private ImageUploaderAdapter adapter;
     public ImageUploaderFragment() {
         // Required empty public constructor
     }
@@ -49,15 +49,21 @@ public class ImageUploaderFragment extends Fragment {
             }
             max = getArguments().getInt("max",99);
         }
-    }
 
+    }
+    public void set(List<String> urlList,int max){
+        this.urlList = urlList;
+        this.max = max;
+        adapter.setUrlList(this.urlList);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_image_uploader, container, false);
         imageView = view.findViewById(R.id.image_uploader);
-
+        adapter = new ImageUploaderAdapter(urlList);
+        imageView.setAdapter(adapter);
         return view;
     }
 }

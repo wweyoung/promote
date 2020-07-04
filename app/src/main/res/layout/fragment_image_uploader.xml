@@ -2,13 +2,13 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".ui._do.ImageUploaderFragment">
 
     <GridView
         android:id="@+id/image_uploader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:columnWidth="120dp"
+        android:columnWidth="90dp"
         android:numColumns="auto_fit" />
 </FrameLayout>

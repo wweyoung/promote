@@ -84,5 +84,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        Button imageUploaderButton = (Button)findViewById(R.id.go_to_image_uploader);
+        imageUploaderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ImageUploaderTestActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

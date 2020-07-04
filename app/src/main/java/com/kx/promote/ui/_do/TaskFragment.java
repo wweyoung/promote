@@ -20,6 +20,7 @@ import com.kx.promote.R;
 import com.kx.promote.bean.Order;
 import com.kx.promote.ui.LoginActivity;
 import com.kx.promote.utils.HttpUtil;
+import com.kx.promote.utils.MyApplication;
 import com.kx.promote.utils.ViewFindUtils;
 
 import java.lang.ref.WeakReference;
@@ -44,6 +45,7 @@ public class TaskFragment extends Fragment {
     private EditText stateET;
     private EditText noET;
     private EditText actpriceET;
+    private ImageUploaderFragment submitImageFragment;
 
     // TODO: Rename and change types of parameters
     private Order order;
@@ -85,6 +87,7 @@ public class TaskFragment extends Fragment {
         prepriceET = ViewFindUtils.find(view,R.id.order_preprice);
         shopNameET = ViewFindUtils.find(view,R.id.order_shop);
         stateET = ViewFindUtils.find(view,R.id.order_state);
+        submitImageFragment = (ImageUploaderFragment) getChildFragmentManager().findFragmentById(R.id.order_submit_image);
         noET.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -129,6 +132,7 @@ public class TaskFragment extends Fragment {
     public void updateUI(){
         if(order==null)
             return;
+        submitImageFragment.set(order.getImagelist(), MyApplication.getOrderImageMaxNumber());
         idET.setText(""+order.getId());
         keywordET.setText(order.getNeed().getKeyword());
         actpriceET.setText(order.getPrice().toString());

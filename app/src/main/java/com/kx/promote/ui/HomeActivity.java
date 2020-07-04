@@ -50,8 +50,7 @@ public class HomeActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private View mDecorView;
     Random mRandom = new Random();
-    public Handler handler = new MyHandler(this);
-
+    private Handler handler = new MyHandler(this);
 
     public final static int SHOW_MESSAGE = 0;
     @Override
@@ -152,6 +151,7 @@ public class HomeActivity extends AppCompatActivity {
     public ViewPager getViewPager(){
         return mViewPager;
     }
+    public Handler getHandler(){return handler;}
     static class MyHandler extends Handler {
         private WeakReference<HomeActivity> mOuter;
 
