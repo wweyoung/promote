@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.kx.promote.R;
 import com.kx.promote.bean.Group;
 import com.kx.promote.ui.HomeActivity;
@@ -43,18 +44,18 @@ public class ImageUploaderAdapter extends BaseAdapter {
 
     public void setUrlList(List<String> urlList) {
         this.urlList = urlList;
-        this.bitmapList.clear();
         notifyDataSetChanged();//更新数据源自动刷新
     }
-
+    public void removeUrl(int index){
+        this.urlList.remove(index);
+        setUrlList(this.urlList);
+    }
     private List<String> urlList;
-    private List<Bitmap> bitmapList = new ArrayList<>();
     private Context mContext;
 
     public ImageUploaderAdapter(List<String> urlList){
         super();
         this.urlList = urlList;
-        this.bitmapList.clear();
         mInflater = (LayoutInflater) MyApplication.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -78,41 +79,42 @@ public class ImageUploaderAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View convertView, ViewGroup viewGroup) {
+    public View getView(final int i, View convertView, ViewGroup viewGroup) {
         ViewHolder holder = null;
+        String url = urlList.get(i)+MyApplication.getImageSmall();
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.item_image_uploader_image, null);
             holder = new ViewHolder(convertView);
-            final ViewHolder finalHolder = holder;
-            HttpUtil.getImage(urlList.get(i)+MyApplication.getImageSmall(), new MyCallback() {
+            holder.setUrl(urlList.get(i));
+            holder.removeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void success(Msg msg) {
-                    Bitmap bitmap = (Bitmap) msg.get("bitmap");
-                    msg.add("imageView", finalHolder.imgView);
-                    handler.obtainMessage(SET_IMAGE_BITMAP,msg).sendToTarget();
-                }
-
-                @Override
-                public void failed(Msg msg) {
-                    HomeActivity homeActivity = MyApplication.getHomeActivity();
-                    homeActivity.getHandler().obtainMessage(HomeActivity.SHOW_MESSAGE,"加载图片失败！").sendToTarget();
+                public void onClick(View view) {
+                    removeUrl(i);
                 }
             });
         } else {
             holder = (ViewHolder)convertView.getTag();
+            if(!holder.url.equals(urlList.get(i))){
+                holder.setUrl(urlList.get(i));
+            }
         }
         return convertView;
     }
     class ViewHolder {
-        public ImageView imgView;
+        public SimpleDraweeView imgView;
         public ImageView removeButton;
+        private String url;
         ViewHolder(View view) {
             imgView =  view.findViewById(R.id.image_uploader_image);
             removeButton = view.findViewById(R.id.image_uploader_remove);
             view.setTag(this);
         }
-        void setBitmap(Bitmap bitmap){
-            imgView.setImageBitmap(bitmap);
+        void setUrl(String url){
+            this.url = url;
+            imgView.setImageURI(url+MyApplication.getImageSmall());
+        }
+        String getUrl(){
+            return url;
         }
     }
     static class MyHandler extends Handler {

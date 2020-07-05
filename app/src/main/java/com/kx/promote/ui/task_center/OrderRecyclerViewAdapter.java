@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.kx.promote.R;
 import com.kx.promote.bean.Group;
 import com.kx.promote.bean.Order;
@@ -45,7 +46,6 @@ public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<OrderRecycler
 
     private List<Order> orderList = new ArrayList<>();
     private Context mContext;
-    private Handler handler = new MyHandler(this);
     private static final int SHOW_TOAST = 0;
     private static final int SET_IMAGE = 1;
 
@@ -65,18 +65,8 @@ public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<OrderRecycler
         final Order order = orderList.get(position);
         if(order==null)
             return;
-        HttpUtil.getImage(order.getNeed().getImage().getUrl() + MyApplication.getImageSmall(), new MyCallback() {
-            @Override
-            public void success(Msg msg) {
-                msg.add("holder",holder);
-                Message.obtain(handler,SET_IMAGE,msg).sendToTarget();
-            }
-
-            @Override
-            public void failed(Msg msg) {
-                Message.obtain(handler,SHOW_TOAST,msg.getMsg()).sendToTarget();
-            }
-        });
+        String url = order.getNeed().getImage().getUrl() + MyApplication.getImageSmall();
+        holder.imageView.setImageURI(url);
         holder.keywordView.setText(order.getNeed().getKeyword());
         holder.shopView.setText(order.getNeed().getShop().getName());
         holder.prepriceView.setText("预付"+order.getNeed().getPrice().toString()+"元");
@@ -98,7 +88,7 @@ public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<OrderRecycler
         private TextView prepriceView;
         private TextView actpriceView;
         private TextView stateView;
-        private ImageView imageView;
+        private SimpleDraweeView imageView;
         public ViewHolder(View itemView) {
             super(itemView);
             keywordView = itemView.findViewById(R.id.order_keyword);
@@ -111,29 +101,5 @@ public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<OrderRecycler
     }
     public void setImage(){
 
-    }
-    static class MyHandler extends Handler {
-        private WeakReference<OrderRecyclerViewAdapter> mOuter;
-
-        public MyHandler(OrderRecyclerViewAdapter activity) {
-            mOuter = new WeakReference<OrderRecyclerViewAdapter>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            OrderRecyclerViewAdapter outer = mOuter.get();
-            if (outer != null) {
-                if(msg.what == SHOW_TOAST){
-                    String text = (String) msg.obj;
-                    Toast.makeText(MyApplication.getContext(),text,Toast.LENGTH_SHORT).show();
-                }
-                else if (msg.what == SET_IMAGE) {
-                    Msg m = (Msg) msg.obj;
-                    Bitmap bitmap = (Bitmap) m.get("bitmap");
-                    ViewHolder holder = (ViewHolder) m.get("holder");
-                    holder.imageView.setImageBitmap(bitmap);
-                }
-            }
-        }
     }
 }

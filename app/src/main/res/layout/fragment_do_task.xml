@@ -38,14 +38,13 @@
                     android:layout_marginRight="2dp"
                     android:background="#EEEFFF" />
 
-                <ImageView
+                <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/order_image"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:adjustViewBounds="true"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/shape_white_frame" />
+                    android:scaleType="fitCenter"/>
 
             </LinearLayout>
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.kx.promote.R;
 import com.kx.promote.bean.User;
 import com.kx.promote.ui.HomeActivity;
@@ -23,6 +24,7 @@ public class MyApplication extends Application {
         appPath = context.getString(R.string.app_path);
         imageSmall = getString(R.string.image_small);
         orderImageMaxNumber = Integer.valueOf(getString(R.string.order_image_max_number));
+        Fresco.initialize(this);//图片加载插件初始化
     }
     public static Context getContext(){
         return context;

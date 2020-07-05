@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.kx.promote.R;
 import com.kx.promote.bean.Order;
 import com.kx.promote.ui.LoginActivity;
@@ -36,7 +37,7 @@ public class TaskFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private ImageView imageView;
+    private SimpleDraweeView imageView;
     private EditText idET;
     private EditText keywordET;
     private EditText shopNameET;
@@ -51,7 +52,6 @@ public class TaskFragment extends Fragment {
     private Order order;
     protected static final int IMAGE_UPDATE = 1;
     protected static final int ERROR = 2;
-    private Handler handler = new MyHandler(this);
 
     public TaskFragment() {
         // Required empty public constructor
@@ -132,6 +132,8 @@ public class TaskFragment extends Fragment {
     public void updateUI(){
         if(order==null)
             return;
+        String url = order.getNeed().getImage().getUrl()+MyApplication.getImageSmall();
+        imageView.setImageURI(url);
         submitImageFragment.set(order.getImagelist(), MyApplication.getOrderImageMaxNumber());
         idET.setText(""+order.getId());
         keywordET.setText(order.getNeed().getKeyword());
@@ -141,24 +143,5 @@ public class TaskFragment extends Fragment {
         prepriceET.setText(""+order.getNeed().getPrice());
         shopNameET.setText(order.getNeed().getShop().getName());
         stateET.setText(order.getStateString());
-        HttpUtil.getImage(order.getNeed().getImage().getUrl()+getString(R.string.image_small),handler,IMAGE_UPDATE);
-    }
-    static class MyHandler extends Handler {
-        private WeakReference<TaskFragment> mOuter;
-
-        public MyHandler(TaskFragment activity) {
-            mOuter = new WeakReference<TaskFragment>(activity);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            TaskFragment outer = mOuter.get();
-            if (outer != null) {
-                if (msg.what == IMAGE_UPDATE) {
-                    Bitmap bitmap = (Bitmap) msg.obj;
-                    outer.imageView.setImageBitmap(bitmap);
-                }
-            }
-        }
     }
 }
