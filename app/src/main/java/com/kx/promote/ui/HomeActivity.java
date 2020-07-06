@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -64,6 +65,23 @@ public class HomeActivity extends AppCompatActivity {
     public void setImageUploader(ImageUploaderFragment imageUploader){
         this.imageUploader = imageUploader;
     }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        int count = fragmentManager.getBackStackEntryCount();
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            startActivity(intent);
+            return true;//不执行父类点击事件
+        }
+        return super.onKeyDown(keyCode, event);//继续执行父类其他点击事件
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
