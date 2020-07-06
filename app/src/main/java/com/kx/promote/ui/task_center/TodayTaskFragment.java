@@ -9,6 +9,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,7 +80,6 @@ public class TodayTaskFragment extends Fragment  {
         View view = inflater.inflate(R.layout.fragment_today_task, container, false);
         groupListFragment = (GroupListFragment)getChildFragmentManager().findFragmentById(R.id.group_list_fragment);
         getTodayTask();
-        //        initSwipeRefreshLayout(view);
         swipeRefreshLayout= view.findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setColorSchemeColors(R.color.colorPrimary);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
