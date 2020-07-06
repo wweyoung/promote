@@ -163,7 +163,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
     private void goHome(User user){
-        Intent intent = new Intent(this, UpdateUserInfoActivity.class);
+        Intent intent = new Intent(this, HomeActivity.class);
         intent.putExtra("user",user);
 
         startActivity(intent);

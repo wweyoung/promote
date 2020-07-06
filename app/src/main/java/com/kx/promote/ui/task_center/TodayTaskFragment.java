@@ -1,9 +1,11 @@
 package com.kx.promote.ui.task_center;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Handler;
 import android.os.Message;
@@ -39,12 +41,15 @@ import okhttp3.internal.concurrent.Task;
  * Use the {@link TodayTaskFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TodayTaskFragment extends Fragment {
+public class TodayTaskFragment extends Fragment  {
     private List<Group> groupList;
     private GroupListFragment groupListFragment;
     private Handler handler = new MyHandler(this);
     protected static final int SHOW_TOAST = 0;
     protected static final int UPDATE_UI = 1;
+
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     public TodayTaskFragment() {
         // Required empty public constructor
     }
@@ -66,16 +71,27 @@ public class TodayTaskFragment extends Fragment {
         }
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_today_task, container, false);
         groupListFragment = (GroupListFragment)getChildFragmentManager().findFragmentById(R.id.group_list_fragment);
         getTodayTask();
+        //        initSwipeRefreshLayout(view);
+        swipeRefreshLayout= view.findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setColorSchemeColors(R.color.colorPrimary);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getTodayTask();
+            }
+        });
         updateUI();
         return view;
     }
+
     public void updateUI(){
         groupListFragment.setGroupList(groupList);
     }
