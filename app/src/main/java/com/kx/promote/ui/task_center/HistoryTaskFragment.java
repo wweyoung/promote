@@ -3,6 +3,8 @@ package com.kx.promote.ui.task_center;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.os.Message;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.kx.promote.R;
+import com.kx.promote.bean.Group;
 import com.kx.promote.bean.HistoryDateGroup;
 import com.kx.promote.dao.TaskDao;
 import com.kx.promote.utils.Msg;
@@ -28,7 +31,9 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class HistoryTaskFragment extends Fragment {
-    List<HistoryDateGroup> dateList;
+    private List<HistoryDateGroup> dateList;
+    private RecyclerView recyclerView;
+    private HistoryDateGroupRecyclerViewAdapter adapter;
     private Handler handler = new MyHandler(this);
     protected static final int SHOW_TOAST = 0;
     protected static final int UPDATE_UI = 1;
@@ -54,6 +59,11 @@ public class HistoryTaskFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_history_task, container, false);
+        recyclerView = (RecyclerView)view.findViewById(R.id.date_recycler_view);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(mLayoutManager);
+        adapter = new HistoryDateGroupRecyclerViewAdapter(dateList);
+        recyclerView.setAdapter(adapter);
         getHistoryDate();
         return view;
     }
@@ -62,8 +72,15 @@ public class HistoryTaskFragment extends Fragment {
         dao.getHistoryDate(new MyCallback() {
             @Override
             public void success(Msg msg) {
-                dateList = (List<HistoryDateGroup>) msg.get("dateList");
-                Log.d("历史任务", dateList.toString());
+                if(msg.getCode()==0) {
+                    dateList = (List<HistoryDateGroup>) msg.get("dateList");
+                    Log.d("历史任务", dateList.toString());
+                    Message.obtain(handler,UPDATE_UI).sendToTarget();
+
+                }
+                else{
+                    handler.obtainMessage(SHOW_TOAST,msg.getMsg()).sendToTarget();
+                }
             }
 
             @Override
@@ -74,9 +91,12 @@ public class HistoryTaskFragment extends Fragment {
     }
 
     public void updateUI(){
-
+        setHistoryGroupList(dateList);
     }
-
+    public void setHistoryGroupList(List<HistoryDateGroup> dateList){
+        this.dateList = dateList;
+        adapter.setHistoryGroupList(this.dateList);//更新数据源
+    }
 
     static class MyHandler extends Handler {
         private WeakReference<HistoryTaskFragment> mOuter;

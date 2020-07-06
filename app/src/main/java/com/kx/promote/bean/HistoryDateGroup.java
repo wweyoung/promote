@@ -12,7 +12,7 @@ public class HistoryDateGroup implements Serializable {
     private Integer finishedOrderNumber;
 
     private BigDecimal actPrice;
-    private List<List<Group>> groupList;
+    private List<Group> groupList;
     public Date getDate() {
         return date;
     }
@@ -52,11 +52,11 @@ public class HistoryDateGroup implements Serializable {
     public void setActPrice(BigDecimal actPrice) {
         this.actPrice = actPrice;
     }
-    public List<List<Group>> getGroupList() {
+    public List<Group> getGroupList() {
         return groupList;
     }
 
-    public void setGroupList(List<List<Group>> groupList) {
+    public void setGroupList(List<Group> groupList) {
         this.groupList = groupList;
     }
 }

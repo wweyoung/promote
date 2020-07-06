@@ -31,7 +31,9 @@ public class HttpUtil {
         get(url, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                callback.failed(null);
+                Msg msg = new Msg();
+                msg.set(1000,e.getMessage());
+                callback.failed(msg);
             }
 
             @Override

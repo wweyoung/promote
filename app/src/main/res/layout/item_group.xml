@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="3dp"
+    android:layout_marginBottom="3dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -21,14 +23,14 @@
 
             <TextView
                 android:id="@+id/group_id"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
                 android:text="组号" />
 
             <TextView
                 android:id="@+id/group_order_number"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
                 android:text="5连"
@@ -36,7 +38,7 @@
 
             <TextView
                 android:id="@+id/group_state"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
                 android:text="已完成"
@@ -50,16 +52,16 @@
 
             <TextView
                 android:id="@+id/group_time"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="7"
+                android:layout_weight="1"
                 android:text="2020/01/01" />
 
             <TextView
                 android:id="@+id/group_preprice"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="5"
+                android:layout_weight="1"
                 android:text="预付421"
                 android:textAlignment="viewEnd" />
         </LinearLayout>
@@ -73,15 +75,15 @@
 
             <TextView
                 android:id="@+id/group_customer"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="7" />
+                android:layout_weight="1" />
 
             <TextView
                 android:id="@+id/group_actprice"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="5"
+                android:layout_weight="1"
                 android:text="实付0"
                 android:textAlignment="viewEnd" />
         </LinearLayout>

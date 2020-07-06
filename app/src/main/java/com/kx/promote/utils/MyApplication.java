@@ -3,6 +3,7 @@ package com.kx.promote.utils;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.text.TextUtils;
 
 import com.facebook.drawee.backends.pipeline.Fresco;

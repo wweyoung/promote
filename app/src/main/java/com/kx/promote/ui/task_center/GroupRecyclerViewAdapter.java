@@ -1,12 +1,16 @@
 package com.kx.promote.ui.task_center;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,6 +21,7 @@ import com.kx.promote.bean.Group;
 import com.kx.promote.ui.HomeActivity;
 import com.kx.promote.utils.MyApplication;
 
+import java.lang.ref.WeakReference;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,12 +56,20 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
         final Group group = groupList.get(position);
         if(group==null)
             return;
-        holder.idView.setText(""+group.getId());
+        holder.idView.setText("组号："+group.getId());
         holder.orderNumberView.setText(group.getOrderlist().size()+"连");
         holder.prepriceView.setText("预付"+group.getPreprice().toString()+"元");
         DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
         holder.timeView.setText(df.format(group.getTime()));
         holder.stateView.setText(group.getStateString());
+        Resources resource = MyApplication.getContext().getResources();
+        if(group.getState()==Group.FILLIN){
+            holder.header.setBackgroundColor(resource.getColor(R.color.info_background));
+        }
+        else if(group.getState()==Group.FINISHED){
+            holder.header.setBackgroundColor(resource.getColor(R.color.success_background));
+        }
+
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(MyApplication.getContext());
         holder.orderRecyclerView.setLayoutManager(mLayoutManager);
         OrderRecyclerViewAdapter adapter = new OrderRecyclerViewAdapter(group.getOrderlist());
@@ -122,4 +135,5 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
             });
         }
     }
+
 }
