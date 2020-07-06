@@ -148,13 +148,16 @@ public class SubmitFragment extends Fragment {
         group.setId(this.group.getId());
         group.setCustomer(this.group.getCustomer());
         group.setNote(this.group.getNote());
+        group.setImagelist(this.group.getImagelist());
         List<Order> orderList = new ArrayList<>();
         for(Order order:this.group.getOrderlist()){
             Order newOrder = new Order();
             newOrder.setId(order.getId());
             newOrder.setPrice(order.getPrice());
             newOrder.setNo(order.getNo());
-            orderList.add(order);
+            newOrder.setState(order.getState());
+            newOrder.setImagelist(order.getImagelist());
+            orderList.add(newOrder);
         }
         group.setOrderlist(orderList);
 

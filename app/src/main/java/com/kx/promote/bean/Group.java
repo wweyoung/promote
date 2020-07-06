@@ -63,6 +63,7 @@ public class Group implements Serializable {
     public Byte getState() {
         return state;
     }
+
     @JSONField(serialize=false)  
     public String getStateString() {
     	switch(state) {
@@ -141,6 +142,7 @@ public class Group implements Serializable {
 		}
 		this.setImagelist(imagelist);
 	}
+    @JSONField(serialize=false)
     public BigDecimal getPreprice(){
         BigDecimal preprice = new BigDecimal(0);
         if(this.getOrderlist()==null)
@@ -150,6 +152,7 @@ public class Group implements Serializable {
         }
         return preprice;
     }
+    @JSONField(serialize=false)
     public BigDecimal getActprice(){
         BigDecimal actprice = new BigDecimal(0);
         if(this.getOrderlist()==null)

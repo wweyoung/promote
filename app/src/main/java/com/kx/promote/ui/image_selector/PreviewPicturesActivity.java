@@ -25,13 +25,7 @@ public class PreviewPicturesActivity extends Activity {
     private ArrayList<String> picList = new ArrayList<>();
     private TextView tvCancel, tvSend;
 
-    /**
-     * ‘§¿¿µ•’≈Õº∆¨
-     *
-     * @param activity    Activity
-     * @param url         Õº∆¨µÿ÷∑
-     * @param requestCode requestCode
-     */
+    //preview image
     public static void preViewSingle(Activity activity, String url, int requestCode) {
         Intent intent = new Intent(activity, PreviewPicturesActivity.class);
         ArrayList<String> pic = new ArrayList<>();

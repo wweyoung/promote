@@ -3,6 +3,7 @@ package com.kx.promote.ui._do;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -19,8 +20,11 @@ import com.kx.promote.ui.MainActivity;
 import com.kx.promote.ui.image_selector.MultiImageSelectorActivity;
 import com.kx.promote.utils.Msg;
 import com.kx.promote.utils.MyApplication;
+import com.kx.promote.utils.QiniuUtil;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
+import java.util.Collections;
 import java.util.List;
 
 public class ImageUploaderAdapter extends BaseAdapter {
@@ -41,6 +45,7 @@ public class ImageUploaderAdapter extends BaseAdapter {
         this.urlList = urlList;
         notifyDataSetChanged();//更新数据源自动刷新
     }
+
     public void removeUrl(int index){
         this.urlList.remove(index);
         setUrlList(this.urlList);
@@ -113,7 +118,7 @@ public class ImageUploaderAdapter extends BaseAdapter {
                 holder.removeButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        removeUrl(imageIndex);
+                    removeUrl(imageIndex);
                     }
                 });
             } else {
@@ -128,17 +133,48 @@ public class ImageUploaderAdapter extends BaseAdapter {
 
     class ViewHolder {
         public SimpleDraweeView imgView;
+        public TextView textView;
         public ImageView removeButton;
         private String url;
         ViewHolder(View view) {
             imgView =  view.findViewById(R.id.image_uploader_image);
             removeButton = view.findViewById(R.id.image_uploader_remove);
+            textView = view.findViewById(R.id.image_uploader_text);
             view.setTag(this);
         }
         void setUrl(String url){
+            Log.d("----", url);
             this.url = url;
             if(url.indexOf("http")==0){
                 url+=MyApplication.getImageSmall();
+                textView.setVisibility(View.GONE);
+            }
+            else{
+                QiniuUtil qiniuUtil = MyApplication.getQiniuUtil();
+                final String finalUrl = url;
+                final int originHeight = textView.getHeight();
+                qiniuUtil.upload(url, new QiniuUtil.Callback() {
+                    @Override
+                    public void success(String newUrl) {
+                        Log.d("上传：", "success: ");
+                        Collections.replaceAll(urlList, finalUrl, newUrl);
+                        textView.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void failed() {
+                        Log.d("上传：", "failed: ");
+                        textView.setHeight(originHeight);
+                        textView.setText("上传失败");
+                    }
+
+                    @Override
+                    public void progress(double percent) {
+                        textView.setHeight((int) Math.round(percent*originHeight));
+                    }
+                });
+                Uri uri = Uri.fromFile(new File(url));
+                url= uri.toString();
             }
             Log.d("", url);
             imgView.setImageURI(url);

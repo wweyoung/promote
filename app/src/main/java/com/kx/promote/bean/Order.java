@@ -74,6 +74,7 @@ public class Order implements Serializable {
     public Byte getState() {
     	return this.state;
     }
+
     @JSONField(serialize=false)  
     public String getStateString() {
     	return Order.getStateString(state);
@@ -130,6 +131,8 @@ public class Order implements Serializable {
 		}
 		this.setImagelist(imagelist);
 	}
+
+	@JSONField(serialize=false)
 	public static String getStateString(Byte state) {
 	   	switch(state) {
     	case Order.PREPARE:return "未开始";

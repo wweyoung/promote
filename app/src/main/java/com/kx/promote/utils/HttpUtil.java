@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 
+import com.alibaba.fastjson.JSON;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -25,8 +27,20 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class HttpUtil {
-    public static void get(String url,MyCallback callback){
+    public static void get(String url, final MyCallback callback){
+        get(url, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                callback.failed(null);
+            }
 
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String json = response.body().string();
+                Msg msg = JSON.parseObject(json,Msg.class);
+                callback.success(msg);
+            }
+        });
     }
 
     public static void get(String url, Callback callback){

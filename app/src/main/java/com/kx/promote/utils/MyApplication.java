@@ -13,6 +13,7 @@ import com.kx.promote.ui.HomeActivity;
 public class MyApplication extends Application {
     private static Context context;
     private static HomeActivity homeActivity;
+    private static QiniuUtil qiniuUtil;
     private static String appPath;
     private static String imageSmall;
     private static User user;
@@ -21,6 +22,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
+        qiniuUtil = new QiniuUtil();
         appPath = context.getString(R.string.app_path);
         imageSmall = getString(R.string.image_small);
         orderImageMaxNumber = Integer.valueOf(getString(R.string.order_image_max_number));
@@ -36,6 +38,7 @@ public class MyApplication extends Application {
         return imageSmall;
     }
     public static Integer getOrderImageMaxNumber(){return orderImageMaxNumber;}
+    public static QiniuUtil getQiniuUtil(){return qiniuUtil;}
     public static HomeActivity getHomeActivity() {
         return homeActivity;
     }

@@ -99,16 +99,13 @@ public class HomeActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 List<String> mSelectPath = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
                 StringBuilder sb = new StringBuilder();
-                List<String> urlList = new ArrayList<>(mSelectPath.size());
                 for (String p : mSelectPath) {
                     sb.append(p);
                     sb.append("\n");
-                    Uri uri = Uri.fromFile(new File(p));
-                    urlList.add(uri.toString());
+
                 }
                 Log.d("Image", sb.toString());
-                Toast.makeText(this,sb.toString(),Toast.LENGTH_SHORT).show();
-                imageUploader.add(urlList);
+                imageUploader.add(mSelectPath);
             }
         }
     }

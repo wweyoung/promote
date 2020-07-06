@@ -23,7 +23,7 @@ import java.util.List;
 public class ImageUploaderFragment extends Fragment implements Serializable {
     private List<String> urlList;
     private int max = 10;
-    private GridView imageView;
+    private ImageUploaderGridView imageView;
     private ImageUploaderAdapter adapter;
     public ImageUploaderFragment() {
         // Required empty public constructor

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     tools:context=".ui._do.ImageUploaderFragment">
 
-    <GridView
+    <com.kx.promote.ui._do.ImageUploaderGridView
         android:id="@+id/image_uploader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
