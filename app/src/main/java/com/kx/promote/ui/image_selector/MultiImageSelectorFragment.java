@@ -237,6 +237,7 @@ public class MultiImageSelectorFragment extends Fragment {
 
         mCategoryText = (TextView) view.findViewById(R.id.category_btn);
         // 初始化，加载所有图片
+        mCategoryText.setText("所有图片");
         mCategoryText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -364,6 +365,7 @@ public class MultiImageSelectorFragment extends Fragment {
 
                         if (index == 0) {
                             getActivity().getSupportLoaderManager().restartLoader(LOADER_ALL, null, mLoaderCallback);
+                            mCategoryText.setText("所有图片");
                             if (mIsShowCamera) {
                                 mImageAdapter.setShowCamera(true);
                             } else {
