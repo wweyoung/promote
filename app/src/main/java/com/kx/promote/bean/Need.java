@@ -1,9 +1,10 @@
 package com.kx.promote.bean;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class Need {
+public class Need implements Serializable {
     private Integer id;
 
     private Integer shopid;

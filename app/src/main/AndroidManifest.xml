@@ -3,6 +3,7 @@
     package="com.kx.promote">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".utils.MyApplication"
@@ -12,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.ImageUploaderTestActivity"></activity>
+        <activity android:name=".ui.ImageUploaderTestActivity" />
         <activity android:name=".ui.UpdateUserInfoActivity" />
         <activity android:name=".ui.HomeActivity" />
         <activity android:name=".ui.LoginActivity" />
@@ -26,6 +27,8 @@
         </activity>
         <activity android:name=".ui.CommonTabActivity" />
         <activity android:name=".ui.SlidingTabActivity" />
+        <activity android:name=".ui.image_selector.MultiImageSelectorActivity"/>
+        <activity android:name=".ui.image_selector.PreviewPicturesActivity"/>
     </application>
 
 </manifest>

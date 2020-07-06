@@ -1,9 +1,10 @@
 package com.kx.promote.bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShopNeed {
+public class ShopNeed implements Serializable {
 	private String shopname;
 	private String imageurl;
 	private List<Need> need;

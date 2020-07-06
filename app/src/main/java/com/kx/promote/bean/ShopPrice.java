@@ -1,8 +1,9 @@
 package com.kx.promote.bean;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class ShopPrice {
+public class ShopPrice implements Serializable {
     private Integer id;
 
     private Integer shopid;

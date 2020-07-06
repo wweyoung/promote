@@ -1,6 +1,8 @@
 package com.kx.promote.bean;
 
-public class Boss {
+import java.io.Serializable;
+
+public class Boss implements Serializable {
     @Override
 	public String toString() {
 		return "Boss [id=" + id + ", name=" + name + ", phone=" + phone + ", state=" + state + "]";
