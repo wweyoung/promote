@@ -4,14 +4,18 @@ import android.os.Message;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 import com.kx.promote.bean.Group;
+import com.kx.promote.bean.HistoryDateGroup;
+import com.kx.promote.bean.User;
 import com.kx.promote.utils.DateToolkit;
 import com.kx.promote.utils.HttpUtil;
 import com.kx.promote.utils.Msg;
@@ -39,6 +43,35 @@ public class TaskDao {
         String url = MyApplication.getAppPath()+"/interface/worker/groupList/today";
         HttpUtil.get(url, new GroupListCallback(callback));
     }
+    public void getHistoryDate(final MyCallback callback){
+        String url = MyApplication.getAppPath()+"/interface/worker/historyDate";
+        HttpUtil.get(url, new MyCallback() {
+            @Override
+            public void success(Msg msg) {
+                if(msg.getCode()==0){
+                    JSONArray jsonArray = (JSONArray)msg.get("dateList");
+                    String json = jsonArray.toJSONString();
+                    GsonBuilder builder = new GsonBuilder();
+                    builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
+                        public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                            return new Date(json.getAsJsonPrimitive().getAsLong());//时间戳自动转时间
+                        }
+                    });
+                    Gson gson = builder.create();
+                    List<HistoryDateGroup> dateList = (List<HistoryDateGroup>) gson.fromJson(json, new TypeToken<List<HistoryDateGroup>>() {
+                    }.getType());//把字符串转换成集合
+                    msg.put("dateList",dateList);
+                }
+                callback.success(msg);
+            }
+
+            @Override
+            public void failed(Msg msg) {
+                callback.failed(msg);
+            }
+        });
+    }
+
     public static TaskDao getInstance(){//单例模式，需要的时候获取已经new好的
         return instance;
     }
@@ -55,20 +88,20 @@ public class TaskDao {
                 GsonBuilder builder = new GsonBuilder();
                 builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
                     public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-                        return new Date(json.getAsJsonPrimitive().getAsLong());//时间戳自动转时间
+                    return new Date(json.getAsJsonPrimitive().getAsLong());//时间戳自动转时间
                     }
                 });
                 Gson gson = builder.create();
                 List<Group> groupList = (List<Group>) gson.fromJson(answerString, new TypeToken<List<Group>>() {
                 }.getType());//把字符串转换成集合
                 msg.put("groupList", groupList);
-                callback.success(msg);
             }
+            callback.success(msg);
         }
 
         @Override
         public void failed(Msg msg) {
-            callback.failed(null);
+            callback.failed(msg);
         }
     }
 }

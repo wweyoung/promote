@@ -9,10 +9,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.alibaba.fastjson.JSONObject;
 import com.kx.promote.R;
+import com.kx.promote.bean.HistoryDateGroup;
 import com.kx.promote.utils.HttpUtil;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 import okhttp3.Call;

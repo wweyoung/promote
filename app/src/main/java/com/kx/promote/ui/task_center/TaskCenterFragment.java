@@ -37,9 +37,9 @@ public class TaskCenterFragment extends Fragment {
     private View mDecorView;
     Random mRandom = new Random();
     public Handler handler = new MyHandler(this);
-    private HomeActivity homeActivity;
     private View view;
     private TodayTaskFragment todayTaskFragment;
+    private HistoryTaskFragment historyTaskFragment;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +63,6 @@ public class TaskCenterFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_task_center, container, false);
         this.view = view;
-        this.homeActivity = (HomeActivity) getActivity();
 
 
         mViewPager = ViewFindUtils.find(view, R.id.task_center_body);//在view中寻找do_body
@@ -120,7 +119,8 @@ public class TaskCenterFragment extends Fragment {
         todayTaskFragment = new TodayTaskFragment();
         mFragments.add(todayTaskFragment);
         mTabEntities.add(new TabEntity("今日任务", 0,0));
-        mFragments.add(new SimpleCardFragment());
+        historyTaskFragment = HistoryTaskFragment.newInstance();
+        mFragments.add(historyTaskFragment);
         mTabEntities.add(new TabEntity("历史任务", 0,0));
         header.setTabData(mTabEntities);
         mAdapter.notifyDataSetChanged();
