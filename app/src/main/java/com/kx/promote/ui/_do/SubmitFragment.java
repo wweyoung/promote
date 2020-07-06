@@ -138,7 +138,7 @@ public class SubmitFragment extends Fragment {
     private void updateUI(){
         if(group==null)
             return;
-        submitImageFragment.set(group.getImagelist(), MyApplication.getOrderImageMaxNumber());
+        submitImageFragment.set(group.getImagelist(), MyApplication.getGroupImageMaxNumber());
         actpriceET.setText(group.getActprice()+"元");
         customerET.setText(group.getCustomer());
         noteET.setText(group.getNote());

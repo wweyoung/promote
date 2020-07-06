@@ -54,7 +54,7 @@ public class ImageUploaderFragment extends Fragment implements Serializable {
     public void set(List<String> urlList,int max){
         this.urlList = urlList;
         this.max = max;
-        adapter.setUrlList(this.urlList);
+        adapter.set(this.urlList,max);
     }
     public void add(List<String> urlList){
         this.urlList.addAll(urlList);

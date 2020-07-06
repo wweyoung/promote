@@ -98,7 +98,7 @@ public class TodayTaskFragment extends Fragment  {
     }
     public void getTodayTask(){
         TaskDao taskDao = TaskDao.getInstance();
-        taskDao.getGroupListByDate(new Date(), new MyCallback() {
+        taskDao.getTodayGroupList(new MyCallback() {
             @Override
             public void success(Msg msg) {
                 if(msg.getCode()==0){

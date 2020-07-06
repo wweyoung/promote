@@ -8,5 +8,6 @@
     <string name="site_name">淘动力网络</string>
     <string name="image_small">-200.200.75</string>
     <string name="image_original">-original</string>
-    <string name="order_image_max_number">5</string>
+    <string name="order_image_max_number">3</string>
+    <string name="group_image_max_number">8</string>
 </resources>

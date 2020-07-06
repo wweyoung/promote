@@ -104,7 +104,6 @@ public class HomeActivity extends AppCompatActivity {
                     sb.append("\n");
 
                 }
-                Log.d("Image", sb.toString());
                 imageUploader.add(mSelectPath);
             }
         }

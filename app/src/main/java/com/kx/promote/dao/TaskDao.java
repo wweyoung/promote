@@ -33,36 +33,42 @@ public class TaskDao {
     public void getGroupListByDate(Date date, final MyCallback callback){
         date = DateToolkit.getZeroOfDay(date);//把日期转为0点
         String url = MyApplication.getAppPath()+"/interface/worker/groupListByTime/"+date.getTime();
-        HttpUtil.get(url, new okhttp3.Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                callback.failed(null);
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String json = response.body().string();
-                Msg msg = JSON.parseObject(json,Msg.class);
-                if(msg.getCode()==0) {
-                    JSONArray groupJsonArray = (JSONArray) msg.get("groupList");
-                    String answerString = groupJsonArray.toJSONString();//将array数组转换成字符串
-                    GsonBuilder builder = new GsonBuilder();
-                    builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
-                        public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-                            return new Date(json.getAsJsonPrimitive().getAsLong());//时间戳自动转时间
-                        }
-                    });
-                    Gson gson = builder.create();
-                    List<Group> groupList = (List<Group>) gson.fromJson(answerString, new TypeToken<List<Group>>() {
-                    }.getType());//把字符串转换成集合
-                    msg.put("groupList", groupList);
-                    callback.success(msg);
-                }
-
-            }
-        });
+        HttpUtil.get(url, new GroupListCallback(callback));
+    }
+    public void getTodayGroupList(final MyCallback callback){
+        String url = MyApplication.getAppPath()+"/interface/worker/groupList/today";
+        HttpUtil.get(url, new GroupListCallback(callback));
     }
     public static TaskDao getInstance(){//单例模式，需要的时候获取已经new好的
         return instance;
+    }
+    class GroupListCallback implements MyCallback{
+        MyCallback callback;
+        public GroupListCallback(MyCallback callback){
+            this.callback = callback;
+        }
+        @Override
+        public void success(Msg msg) {
+            if(msg.getCode()==0) {
+                JSONArray groupJsonArray = (JSONArray) msg.get("groupList");
+                String answerString = groupJsonArray.toJSONString();//将array数组转换成字符串
+                GsonBuilder builder = new GsonBuilder();
+                builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
+                    public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                        return new Date(json.getAsJsonPrimitive().getAsLong());//时间戳自动转时间
+                    }
+                });
+                Gson gson = builder.create();
+                List<Group> groupList = (List<Group>) gson.fromJson(answerString, new TypeToken<List<Group>>() {
+                }.getType());//把字符串转换成集合
+                msg.put("groupList", groupList);
+                callback.success(msg);
+            }
+        }
+
+        @Override
+        public void failed(Msg msg) {
+            callback.failed(null);
+        }
     }
 }

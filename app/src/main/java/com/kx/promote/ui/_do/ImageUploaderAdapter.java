@@ -45,7 +45,10 @@ public class ImageUploaderAdapter extends BaseAdapter {
         this.urlList = urlList;
         notifyDataSetChanged();//更新数据源自动刷新
     }
-
+    public void set(List<String> urlList,int max){
+        this.max = max;
+        this.setUrlList(urlList);
+    }
     public void removeUrl(int index){
         this.urlList.remove(index);
         setUrlList(this.urlList);
@@ -104,7 +107,7 @@ public class ImageUploaderAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View view) {
                 MyApplication.getHomeActivity().setImageUploader(fragment);
-                MultiImageSelectorActivity.startSelect(MyApplication.getHomeActivity(), 2, 10, MultiImageSelectorActivity.MODE_MULTI);
+                MultiImageSelectorActivity.startSelect(MyApplication.getHomeActivity(), 2, max-urlList.size(), MultiImageSelectorActivity.MODE_MULTI);
                 }
             });
             convertView.setTag(null);
@@ -148,6 +151,12 @@ public class ImageUploaderAdapter extends BaseAdapter {
             if(url.indexOf("http")==0){
                 url+=MyApplication.getImageSmall();
                 textView.setVisibility(View.GONE);
+                imgView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
             }
             else{
                 QiniuUtil qiniuUtil = MyApplication.getQiniuUtil();
@@ -156,7 +165,6 @@ public class ImageUploaderAdapter extends BaseAdapter {
                 qiniuUtil.upload(url, new QiniuUtil.Callback() {
                     @Override
                     public void success(String newUrl) {
-                        Log.d("上传：", "success: ");
                         Collections.replaceAll(urlList, finalUrl, newUrl);
                         textView.setVisibility(View.GONE);
                     }
@@ -176,7 +184,6 @@ public class ImageUploaderAdapter extends BaseAdapter {
                 Uri uri = Uri.fromFile(new File(url));
                 url= uri.toString();
             }
-            Log.d("", url);
             imgView.setImageURI(url);
         }
         String getUrl(){

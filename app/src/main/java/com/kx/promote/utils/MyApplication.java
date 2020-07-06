@@ -18,6 +18,7 @@ public class MyApplication extends Application {
     private static String imageSmall;
     private static User user;
     private static Integer orderImageMaxNumber;
+    private static Integer groupImageMaxNumber;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -26,6 +27,7 @@ public class MyApplication extends Application {
         appPath = context.getString(R.string.app_path);
         imageSmall = getString(R.string.image_small);
         orderImageMaxNumber = Integer.valueOf(getString(R.string.order_image_max_number));
+        groupImageMaxNumber = Integer.valueOf(getString(R.string.group_image_max_number));
         Fresco.initialize(this);//图片加载插件初始化
     }
     public static Context getContext(){
@@ -38,6 +40,7 @@ public class MyApplication extends Application {
         return imageSmall;
     }
     public static Integer getOrderImageMaxNumber(){return orderImageMaxNumber;}
+    public static Integer getGroupImageMaxNumber(){return groupImageMaxNumber;}
     public static QiniuUtil getQiniuUtil(){return qiniuUtil;}
     public static HomeActivity getHomeActivity() {
         return homeActivity;
