@@ -20,9 +20,9 @@ import java.util.List;
  * Use the {@link ImageUploaderFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ImageUploaderFragment extends Fragment {
+public class ImageUploaderFragment extends Fragment implements Serializable {
     private List<String> urlList;
-    private Integer max;
+    private int max = 10;
     private GridView imageView;
     private ImageUploaderAdapter adapter;
     public ImageUploaderFragment() {
@@ -56,13 +56,17 @@ public class ImageUploaderFragment extends Fragment {
         this.max = max;
         adapter.setUrlList(this.urlList);
     }
+    public void add(List<String> urlList){
+        this.urlList.addAll(urlList);
+        adapter.setUrlList(this.urlList);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_image_uploader, container, false);
         imageView = view.findViewById(R.id.image_uploader);
-        adapter = new ImageUploaderAdapter(urlList);
+        adapter = new ImageUploaderAdapter(urlList,max,this);
         imageView.setAdapter(adapter);
         return view;
     }

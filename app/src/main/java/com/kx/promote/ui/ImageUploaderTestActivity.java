@@ -6,8 +6,10 @@ import androidx.fragment.app.FragmentManager;
 import com.kx.promote.R;
 import com.kx.promote.ui._do.ImageUploaderFragment;
 
+import android.net.Uri;
 import android.os.Bundle;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +26,8 @@ public class ImageUploaderTestActivity extends AppCompatActivity {
         urlList.add("http://qiniu.taodongli.net/9f3362ab8b67408a8171b83202a356aa.png");
         urlList.add("http://qiniu.taodongli.net/7ad9b04a26b1469f9ed8786643116818.jpeg");
         urlList.add("http://qiniu.taodongli.net/088f8b216fee488fae7210ee16f5ec34.png");
+        Uri uri = Uri.fromFile(new File("/storage/emulated/0/Download/123456.jpg"));
+        urlList.add(uri.toString());
         imageUploaderFragment.set(urlList,9);
     }
 }

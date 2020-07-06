@@ -1,42 +1,37 @@
 package com.kx.promote.ui._do;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.kx.promote.R;
-import com.kx.promote.bean.Group;
-import com.kx.promote.ui.HomeActivity;
-import com.kx.promote.ui.task_center.GroupRecyclerViewAdapter;
-import com.kx.promote.ui.task_center.OrderRecyclerViewAdapter;
-import com.kx.promote.utils.HttpUtil;
+import com.kx.promote.ui.MainActivity;
+import com.kx.promote.ui.image_selector.MultiImageSelectorActivity;
 import com.kx.promote.utils.Msg;
 import com.kx.promote.utils.MyApplication;
-import com.kx.promote.utils.MyCallback;
 
 import java.lang.ref.WeakReference;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ImageUploaderAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private static final int SET_IMAGE_BITMAP = 0;
+    private List<String> urlList;
+    private ImageUploaderFragment fragment;
+    private int max = 10;
+    private Context mContext;
+    private final static byte IMAGE = 0 ;
+    private final static byte UPLOADER = 1;
     private Handler handler = new MyHandler(this);
     public List<String> getUrlList() {
         return urlList;
@@ -50,27 +45,28 @@ public class ImageUploaderAdapter extends BaseAdapter {
         this.urlList.remove(index);
         setUrlList(this.urlList);
     }
-    private List<String> urlList;
-    private Context mContext;
 
-    public ImageUploaderAdapter(List<String> urlList){
+
+    public ImageUploaderAdapter(List<String> urlList,int max,ImageUploaderFragment fragment){
         super();
         this.urlList = urlList;
+        this.max = max;
+        this.fragment = fragment;
         mInflater = (LayoutInflater) MyApplication.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
         if(urlList==null)
-            return 0;
-        return this.urlList.size();
+            return 1;
+        int size = this.urlList.size();
+        size++;
+        return size;
     }
 
     @Override
     public Object getItem(int i) {
-        if(this.urlList==null)
-            return null;
-        return this.urlList.get(i);
+        return null;
     }
 
     @Override
@@ -79,27 +75,57 @@ public class ImageUploaderAdapter extends BaseAdapter {
     }
 
     @Override
+    public int getItemViewType(int i){
+        if(urlList==null || i==urlList.size()){
+            return UPLOADER;
+        }
+        return IMAGE;
+    }
+
+    @Override
     public View getView(final int i, View convertView, ViewGroup viewGroup) {
         ViewHolder holder = null;
-        String url = urlList.get(i)+MyApplication.getImageSmall();
-        if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.item_image_uploader_image, null);
-            holder = new ViewHolder(convertView);
-            holder.setUrl(urlList.get(i));
-            holder.removeButton.setOnClickListener(new View.OnClickListener() {
+        if(i==0){
+            convertView = mInflater.inflate(R.layout.item_image_uploader_uploader, null);
+            TextView textView = convertView.findViewById(R.id.image_uploader_number);
+            textView.setText(urlList.size()+"/"+max);
+            if(urlList==null || urlList.size()<max){
+                convertView.setVisibility(View.VISIBLE);
+            }
+            else{
+                convertView.setVisibility(View.GONE);
+            }
+            convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    removeUrl(i);
+                MyApplication.getHomeActivity().setImageUploader(fragment);
+                MultiImageSelectorActivity.startSelect(MyApplication.getHomeActivity(), 2, 10, MultiImageSelectorActivity.MODE_MULTI);
                 }
             });
-        } else {
-            holder = (ViewHolder)convertView.getTag();
-            if(!holder.url.equals(urlList.get(i))){
-                holder.setUrl(urlList.get(i));
+            convertView.setTag(null);
+        }
+        else {
+            final int imageIndex = i - 1;
+            if (convertView == null || convertView.getTag()==null) {
+                convertView = mInflater.inflate(R.layout.item_image_uploader_image, null);
+                holder = new ViewHolder(convertView);
+                holder.setUrl(urlList.get(imageIndex));
+                holder.removeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        removeUrl(imageIndex);
+                    }
+                });
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+                if (!holder.url.equals(urlList.get(imageIndex))) {
+                    holder.setUrl(urlList.get(imageIndex));
+                }
             }
         }
         return convertView;
     }
+
     class ViewHolder {
         public SimpleDraweeView imgView;
         public ImageView removeButton;
@@ -111,7 +137,11 @@ public class ImageUploaderAdapter extends BaseAdapter {
         }
         void setUrl(String url){
             this.url = url;
-            imgView.setImageURI(url+MyApplication.getImageSmall());
+            if(url.indexOf("http")==0){
+                url+=MyApplication.getImageSmall();
+            }
+            Log.d("", url);
+            imgView.setImageURI(url);
         }
         String getUrl(){
             return url;

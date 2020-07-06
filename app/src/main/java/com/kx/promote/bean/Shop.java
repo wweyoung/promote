@@ -1,8 +1,9 @@
 package com.kx.promote.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Shop {
+public class Shop implements Serializable {
     @Override
 	public String toString() {
 		return "Shop [id=" + id + ", name=" + name + ", bossid=" + bossid + ", state=" + state + ", boss=" + boss + "]";

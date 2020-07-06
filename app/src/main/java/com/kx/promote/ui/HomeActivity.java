@@ -6,9 +6,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -18,12 +21,16 @@ import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.kx.promote.R;
 import com.kx.promote.entity.TabEntity;
 import com.kx.promote.ui._do.DoFragment;
+import com.kx.promote.ui._do.ImageUploaderFragment;
+import com.kx.promote.ui.image_selector.MultiImageSelectorActivity;
 import com.kx.promote.ui.task_center.TaskCenterFragment;
 import com.kx.promote.utils.MyApplication;
 import com.kx.promote.utils.ViewFindUtils;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class HomeActivity extends AppCompatActivity {
@@ -32,7 +39,8 @@ public class HomeActivity extends AppCompatActivity {
     private UserCenterFragment userCenterFragment;
     private ArrayList<Fragment> mFragments = new ArrayList<>();
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
-
+    private ImageUploaderFragment imageUploader;
+    public final static int IMAGE_SELECTED = 2;
     private String[] mTitles = {"任务中心", "当前任务", "我"};
     public final static int TASK_CENTER = 0;
     public final static int DO_TASK = 1;
@@ -53,6 +61,9 @@ public class HomeActivity extends AppCompatActivity {
     private Handler handler = new MyHandler(this);
 
     public final static int SHOW_MESSAGE = 0;
+    public void setImageUploader(ImageUploaderFragment imageUploader){
+        this.imageUploader = imageUploader;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +91,26 @@ public class HomeActivity extends AppCompatActivity {
         footer = ViewFindUtils.find(mDecorView, R.id.home_footer);
         initFooterBar();
 
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == IMAGE_SELECTED) {
+            if (resultCode == RESULT_OK) {
+                List<String> mSelectPath = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
+                StringBuilder sb = new StringBuilder();
+                List<String> urlList = new ArrayList<>(mSelectPath.size());
+                for (String p : mSelectPath) {
+                    sb.append(p);
+                    sb.append("\n");
+                    Uri uri = Uri.fromFile(new File(p));
+                    urlList.add(uri.toString());
+                }
+                Log.d("Image", sb.toString());
+                Toast.makeText(this,sb.toString(),Toast.LENGTH_SHORT).show();
+                imageUploader.add(urlList);
+            }
+        }
     }
     private class MyPagerAdapter extends FragmentPagerAdapter {
         public MyPagerAdapter(FragmentManager fm) {
