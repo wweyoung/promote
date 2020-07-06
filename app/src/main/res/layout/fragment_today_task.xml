@@ -9,12 +9,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
-        <fragment
-            android:id="@+id/group_list_fragment"
-            android:name="com.kx.promote.ui.task_center.GroupListFragment"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:layout="@layout/fragment_group_list" />
+            android:layout_height="match_parent"
+            android:scrollbars="vertical">
+            <fragment
+                android:id="@+id/group_list_fragment"
+                android:name="com.kx.promote.ui.task_center.GroupListFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout="@layout/fragment_group_list" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
 </FrameLayout>

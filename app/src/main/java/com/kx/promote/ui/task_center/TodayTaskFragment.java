@@ -86,7 +86,7 @@ public class TodayTaskFragment extends Fragment  {
             @Override
             public void onRefresh() {
                 getTodayTask();
-//                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
         updateUI();

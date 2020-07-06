@@ -5,16 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".ui.task_center.GroupListFragment">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/group_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/group_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </FrameLayout>
