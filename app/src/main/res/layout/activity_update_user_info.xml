@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:orientation="vertical"
     tools:context=".ui.UpdateUserInfoActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="52dp"
+        android:background="#FFFFFF"
         android:orientation="horizontal">
 
         <ImageButton
@@ -17,8 +19,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:background="#F1F0F0"
-            android:backgroundTint="#F1F0F0"
+            android:background="#FFFFFF"
+            android:backgroundTint="#FFFFFF"
             app:srcCompat="@drawable/back" />
 
         <TextView
@@ -69,9 +71,12 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/translucent"
+                android:cursorVisible="false"
                 android:ems="10"
+                android:focusable="false"
                 android:inputType="textPersonName"
-                android:textColor="#292828" />
+                android:textColor="#292828"
+                android:textIsSelectable="false" />
 
         </LinearLayout>
 
@@ -94,13 +99,13 @@
                 android:id="@+id/editText_personName"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:textColor="#292828"
                 android:background="@drawable/translucent"
                 android:cursorVisible="false"
+                android:ems="10"
                 android:focusable="false"
-                android:textIsSelectable="false"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textColor="#292828"
+                android:textIsSelectable="false" />
 
         </LinearLayout>
 
@@ -123,10 +128,10 @@
                 android:id="@+id/editText_userPhone"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:textColor="#292828"
                 android:background="@drawable/translucent"
-                android:inputType="textPersonName" />
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textColor="#292828" />
         </LinearLayout>
 
         <LinearLayout
@@ -148,10 +153,10 @@
                 android:id="@+id/editText_mail"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:textColor="#292828"
                 android:background="@drawable/translucent"
-                android:inputType="textPersonName" />
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textColor="#292828" />
         </LinearLayout>
 
         <LinearLayout
@@ -173,11 +178,11 @@
                 android:id="@+id/editText_newPassword"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:textColor="#292828"
                 android:background="@drawable/translucent"
+                android:ems="10"
                 android:hint="填写新密码"
                 android:inputType="textPersonName"
+                android:textColor="#292828"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
@@ -206,11 +211,11 @@
                 android:id="@+id/editText_confirmPassword"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:textColor="#292828"
                 android:background="@drawable/translucent"
+                android:ems="10"
                 android:hint="再次填写确认"
                 android:inputType="textPersonName"
+                android:textColor="#292828"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.9"

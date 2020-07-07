@@ -23,6 +23,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.kx.promote.R;
 import com.kx.promote.bean.User;
+import com.kx.promote.bean.Validator;
 import com.kx.promote.utils.HttpUtil;
 import com.kx.promote.utils.Msg;
 import com.kx.promote.utils.MyApplication;
@@ -54,7 +55,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity implements View.On
     protected static final int SUCCESS = 0;
     protected static final int FAIL = 1;
     protected static int Click = 0;
-//   private Handler handler = new UpdateUserInfoActivity().MyHandler(this);
+    private Validator validator;
 
 
      private Handler handler= new Handler(){
@@ -95,13 +96,6 @@ public class UpdateUserInfoActivity extends AppCompatActivity implements View.On
         btn_back.setOnClickListener(this);
         btn_save.setOnClickListener(this);
 
-//        Intent intent=getIntent();
-//        user = (User) intent.getSerializableExtra("user");
-//        userNameEdit.setText(user.getUser());
-//        personNameEdit.setText(user.getName());
-//        userPhoneEdit.setText(user.getPhone());
-//        userMailEdit.setText(user.getEmail());
-
         user=MyApplication.getUser();
         userNameEdit.setText(user.getUser());
         personNameEdit.setText(user.getName());
@@ -140,6 +134,7 @@ public class UpdateUserInfoActivity extends AppCompatActivity implements View.On
                 break;
 
             case R.id.btn_save:
+                validator=new Validator();
                 if(!newPasswordEdit.getText().toString().equals(confirmPasswordEdit.getText().toString())){
                     Toast.makeText(UpdateUserInfoActivity.this,"密码与确认密码不一致",Toast.LENGTH_SHORT).show();
                 }else {
@@ -149,8 +144,25 @@ public class UpdateUserInfoActivity extends AppCompatActivity implements View.On
                     userMap.put("user", userNameEdit.getText().toString());
                     userMap.put("name", personNameEdit.getText().toString());
                     userMap.put("phone", userPhoneEdit.getText().toString());
+                    if(!validator.isMobile(userPhoneEdit.getText().toString())){
+                        Toast.makeText(UpdateUserInfoActivity.this,"手机号格式错误",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     userMap.put("email", userMailEdit.getText().toString());
+                    if(!userMailEdit.getText().toString().isEmpty()) {
+                        if (!validator.isEmail(userMailEdit.getText().toString())) {
+                            Toast.makeText(UpdateUserInfoActivity.this, "邮箱格式错误", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
                     userMap.put("password", newPasswordEdit.getText().toString());
+                    if(!newPasswordEdit.getText().toString().isEmpty()) {
+                        if (!validator.isPassword(newPasswordEdit.getText().toString())) {//newPasswordEdit.getText().toString().length()<6 || newPasswordEdit.getText().toString().length()>16
+
+                            Toast.makeText(UpdateUserInfoActivity.this, "密码长度为6-16位", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
                     RequestBody body = RequestBody.create(JSON.toJSONString(userMap), mediaType);
                     HttpUtil.post(MyApplication.getAppPath() + "/interface/user", body, new okhttp3.Callback() {
                         @Override
@@ -178,7 +190,6 @@ public class UpdateUserInfoActivity extends AppCompatActivity implements View.On
                                 message.what = FAIL;
                                 handler.sendMessage(message);
                             }
-
                         }
                     });
                     Click++;
