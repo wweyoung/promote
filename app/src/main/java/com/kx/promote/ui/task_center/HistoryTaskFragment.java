@@ -69,6 +69,7 @@ public class HistoryTaskFragment extends Fragment {
     }
     public void getHistoryDate(){
         TaskDao dao = TaskDao.getInstance();
+        MyApplication.loading(true,getActivity());
         dao.getHistoryDate(new MyCallback() {
             @Override
             public void success(Msg msg) {
@@ -81,11 +82,13 @@ public class HistoryTaskFragment extends Fragment {
                 else{
                     handler.obtainMessage(SHOW_TOAST,msg.getMsg()).sendToTarget();
                 }
+                MyApplication.loading(false,getActivity());
             }
 
             @Override
             public void failed(Msg msg) {
                 handler.obtainMessage(SHOW_TOAST,msg.getMsg()).sendToTarget();
+                MyApplication.loading(false,getActivity());
             }
         });
     }

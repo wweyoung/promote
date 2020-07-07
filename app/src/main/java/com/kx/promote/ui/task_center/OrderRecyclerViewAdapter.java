@@ -45,7 +45,6 @@ public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<OrderRecycler
     }
 
     private List<Order> orderList = new ArrayList<>();
-    private Context mContext;
     private static final int SHOW_TOAST = 0;
     private static final int SET_IMAGE = 1;
 
@@ -65,8 +64,14 @@ public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<OrderRecycler
         final Order order = orderList.get(position);
         if(order==null)
             return;
-        String url = order.getNeed().getImage().getUrl() + MyApplication.getImageSmall();
+        final String url = order.getNeed().getImage().getUrl() + MyApplication.getImageSmall();
         holder.imageView.setImageURI(url);
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MyApplication.showBigImage(order.getNeed().getImage().getUrl(),MyApplication.getHomeActivity());
+            }
+        });
         holder.keywordView.setText(order.getNeed().getKeyword());
         holder.shopView.setText(order.getNeed().getShop().getName());
         holder.prepriceView.setText("预付"+order.getNeed().getPrice().toString()+"元");

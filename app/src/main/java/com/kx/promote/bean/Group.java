@@ -164,5 +164,14 @@ public class Group implements Serializable {
         }
         return actprice;
     }
-
+    @JSONField(serialize=false)
+    public int getFinishedOrderNumber(){
+        int finishedOrderNumber = 0;
+        for(Order order:getOrderlist()){
+            if(order.getState()==Order.FINISHED){
+                finishedOrderNumber++;
+            }
+        }
+        return finishedOrderNumber;
+    }
 }

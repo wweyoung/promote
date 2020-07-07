@@ -14,7 +14,9 @@ import android.widget.Toast;
 
 import com.kx.promote.R;
 import com.kx.promote.bean.User;
+import com.kx.promote.dao.UserDao;
 import com.kx.promote.utils.MyApplication;
+import com.kx.promote.utils.MyCookieJar;
 
 import okhttp3.internal.concurrent.Task;
 
@@ -86,13 +88,8 @@ public class UserCenterFragment extends Fragment {
         btn_finishLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MyApplication.setUser(new User());
-                String a = user.getName();
-                    HomeActivity homeActivity = (HomeActivity)getActivity();
-                    Intent intent = new Intent(homeActivity,LoginActivity.class);
-                    startActivity(intent);
-                    homeActivity.finish();
-                    Toast.makeText(getActivity(),"退出登录成功",Toast.LENGTH_SHORT).show();
+                UserDao.getInstance().logout();
+                Toast.makeText(getActivity(),"退出登录成功",Toast.LENGTH_SHORT).show();
         }
         });
         Button btn_modifyMyInfo = (Button)view.findViewById(R.id.modifyMyInfo);

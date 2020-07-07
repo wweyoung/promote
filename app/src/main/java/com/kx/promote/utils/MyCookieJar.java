@@ -45,6 +45,9 @@ public class MyCookieJar implements CookieJar {
         List<Cookie> cookies = cookieStore.get(url);
         return cookies;
     }
+    public void removeAll(){
+        cookieStore.removeAll();
+    }
 }
 class PersistentCookieStore {
     private static final String LOG_TAG = "PersistentCookieStore";

@@ -26,7 +26,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="5"
-                android:text="组号" />
+                android:text="组号"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/group_order_number"
@@ -34,7 +35,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
                 android:text="5连"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/group_state"
@@ -42,7 +44,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
                 android:text="已完成"
-                android:textAlignment="viewEnd" />
+                android:textAlignment="viewEnd"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -55,7 +58,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="2020/01/01" />
+                android:text="2020/01/01"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/group_preprice"
@@ -63,7 +67,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="预付421"
-                android:textAlignment="viewEnd" />
+                android:textAlignment="viewEnd"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -77,7 +82,8 @@
                 android:id="@+id/group_customer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/group_actprice"
@@ -85,7 +91,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="实付0"
-                android:textAlignment="viewEnd" />
+                android:textAlignment="viewEnd"
+                android:textSize="18sp" />
         </LinearLayout>
     </LinearLayout>
 

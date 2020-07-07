@@ -18,8 +18,6 @@ import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.kx.promote.R;
 import com.kx.promote.entity.TabEntity;
-import com.kx.promote.ui.HomeActivity;
-import com.kx.promote.ui.SimpleCardFragment;
 import com.kx.promote.utils.ViewFindUtils;
 
 import java.lang.ref.WeakReference;

@@ -20,9 +20,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.kx.promote.R;
 import com.kx.promote.bean.User;
+import com.kx.promote.dao.UserDao;
 import com.kx.promote.utils.HttpUtil;
 import com.kx.promote.utils.Msg;
 import com.kx.promote.utils.MyApplication;
+import com.kx.promote.utils.MyCallback;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -141,26 +143,24 @@ public class LoginActivity extends AppCompatActivity {
     }
     private void autoLogin(){
         Toast.makeText(this,"自动登录中...",Toast.LENGTH_SHORT).show();
-        HttpUtil.get(MyApplication.getAppPath()+"/interface/user", new okhttp3.Callback() {
+        MyCallback callback = new MyCallback() {
             @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Toast.makeText(LoginActivity.this,"请求失败！",Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String json = response.body().string();
-                Msg msg =  JSON.parseObject(json,Msg.class);//json转Msg对象
-
+            public void success(Msg msg) {
                 if(msg.getCode()==0){//判断是否成功
-                    user= JSONObject.toJavaObject((JSONObject) msg.get("user"),User.class);//json转User对象
+                    user= (User) msg.get("user");
                     Message.obtain(handler,GO_HOME,user).sendToTarget();
                 }
                 else{//登录失败
                     Message.obtain(handler,SHOW_TOAST,"自动登录失败，请手动登录").sendToTarget();//给主线程发送信息，让主线程弹出Toast
                 }
             }
-        });
+
+            @Override
+            public void failed(Msg msg) {
+                Toast.makeText(LoginActivity.this,"请求失败！",Toast.LENGTH_SHORT).show();
+            }
+        };
+        UserDao.getInstance().getLoginUser(callback);
     }
     private void goHome(User user){
         Intent intent = new Intent(this, HomeActivity.class);

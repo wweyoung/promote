@@ -12,6 +12,15 @@ import android.widget.TextView;
 
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder;
+import com.facebook.drawee.drawable.ProgressBarDrawable;
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.kx.promote.utils.MyApplication;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.kx.promote.R;
@@ -26,12 +35,12 @@ public class PreviewPicturesActivity extends Activity {
     private TextView tvCancel, tvSend;
 
     //preview image
-    public static void preViewSingle(Activity activity, String url, int requestCode) {
+    public static void preViewSingle(Activity activity, String url) {
         Intent intent = new Intent(activity, PreviewPicturesActivity.class);
         ArrayList<String> pic = new ArrayList<>();
         pic.add(url);
         intent.putExtra("pics", pic);
-        activity.startActivityForResult(intent, requestCode);
+        activity.startActivity(intent);
     }
 
     @Override
@@ -39,8 +48,6 @@ public class PreviewPicturesActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview_pictures);
         pager = (ViewPager) findViewById(R.id.pager);
-        tvCancel = (TextView) findViewById(R.id.tv_cancel);
-        tvSend = (TextView) findViewById(R.id.tv_send);
 
         picList = getIntent().getStringArrayListExtra("pics");
         if (picList.size() != 0) {
@@ -48,24 +55,6 @@ public class PreviewPicturesActivity extends Activity {
             pager.setAdapter(adapter);
         }
 
-        Log.i("PreView", picList.toString());
-
-        tvCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-        tvSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.putExtra("pics", picList);
-                setResult(RESULT_OK, intent);
-                finish();
-            }
-        });
     }
 
     private class MyPagerAdapter extends PagerAdapter {
@@ -83,23 +72,26 @@ public class PreviewPicturesActivity extends Activity {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             View view = View.inflate(PreviewPicturesActivity.this, R.layout.item_image, null);
-            ImageView imageView = (ImageView) view.findViewById(R.id.iv_pic);
+            SimpleDraweeView imageView = (SimpleDraweeView) view.findViewById(R.id.iv_pic);
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+            String path = picList.get(position);
+            PipelineDraweeControllerBuilder controllerBuilder = Fresco.newDraweeControllerBuilder()
+                    .setImageRequest(ImageRequest.fromUri(path))
+                    .setOldController(imageView.getController());
+            if(path.indexOf("http")==0){
+                controllerBuilder.setLowResImageRequest(ImageRequest.fromUri(path+ MyApplication.getImageSmall()));
+            }
+            DraweeController  controller = controllerBuilder.build();
+            imageView.setController(controller);
 
-            Picasso.with(PreviewPicturesActivity.this).load(new File(picList.get(position)))
-//                    .placeholder(R.drawable.default_error)
-                    .centerInside()
-                    .resize(800, 1500)
-                            //.error(R.drawable.default_error)
-                    .into(imageView, new Callback() {
-                        @Override
-                        public void onSuccess() {
-//                            attacher = new PhotoViewAttacher(bgPic);
-                        }
-
-                        @Override
-                        public void onError() {
-                        }
-                    });
+            GenericDraweeHierarchy hierarchy = imageView.getHierarchy();
+            hierarchy.setProgressBarImage(new ProgressBarDrawable());
+            imageView.setHierarchy(hierarchy);
             container.addView(view, 0);
             return view;
         }

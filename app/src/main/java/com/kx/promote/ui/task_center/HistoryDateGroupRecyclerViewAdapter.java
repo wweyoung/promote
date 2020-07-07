@@ -74,28 +74,34 @@ public class HistoryDateGroupRecyclerViewAdapter extends RecyclerView.Adapter<Hi
             @Override
             public void onClick(View view) {
                 if(holder.body.getVisibility()==View.GONE) {
-                    if(dateGroup.getGroupList()==null){
+                    if(dateGroup.getGroupList()==null) {
                         TaskDao dao = TaskDao.getInstance();
+                        MyApplication.loading(true, MyApplication.getHomeActivity());
                         dao.getGroupListByDate(dateGroup.getDate(), new MyCallback() {
                             @Override
                             public void success(Msg msg) {
-                                if(msg.getCode()==0) {
+                                if (msg.getCode() == 0) {
                                     List<Group> groupList = (List<Group>) msg.get("groupList");
+                                    dateGroup.setGroupList(groupList);
                                     msg.add("adapter", adapter);
+                                    msg.add("bodyView",holder.body);
                                     handler.obtainMessage(FRESH_GROUP_LIST, msg).sendToTarget();
+                                } else {
+                                    handler.obtainMessage(SHOW_TOAST, msg.getMsg()).sendToTarget();
                                 }
-                                else{
-                                    handler.obtainMessage(SHOW_TOAST,msg.getMsg()).sendToTarget();
-                                }
+                                MyApplication.loading(false, MyApplication.getHomeActivity());
                             }
 
                             @Override
                             public void failed(Msg msg) {
-                                handler.obtainMessage(SHOW_TOAST,msg.getMsg()).sendToTarget();
+                                handler.obtainMessage(SHOW_TOAST, msg.getMsg()).sendToTarget();
+                                MyApplication.loading(false, MyApplication.getHomeActivity());
                             }
                         });
                     }
-                    holder.body.setVisibility(View.VISIBLE);
+                    else{
+                        holder.body.setVisibility(View.VISIBLE);
+                    }
                 }
                 else
                     holder.body.setVisibility(View.GONE);
@@ -152,6 +158,8 @@ public class HistoryDateGroupRecyclerViewAdapter extends RecyclerView.Adapter<Hi
                     GroupRecyclerViewAdapter adapter = (GroupRecyclerViewAdapter) m.get("adapter");
                     List<Group> groupList = (List<Group>) m.get("groupList");
                     outer.freshGroupList(adapter,groupList);
+                    View bodyView = (View) m.get("bodyView");
+                    bodyView.setVisibility(View.VISIBLE);
                 }
             }
         }

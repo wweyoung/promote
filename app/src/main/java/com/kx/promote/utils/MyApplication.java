@@ -1,15 +1,29 @@
 package com.kx.promote.utils;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.kx.promote.R;
 import com.kx.promote.bean.User;
 import com.kx.promote.ui.HomeActivity;
+import com.kx.promote.ui.image_selector.PreviewPicturesActivity;
+
+import java.lang.ref.WeakReference;
 
 public class MyApplication extends Application {
     private static Context context;
@@ -20,10 +34,14 @@ public class MyApplication extends Application {
     private static User user;
     private static Integer orderImageMaxNumber;
     private static Integer groupImageMaxNumber;
+    private static AlertDialog alertDialog;
+    public static final int SHOW_MESSAGE = 1;
+    private static MyHandler handler;
     @Override
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
+        handler = new MyHandler(this);
         qiniuUtil = new QiniuUtil();
         appPath = context.getString(R.string.app_path);
         imageSmall = getString(R.string.image_small);
@@ -46,7 +64,7 @@ public class MyApplication extends Application {
     public static HomeActivity getHomeActivity() {
         return homeActivity;
     }
-
+    public static MyHandler getHandler(){return handler;}
     public static void setHomeActivity(HomeActivity homeActivity) {
         MyApplication.homeActivity = homeActivity;
     }
@@ -92,5 +110,50 @@ public class MyApplication extends Application {
         }
         return false;
     }
+    public static void loading(boolean show, Activity activity){
+        if(show){
+            alertDialog = new AlertDialog.Builder(activity).create();
+            alertDialog.setCancelable(false);
+            alertDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                @Override
+                public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                    if (keyCode == KeyEvent.KEYCODE_SEARCH || keyCode == KeyEvent.KEYCODE_BACK)
+                        return true;
+                    return false;
+                }
+            });
+            alertDialog.show();
+            alertDialog.setContentView(R.layout.item_loading);
+            WindowManager.LayoutParams dialogParams = alertDialog.getWindow().getAttributes();
+            dialogParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
+            dialogParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            alertDialog.setCanceledOnTouchOutside(false);
+        }
+        else{
+            if (null != alertDialog && alertDialog.isShowing()) {
+                alertDialog.dismiss();
+            }
+        }
+    }
+    public static void showBigImage(String url,Activity activity){
+        PreviewPicturesActivity.preViewSingle(activity,url);
+    }
+    static class MyHandler extends Handler {
+        private WeakReference<MyApplication> mOuter;
 
+        public MyHandler(MyApplication activity) {
+            mOuter = new WeakReference<MyApplication>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            MyApplication outer = mOuter.get();
+            if (outer != null) {
+                if (msg.what == SHOW_MESSAGE) {
+                    String tip = (String) msg.obj;
+                    Toast.makeText(outer, tip, Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
 }

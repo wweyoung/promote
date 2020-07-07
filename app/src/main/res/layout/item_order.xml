@@ -26,7 +26,8 @@
             android:id="@+id/order_keyword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="关键词" />
+            android:text="关键词"
+            android:textSize="16sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,7 +39,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="店铺名" />
+                android:text="店铺名"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/order_state"
@@ -46,7 +48,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="进行中"
-                android:textAlignment="viewEnd" />
+                android:textAlignment="viewEnd"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -59,7 +62,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="预付0元" />
+                android:text="预付0元"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/order_actprice"
@@ -67,7 +71,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="实付0元"
-                android:textAlignment="viewEnd" />
+                android:textAlignment="viewEnd"
+                android:textSize="16sp" />
         </LinearLayout>
 
     </LinearLayout>

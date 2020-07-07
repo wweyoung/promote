@@ -264,7 +264,14 @@ public class MultiImageSelectorFragment extends Fragment {
             public void onClick(View view) {
                 if (resultList.size() != 0) {
                     Intent intent = new Intent(getActivity(), PreviewPicturesActivity.class);
-                    intent.putExtra("pics", resultList);
+                    ArrayList<String> urlList = new ArrayList<>(resultList.size());
+                    for(String path:resultList){
+                        Uri uri = Uri.fromFile(new File(path));
+                        String url = uri.toString();
+                        urlList.add(url);
+                    }
+
+                    intent.putExtra("pics", urlList);
                     startActivityForResult(intent, REQUEST_PREVIEW);
                 } else {
                     Toast.makeText(getActivity(), "请选择图片", Toast.LENGTH_SHORT).show();

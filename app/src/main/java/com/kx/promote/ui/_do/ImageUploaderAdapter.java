@@ -1,7 +1,6 @@
 package com.kx.promote.ui._do;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Handler;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.kx.promote.R;
-import com.kx.promote.ui.MainActivity;
 import com.kx.promote.ui.image_selector.MultiImageSelectorActivity;
 import com.kx.promote.utils.Msg;
 import com.kx.promote.utils.MyApplication;
@@ -146,27 +144,35 @@ public class ImageUploaderAdapter extends BaseAdapter {
             view.setTag(this);
         }
         void setUrl(String url){
-            Log.d("----", url);
             this.url = url;
             if(url.indexOf("http")==0){
                 url+=MyApplication.getImageSmall();
                 textView.setVisibility(View.GONE);
+                final String finalUrl = url;
                 imgView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
+                        MyApplication.showBigImage(ViewHolder.this.url,MyApplication.getHomeActivity());
                     }
                 });
             }
             else{
                 QiniuUtil qiniuUtil = MyApplication.getQiniuUtil();
-                final String finalUrl = url;
                 final int originHeight = textView.getHeight();
+                Uri uri = Uri.fromFile(new File(url));
+                url= uri.toString();
+                final String finalUrl = url;//本地文件路径
                 qiniuUtil.upload(url, new QiniuUtil.Callback() {
                     @Override
                     public void success(String newUrl) {
                         Collections.replaceAll(urlList, finalUrl, newUrl);
                         textView.setVisibility(View.GONE);
+                        imgView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                MyApplication.showBigImage(finalUrl,MyApplication.getHomeActivity());
+                            }
+                        });
                     }
 
                     @Override
@@ -181,8 +187,6 @@ public class ImageUploaderAdapter extends BaseAdapter {
                         textView.setHeight((int) Math.round(percent*originHeight));
                     }
                 });
-                Uri uri = Uri.fromFile(new File(url));
-                url= uri.toString();
             }
             imgView.setImageURI(url);
         }
