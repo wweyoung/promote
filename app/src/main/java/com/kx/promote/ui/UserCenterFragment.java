@@ -86,13 +86,13 @@ public class UserCenterFragment extends Fragment {
         btn_finishLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                MyApplication.setUser(new User());
                 String a = user.getName();
                 if (a ==null){
-                    a ="空";
-                }
-                Toast.makeText(getActivity(),a,Toast.LENGTH_SHORT).show();
+                a ="空";
             }
+                Toast.makeText(getActivity(),a,Toast.LENGTH_SHORT).show();
+        }
         });
         Button btn_modifyMyInfo = (Button)view.findViewById(R.id.modifyMyInfo);
         btn_modifyMyInfo.setOnClickListener(new View.OnClickListener() {
@@ -106,10 +106,5 @@ public class UserCenterFragment extends Fragment {
         });
 
         return view;
-    }
-    private void OutLogin(){
-        if(user!=null){
-            user = null;
-        }
     }
 }
