@@ -62,7 +62,7 @@
                 android:id="@+id/textView_userName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="用户名："
+                android:text="\u3000用户名："
                 android:textColor="#1C1C1C"
                 android:textSize="21sp" />
 
@@ -91,7 +91,7 @@
                 android:id="@+id/textView_personName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="姓\u3000名："
+                android:text="\u3000\u3000姓名："
                 android:textColor="#1C1C1C"
                 android:textSize="21sp" />
 
@@ -105,7 +105,7 @@
                 android:focusable="false"
                 android:inputType="textPersonName"
                 android:textColor="#292828"
-                android:textIsSelectable="false" />
+                android:textIsSelectable="true" />
 
         </LinearLayout>
 
@@ -170,7 +170,7 @@
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="新密码："
+                android:text="\u3000新密码："
                 android:textColor="#101010"
                 android:textSize="21sp" />
 
