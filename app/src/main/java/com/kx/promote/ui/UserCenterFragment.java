@@ -88,10 +88,11 @@ public class UserCenterFragment extends Fragment {
             public void onClick(View view) {
                 MyApplication.setUser(new User());
                 String a = user.getName();
-                if (a ==null){
-                a ="空";
-            }
-                Toast.makeText(getActivity(),a,Toast.LENGTH_SHORT).show();
+                    HomeActivity homeActivity = (HomeActivity)getActivity();
+                    Intent intent = new Intent(homeActivity,LoginActivity.class);
+                    startActivity(intent);
+                    homeActivity.finish();
+                    Toast.makeText(getActivity(),"退出登录成功",Toast.LENGTH_SHORT).show();
         }
         });
         Button btn_modifyMyInfo = (Button)view.findViewById(R.id.modifyMyInfo);
