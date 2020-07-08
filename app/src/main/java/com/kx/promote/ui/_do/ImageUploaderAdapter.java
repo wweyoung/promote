@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.kx.promote.R;
@@ -23,11 +24,16 @@ import com.kx.promote.utils.QiniuUtil;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ImageUploaderAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private static final int SET_IMAGE_BITMAP = 0;
+    private static final int SHOW_MESSAGE = 1;
+    private static final int SET_TEXTVIEW_HEIGTH = 2;
+    private static final int SET_TEXTVIEW_TEXT = 3;
     private List<String> urlList;
     private ImageUploaderFragment fragment;
     private int max = 10;
@@ -96,18 +102,22 @@ public class ImageUploaderAdapter extends BaseAdapter {
             TextView textView = convertView.findViewById(R.id.image_uploader_number);
             textView.setText(urlList.size()+"/"+max);
             if(urlList==null || urlList.size()<max){
-                convertView.setVisibility(View.VISIBLE);
+                convertView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                    MyApplication.getHomeActivity().setImageUploader(fragment);
+                    MultiImageSelectorActivity.startSelect(MyApplication.getHomeActivity(), 2, max-urlList.size(), MultiImageSelectorActivity.MODE_MULTI);
+                    }
+                });
             }
             else{
-                convertView.setVisibility(View.GONE);
+                convertView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                    handler.obtainMessage(SHOW_MESSAGE,"已选择"+max+"张图片！").sendToTarget();
+                    }
+                });
             }
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                MyApplication.getHomeActivity().setImageUploader(fragment);
-                MultiImageSelectorActivity.startSelect(MyApplication.getHomeActivity(), 2, max-urlList.size(), MultiImageSelectorActivity.MODE_MULTI);
-                }
-            });
             convertView.setTag(null);
         }
         else {
@@ -152,25 +162,26 @@ public class ImageUploaderAdapter extends BaseAdapter {
                 imgView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        MyApplication.showBigImage(ViewHolder.this.url,MyApplication.getHomeActivity());
+                    MyApplication.showBigImage(ViewHolder.this.url,MyApplication.getHomeActivity());
                     }
                 });
             }
             else{
+                final String path = url;
                 QiniuUtil qiniuUtil = MyApplication.getQiniuUtil();
                 final int originHeight = textView.getHeight();
                 Uri uri = Uri.fromFile(new File(url));
                 url= uri.toString();
                 final String finalUrl = url;//本地文件路径
-                qiniuUtil.upload(url, new QiniuUtil.Callback() {
+                qiniuUtil.upload(path, new QiniuUtil.Callback() {
                     @Override
                     public void success(String newUrl) {
-                        Collections.replaceAll(urlList, finalUrl, newUrl);
+                        Collections.replaceAll(urlList, path, newUrl);
                         textView.setVisibility(View.GONE);
                         imgView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                MyApplication.showBigImage(finalUrl,MyApplication.getHomeActivity());
+                            MyApplication.showBigImage(finalUrl,MyApplication.getHomeActivity());
                             }
                         });
                     }
@@ -178,13 +189,26 @@ public class ImageUploaderAdapter extends BaseAdapter {
                     @Override
                     public void failed() {
                         Log.d("上传：", "failed: ");
-                        textView.setHeight(originHeight);
-                        textView.setText("上传失败");
+                        handler.obtainMessage(SET_TEXTVIEW_HEIGTH,originHeight,0,textView).sendToTarget();
+                        Map<String,Object> obj = new HashMap<>();
+                        obj.put("textView",textView);
+                        obj.put("text","上传失败");
+                        handler.obtainMessage(SET_TEXTVIEW_TEXT,obj).sendToTarget();
+                        textView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                setUrl(path);//重新上传
+                            }
+                        });
                     }
 
                     @Override
                     public void progress(double percent) {
-                        textView.setHeight((int) Math.round(percent*originHeight));
+                        handler.obtainMessage(SET_TEXTVIEW_HEIGTH,(int) Math.round(percent*originHeight),0,textView).sendToTarget();
+                        Map<String,Object> obj = new HashMap<>();
+                        obj.put("textView",textView);
+                        obj.put("text","上传中");
+                        handler.obtainMessage(SET_TEXTVIEW_TEXT,obj).sendToTarget();
                     }
                 });
             }
@@ -210,6 +234,21 @@ public class ImageUploaderAdapter extends BaseAdapter {
                     ImageView imageView = (ImageView) m.get("imageView");
                     Bitmap bitmap = (Bitmap) m.get("bitmap");
                     imageView.setImageBitmap(bitmap);
+                }
+                else if(msg.what == SHOW_MESSAGE){
+                    String text = (String) msg.obj;
+                    Toast.makeText(outer.fragment.getActivity(),text,Toast.LENGTH_SHORT).show();
+                }
+                else if(msg.what == SET_TEXTVIEW_HEIGTH){
+                    int height = msg.arg1;
+                    TextView textView = (TextView) msg.obj;
+                    textView.setHeight(height);
+                }
+                else if(msg.what == SET_TEXTVIEW_TEXT){
+                    Map map = (Map) msg.obj;
+                    TextView textView = (TextView) map.get("textView");
+                    String text = (String) map.get("text");
+                    textView.setText(text);
                 }
             }
         }
