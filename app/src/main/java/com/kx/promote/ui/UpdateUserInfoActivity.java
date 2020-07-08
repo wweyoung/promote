@@ -126,74 +126,71 @@ public class UpdateUserInfoActivity extends AppCompatActivity implements View.On
                     });
                     dialog.show();
                 }else{
-                    Intent intent = new Intent(UpdateUserInfoActivity.this, HomeActivity.class);
-//                intent.putExtra("user",user);//将数据返回
-                    startActivity(intent);
+                    finish();
                 }
 
                 break;
 
             case R.id.btn_save:
                 validator=new Validator();
-                if(!newPasswordEdit.getText().toString().equals(confirmPasswordEdit.getText().toString())){
-                    Toast.makeText(UpdateUserInfoActivity.this,"密码与确认密码不一致",Toast.LENGTH_SHORT).show();
-                }else {
-                    MediaType mediaType = MediaType.parse("application/json;charset=UTF-8");
-                    Map<String, String> userMap = new HashMap<>();
-                    userMap.put("id", String.valueOf(user.getId()));
-                    userMap.put("user", userNameEdit.getText().toString());
-                    userMap.put("name", personNameEdit.getText().toString());
-                    userMap.put("phone", userPhoneEdit.getText().toString());
-                    if(!validator.isMobile(userPhoneEdit.getText().toString())){
-                        Toast.makeText(UpdateUserInfoActivity.this,"手机号格式错误",Toast.LENGTH_SHORT).show();
+
+                MediaType mediaType = MediaType.parse("application/json;charset=UTF-8");
+                Map<String, String> userMap = new HashMap<>();
+                userMap.put("id", String.valueOf(user.getId()));
+                userMap.put("user", userNameEdit.getText().toString());
+                userMap.put("name", personNameEdit.getText().toString());
+                userMap.put("phone", userPhoneEdit.getText().toString());
+                if(!validator.isMobile(userPhoneEdit.getText().toString())){
+                    Toast.makeText(UpdateUserInfoActivity.this,"手机号格式错误",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                userMap.put("email", userMailEdit.getText().toString());
+                if(!userMailEdit.getText().toString().isEmpty()) {
+                    if (!validator.isEmail(userMailEdit.getText().toString())) {
+                        Toast.makeText(UpdateUserInfoActivity.this, "邮箱格式错误", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    userMap.put("email", userMailEdit.getText().toString());
-                    if(!userMailEdit.getText().toString().isEmpty()) {
-                        if (!validator.isEmail(userMailEdit.getText().toString())) {
-                            Toast.makeText(UpdateUserInfoActivity.this, "邮箱格式错误", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                    }
-                    userMap.put("password", newPasswordEdit.getText().toString());
-                    if(!newPasswordEdit.getText().toString().isEmpty()) {
-                        if (!validator.isPassword(newPasswordEdit.getText().toString())) {//newPasswordEdit.getText().toString().length()<6 || newPasswordEdit.getText().toString().length()>16
-
-                            Toast.makeText(UpdateUserInfoActivity.this, "密码长度为6-16位", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                    }
-                    RequestBody body = RequestBody.create(JSON.toJSONString(userMap), mediaType);
-                    HttpUtil.post(MyApplication.getAppPath() + "/interface/user", body, new okhttp3.Callback() {
-                        @Override
-                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                            Toast.makeText(UpdateUserInfoActivity.this, "修改失败",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                            String json = response.body().string();
-                            Msg msg = JSON.parseObject(json, Msg.class);//json转Msg对象
-                            Log.d("result", json);
-                            if (msg.getCode() == 0) {//判断是否成功
-                                user.setPassword(newPasswordEdit.getText().toString());
-                                user.setPhone(userPhoneEdit.getText().toString());
-                                user.setUser(userNameEdit.getText().toString());
-                                user.setEmail(userMailEdit.getText().toString());
-                                MyApplication.setUser(user);
-                                Message message = new Message();
-                                message.what = SUCCESS;
-                                handler.sendMessage(message);
-                            } else {//修改失败
-                                Message message = new Message();
-                                message.what = FAIL;
-                                handler.sendMessage(message);
-                            }
-                        }
-                    });
-                    Click++;
                 }
+                userMap.put("password", newPasswordEdit.getText().toString());
+                if(!newPasswordEdit.getText().toString().isEmpty()) {
+                    if (!validator.isPassword(newPasswordEdit.getText().toString())) {
+                        Toast.makeText(UpdateUserInfoActivity.this, "密码长度为6-16位", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+                if(!newPasswordEdit.getText().toString().equals(confirmPasswordEdit.getText().toString())){
+                    Toast.makeText(UpdateUserInfoActivity.this,"密码与确认密码不一致",Toast.LENGTH_SHORT).show();
+                }
+                RequestBody body = RequestBody.create(JSON.toJSONString(userMap), mediaType);
+                HttpUtil.post(MyApplication.getAppPath() + "/interface/user", body, new okhttp3.Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        Toast.makeText(UpdateUserInfoActivity.this, "修改失败",
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        String json = response.body().string();
+                        Msg msg = JSON.parseObject(json, Msg.class);//json转Msg对象
+                        Log.d("result", json);
+                        if (msg.getCode() == 0) {//判断是否成功
+                            user.setPassword(newPasswordEdit.getText().toString());
+                            user.setPhone(userPhoneEdit.getText().toString());
+                            user.setUser(userNameEdit.getText().toString());
+                            user.setEmail(userMailEdit.getText().toString());
+                            MyApplication.setUser(user);
+                            Message message = new Message();
+                            message.what = SUCCESS;
+                            handler.sendMessage(message);
+                        } else {//修改失败
+                            Message message = new Message();
+                            message.what = FAIL;
+                            handler.sendMessage(message);
+                        }
+                    }
+                });
+                Click++;
                 break;
             default:
                 break;
