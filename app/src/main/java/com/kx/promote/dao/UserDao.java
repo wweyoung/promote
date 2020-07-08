@@ -77,10 +77,12 @@ public class UserDao {
         MyApplication.setUser(new User());
         new MyCookieJar(MyApplication.getContext()).removeAll();//清空Cookie;
         HomeActivity homeActivity = MyApplication.getHomeActivity();
-        Intent intent = new Intent(homeActivity, LoginActivity.class);
-        MyApplication.getHomeActivity().startActivity(intent);
-        homeActivity.finish();
-        MyApplication.setHomeActivity(null);
+        if(homeActivity!=null){
+            Intent intent = new Intent(homeActivity, LoginActivity.class);
+            MyApplication.getHomeActivity().startActivity(intent);
+            homeActivity.finish();
+            MyApplication.setHomeActivity(null);
+        }
     }
     public static UserDao getInstance(){//单例模式，需要的时候获取已经new好的
         return instance;

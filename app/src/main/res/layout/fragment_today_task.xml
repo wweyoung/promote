@@ -14,9 +14,10 @@
         android:layout_height="match_parent"
         android:scrollbars="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/header"
@@ -24,10 +25,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/info_background"
                 android:orientation="vertical"
-                android:padding="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:padding="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -99,23 +97,14 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="0dp"
+            <fragment
+                android:id="@+id/group_list_fragment"
+                android:name="com.kx.promote.ui.task_center.GroupListFragment"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/header">
+                tools:layout="@layout/fragment_group_list" />
+        </LinearLayout>
 
-                <fragment
-                    android:id="@+id/group_list_fragment"
-                    android:name="com.kx.promote.ui.task_center.GroupListFragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:layout="@layout/fragment_group_list" />
-            </LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </FrameLayout>
