@@ -111,6 +111,9 @@ public class MyApplication extends Application {
         return false;
     }
     public static void loading(boolean show, Activity activity){
+        if (null != alertDialog && alertDialog.isShowing()) {//先清掉之前的加载框
+            alertDialog.dismiss();
+        }
         if(show){
             alertDialog = new AlertDialog.Builder(activity).create();
             alertDialog.setCancelable(false);
@@ -128,11 +131,6 @@ public class MyApplication extends Application {
             dialogParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
             dialogParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
             alertDialog.setCanceledOnTouchOutside(false);
-        }
-        else{
-            if (null != alertDialog && alertDialog.isShowing()) {
-                alertDialog.dismiss();
-            }
         }
     }
     public static void showBigImage(String url,Activity activity){

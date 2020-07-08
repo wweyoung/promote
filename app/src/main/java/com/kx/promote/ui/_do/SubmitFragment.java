@@ -23,11 +23,13 @@ import com.kx.promote.R;
 import com.kx.promote.bean.Group;
 import com.kx.promote.bean.Order;
 import com.kx.promote.bean.User;
+import com.kx.promote.dao.TaskDao;
 import com.kx.promote.ui.HomeActivity;
 import com.kx.promote.ui.LoginActivity;
 import com.kx.promote.utils.HttpUtil;
 import com.kx.promote.utils.Msg;
 import com.kx.promote.utils.MyApplication;
+import com.kx.promote.utils.MyCallback;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -150,43 +152,57 @@ public class SubmitFragment extends Fragment {
         group.setNote(this.group.getNote());
         group.setImagelist(this.group.getImagelist());
         List<Order> orderList = new ArrayList<>();
+        boolean allImageUploaded = true;
         for(Order order:this.group.getOrderlist()){
             Order newOrder = new Order();
             newOrder.setId(order.getId());
             newOrder.setPrice(order.getPrice());
             newOrder.setNo(order.getNo());
             newOrder.setState(order.getState());
+            if(order.getImagelist()!=null) {//检查每个Order任务图片是否已经上传
+                for (String imgUrl : order.getImagelist()){
+                    if(imgUrl.indexOf("http")<0){
+                        allImageUploaded = false;
+                        break;
+                    }
+                }
+                if(!allImageUploaded)
+                    break;
+            }
             newOrder.setImagelist(order.getImagelist());
             orderList.add(newOrder);
         }
+        if(allImageUploaded && group.getImagelist()!=null){//检查group的每个图片是否都已上传
+            for (String imgUrl : group.getImagelist()){
+                if(imgUrl.indexOf("http")<0){
+                    allImageUploaded = false;
+                    break;
+                }
+            }
+        }
+        if(!allImageUploaded){
+            Toast.makeText(getActivity(),"有图片上传失败了，请重传上传失败的图片！",Toast.LENGTH_SHORT).show();
+            return;
+        }
         group.setOrderlist(orderList);
+        TaskDao dao = TaskDao.getInstance();
+        dao.submitTask(group, new MyCallback() {
+            @Override
+            public void success(Msg msg) {
+                if(msg.getCode()==0){//判断是否成功
+                    Message.obtain(handler,SHOW_TOAST,"提交成功！").sendToTarget();
+                    Message.obtain(handler,SUBMITED).sendToTarget();//前往主页、执行刷新数据等操作
+                }
+                else{//登录失败
+                    Message.obtain(handler,SHOW_TOAST,msg.getMsg()).sendToTarget();//给主线程发送信息，让主线程弹出Toast
+                }
+            }
 
-        MediaType mediaType = MediaType.parse("application/json;charset=UTF-8");
-        RequestBody body = RequestBody.create(JSON.toJSONString(group),mediaType);
-        HttpUtil.post(MyApplication.getAppPath() +"/interface/worker/do",
-                body, new okhttp3.Callback() {
-                    @Override
-                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                        Message.obtain(handler,SHOW_TOAST,"请求失败！").sendToTarget();
-                    }
-                    @Override
-                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                        String json = response.body().string();
-                        Log.d("login",json);
-                        Msg msg =  JSON.parseObject(json,Msg.class);//json转Msg对象
-
-                        if(msg.getCode()==0){//判断是否成功
-                            Message.obtain(handler,SHOW_TOAST,"提交成功！").sendToTarget();
-                            Message.obtain(handler,SUBMITED).sendToTarget();//前往主页、执行刷新数据等操作
-                        }
-                        else{//登录失败
-                            Message.obtain(handler,SHOW_TOAST,msg.getMsg()).sendToTarget();//给主线程发送信息，让主线程弹出Toast
-                        }
-
-                    }
-                });
-
-        Log.d(TAG, group.toString());
+            @Override
+            public void failed(Msg msg) {
+                Message.obtain(handler,SHOW_TOAST,msg.getMsg()).sendToTarget();//给主线程发送信息，让主线程弹出Toast
+            }
+        });
     }
     private void submited(){
         HomeActivity homeActivity = MyApplication.getHomeActivity();
@@ -200,7 +216,7 @@ public class SubmitFragment extends Fragment {
     }
     private void freshGroup(){
         HomeActivity homeActivity = MyApplication.getHomeActivity();
-        homeActivity.getDoFragment().getGroup(group.getId());
+        homeActivity.getDoFragment().getGroupById(group.getId());
     }
     static class MyHandler extends Handler {
         private WeakReference<SubmitFragment> mOuter;

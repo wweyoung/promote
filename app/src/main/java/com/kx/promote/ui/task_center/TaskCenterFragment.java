@@ -84,10 +84,6 @@ public class TaskCenterFragment extends Fragment {
 
             @Override
             public void onTabReselect(int position) {
-                if (position == 0) {
-                    header.showMsg(0, mRandom.nextInt(100) + 1);
-//                    UnreadMsgUtils.show(header.getMsgView(0), mRandom.nextInt(100) + 1);
-                }
             }
         });
 

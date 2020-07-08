@@ -7,11 +7,9 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
@@ -28,7 +26,6 @@ import com.kx.promote.ui.task_center.TaskCenterFragment;
 import com.kx.promote.utils.MyApplication;
 import com.kx.promote.utils.ViewFindUtils;
 
-import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -116,12 +113,6 @@ public class HomeActivity extends AppCompatActivity {
         if (requestCode == IMAGE_SELECTED) {
             if (resultCode == RESULT_OK) {
                 List<String> mSelectPath = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT);
-                StringBuilder sb = new StringBuilder();
-                for (String p : mSelectPath) {
-                    sb.append(p);
-                    sb.append("\n");
-
-                }
                 imageUploader.add(mSelectPath);
             }
         }
@@ -156,15 +147,19 @@ public class HomeActivity extends AppCompatActivity {
         footer.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
+                if(position==DO_TASK){
+                    if(doFragment!=null && doFragment.getGroup()==null){
+                        String text="还没有选择任务，请先去个人中心选择要进行的任务";
+                        handler.obtainMessage(SHOW_MESSAGE,text).sendToTarget();
+                        return;
+                    }
+                }
                 mViewPager.setCurrentItem(position);
             }
 
             @Override
             public void onTabReselect(int position) {
-                if (position == 0) {
-                    footer.showMsg(0, mRandom.nextInt(100) + 1);
-//                    UnreadMsgUtils.show(header.getMsgView(0), mRandom.nextInt(100) + 1);
-                }
+
             }
         });
 
@@ -197,6 +192,7 @@ public class HomeActivity extends AppCompatActivity {
         return mViewPager;
     }
     public Handler getHandler(){return handler;}
+    public CommonTabLayout getFooter(){return footer;}
     static class MyHandler extends Handler {
         private WeakReference<HomeActivity> mOuter;
 

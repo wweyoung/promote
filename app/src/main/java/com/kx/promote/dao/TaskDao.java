@@ -30,6 +30,8 @@ import java.util.Date;
 import java.util.List;
 
 import okhttp3.Call;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class TaskDao {
@@ -71,7 +73,30 @@ public class TaskDao {
             }
         });
     }
+    public void getGroupById(Integer id, final MyCallback callback){
+        String url = MyApplication.getAppPath() +"/interface/worker/do/"+id;
+        HttpUtil.get(url, new MyCallback() {
+            @Override
+            public void success(Msg msg) {
+                if(msg.getCode()==0){
+                    Group group = JSONObject.toJavaObject((JSON) msg.get("group"),Group.class);
+                    msg.put("group",group);
+                }
+                callback.success(msg);
+            }
 
+            @Override
+            public void failed(Msg msg) {
+                callback.failed(msg);
+            }
+        });
+    }
+    public void submitTask(Group group,final MyCallback callback){
+        String url = MyApplication.getAppPath() +"/interface/worker/do";
+        MediaType mediaType = MediaType.parse("application/json;charset=UTF-8");
+        RequestBody body = RequestBody.create(JSON.toJSONString(group),mediaType);
+        HttpUtil.post(url,body,callback);
+    }
     public static TaskDao getInstance(){//单例模式，需要的时候获取已经new好的
         return instance;
     }

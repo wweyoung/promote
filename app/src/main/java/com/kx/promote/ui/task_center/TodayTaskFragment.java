@@ -23,6 +23,7 @@ import com.kx.promote.R;
 import com.kx.promote.bean.Group;
 import com.kx.promote.bean.Order;
 import com.kx.promote.dao.TaskDao;
+import com.kx.promote.ui.HomeActivity;
 import com.kx.promote.ui.LoginActivity;
 import com.kx.promote.utils.Msg;
 import com.kx.promote.utils.MyApplication;
@@ -137,9 +138,23 @@ public class TodayTaskFragment extends Fragment  {
         if(finishedGroupNumber==groupList.size()){
             header.setBackgroundColor(resources.getColor(R.color.success_background));
         }
+        int doingOrderNumber = 0;
+        for(Group group:groupList){//求没有做完的任务数
+            if(group.getOrderlist()!=null){
+                for(Order order:group.getOrderlist()){
+                    if(order.getState()==Order.DOING || order.getState()==Order.FILLIN){
+                        doingOrderNumber++;
+                    }
+                }
+            }
+        }
+        if(doingOrderNumber>0) {
+            MyApplication.getHomeActivity().getFooter().showMsg(HomeActivity.TASK_CENTER, doingOrderNumber);
+        }
     }
     public void getTodayTask(){
         TaskDao taskDao = TaskDao.getInstance();
+        MyApplication.loading(true,getActivity());
         taskDao.getTodayGroupList(new MyCallback() {
             @Override
             public void success(Msg msg) {
@@ -150,11 +165,13 @@ public class TodayTaskFragment extends Fragment  {
                 else{
                     Message.obtain(handler,SHOW_TOAST,msg.getMsg()).sendToTarget();//提示用户
                 }
+                MyApplication.loading(false,getActivity());
             }
 
             @Override
             public void failed(Msg msg) {
                 Message.obtain(handler,SHOW_TOAST,"请求失败！").sendToTarget();
+                MyApplication.loading(false,getActivity());
             }
         });
     }

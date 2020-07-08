@@ -83,9 +83,9 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
         holder.goButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HomeActivity homeActivity = MyApplication.getHomeActivity();
-                homeActivity.getDoFragment().getGroup(group.getId());
-                homeActivity.getViewPager().setCurrentItem(HomeActivity.DO_TASK);
+            HomeActivity homeActivity = MyApplication.getHomeActivity();
+            homeActivity.getDoFragment().getGroupById(group.getId());
+            homeActivity.getViewPager().setCurrentItem(HomeActivity.DO_TASK);
             }
         });
 

@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -24,11 +25,13 @@ import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.kx.promote.R;
 import com.kx.promote.bean.Group;
 import com.kx.promote.bean.Order;
+import com.kx.promote.dao.TaskDao;
 import com.kx.promote.entity.TabEntity;
 import com.kx.promote.ui.HomeActivity;
 import com.kx.promote.utils.HttpUtil;
 import com.kx.promote.utils.Msg;
 import com.kx.promote.utils.MyApplication;
+import com.kx.promote.utils.MyCallback;
 import com.kx.promote.utils.ViewFindUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -59,7 +62,6 @@ public class DoFragment extends Fragment {
     private ViewPager mViewPager;
     private View view;
     private Group group;
-    private HomeActivity homeActivity;
 
     private OverviewFragment overviewFragment;
     private List<TaskFragment> taskFragmentList;
@@ -73,6 +75,7 @@ public class DoFragment extends Fragment {
 
 
     public final static int UPDATE_UI = 0;
+    public final static int SHOW_MESSAGE = 1;
 
     public DoFragment() {
         // Required empty public constructor
@@ -111,9 +114,7 @@ public class DoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_do, container, false);
-        appPath = getString(R.string.app_path);
         this.view = view;
-        this.homeActivity = (HomeActivity) getActivity();
         mViewPager = ViewFindUtils.find(view, R.id.do_body);//在view中寻找do_body
         /** with ViewPager */
         header = ViewFindUtils.find(view, R.id.do_header);
@@ -122,6 +123,8 @@ public class DoFragment extends Fragment {
         updateUI();
         return view;
     }
+
+
     private class MyPagerAdapter extends FragmentStatePagerAdapter {
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -168,10 +171,6 @@ public class DoFragment extends Fragment {
 
             @Override
             public void onTabReselect(int position) {
-                if (position == 0) {
-                    header.showMsg(0, mRandom.nextInt(100) + 1);
-//                    UnreadMsgUtils.show(header.getMsgView(0), mRandom.nextInt(100) + 1);
-                }
             }
         });
 
@@ -218,24 +217,33 @@ public class DoFragment extends Fragment {
         mAdapter.notifyDataSetChanged();
         header.setCurrentTab(0);
     }
-    public void getGroup(Integer groupId){
-        String url = appPath+"/interface/worker/do";
-        if(groupId!=null)
-            url+="/"+groupId;
-        HttpUtil.get(url, new okhttp3.Callback() {
+    public Group getGroup(){
+        return group;
+    }
+    public void getGroupById(Integer groupId){
+        this.group = new Group();
+        TaskDao dao = TaskDao.getInstance();
+        MyApplication.loading(true,getActivity());
+        dao.getGroupById(groupId, new MyCallback() {
             @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Message.obtain(homeActivity.getHandler(),homeActivity.SHOW_MESSAGE,"请求失败！").sendToTarget();//通知打印Toast
+            public void success(Msg msg) {
+                if(msg.getCode()==0) {
+                    group = (Group) msg.get("group");
+                    Message.obtain(handler, UPDATE_UI).sendToTarget();//通知主线程更新界面
+                    if(group.getState()==Group.FINISHED){
+                        handler.obtainMessage(SHOW_MESSAGE,"当前任务已完成！").sendToTarget();
+                    }
+                }
+                else{
+                    handler.obtainMessage(SHOW_MESSAGE,msg.getMsg()).sendToTarget();
+                }
+                MyApplication.loading(false,getActivity());
             }
-
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String json = response.body().string();
-                Log.d("doFragment", json);
-                Msg msg = JSON.parseObject(json,Msg.class);
-                group = JSONObject.toJavaObject((JSON) msg.get("group"),Group.class);
-                Message.obtain(homeActivity.getHandler(),homeActivity.SHOW_MESSAGE,msg.getMsg()).sendToTarget();//通知打印Toast
-                Message.obtain(handler,UPDATE_UI).sendToTarget();//通知主线程更新界面
+            public void failed(Msg msg) {
+                group = null;
+                handler.obtainMessage(SHOW_MESSAGE,msg.getMsg()).sendToTarget();
+                MyApplication.loading(false,getActivity());
             }
         });
     }
@@ -252,6 +260,11 @@ public class DoFragment extends Fragment {
             if (outer != null) {
                 if (msg.what == UPDATE_UI) {
                     outer.updateUI();
+                }
+                else if(msg.what == SHOW_MESSAGE){
+                    String text = (String) msg.obj;
+                    HomeActivity homeActivity = MyApplication.getHomeActivity();
+                    Toast.makeText(homeActivity,text,Toast.LENGTH_SHORT).show();
                 }
             }
         }
