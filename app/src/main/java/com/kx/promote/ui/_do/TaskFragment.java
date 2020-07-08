@@ -137,7 +137,10 @@ public class TaskFragment extends Fragment {
         submitImageFragment.set(order.getImagelist(), MyApplication.getOrderImageMaxNumber());
         idET.setText(""+order.getId());
         keywordET.setText(order.getNeed().getKeyword());
-        actpriceET.setText(order.getPrice().toString());
+        if(order.getPrice()!=null)
+            actpriceET.setText(order.getPrice().toString());
+        else
+            actpriceET.setText("");
         noET.setText(order.getNo());
         noteET.setText(order.getNeed().getNote());
         prepriceET.setText(""+order.getNeed().getPrice());
