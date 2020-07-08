@@ -69,14 +69,14 @@ public class OrderRecyclerViewAdapter extends RecyclerView.Adapter<OrderRecycler
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MyApplication.showBigImage(order.getNeed().getImage().getUrl(),MyApplication.getHomeActivity());
+            MyApplication.showBigImage(order.getNeed().getImage().getUrl(),MyApplication.getHomeActivity());
             }
         });
         holder.keywordView.setText(order.getNeed().getKeyword());
         holder.shopView.setText(order.getNeed().getShop().getName());
         holder.prepriceView.setText("预付"+order.getNeed().getPrice().toString()+"元");
         holder.stateView.setText(order.getStateString());
-        if(order.getState()==Order.FINISHED || order.getState()==Order.FILLIN){
+        if(order.getPrice()!=null && (order.getState()==Order.FINISHED || order.getState()==Order.FILLIN)){
             holder.actpriceView.setText("实付"+order.getPrice().toString()+"元");
         }
     }

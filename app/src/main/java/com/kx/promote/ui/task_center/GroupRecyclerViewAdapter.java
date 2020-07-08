@@ -69,6 +69,9 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
         else if(group.getState()==Group.FINISHED){
             holder.header.setBackgroundColor(resource.getColor(R.color.success_background));
         }
+        else{
+            holder.header.setBackground(null);
+        }
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(MyApplication.getContext());
         holder.orderRecyclerView.setLayoutManager(mLayoutManager);
@@ -79,6 +82,9 @@ public class GroupRecyclerViewAdapter extends RecyclerView.Adapter<GroupRecycler
             holder.customerView.setText(group.getCustomer());
             holder.actpriceView.setText("实付"+group.getActprice().toString()+"元");
             holder.submitInfoLayout.setVisibility(View.VISIBLE);
+        }
+        else{
+            holder.submitInfoLayout.setVisibility(View.GONE);
         }
         holder.goButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -176,4 +176,15 @@ public class Group implements Serializable {
         }
         return finishedOrderNumber;
     }
+
+    @JSONField(serialize=false)
+    public int getPriority(){
+        if(orderlist==null)
+            return 0;
+        int priority = 0;
+        for(Order order:orderlist){
+            priority += order.getNeed().getPriority();
+        }
+        return priority;
+    }
 }

@@ -36,6 +36,8 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -115,7 +117,26 @@ public class TodayTaskFragment extends Fragment  {
     public void updateUI(){
         if(groupList==null)
             groupList = new ArrayList<>();
-
+        Collections.sort(groupList, new Comparator<Group>() {
+            @Override
+            public int compare(Group g1, Group g2) {
+                if(g1.getState()==Group.FINISHED){//完成的往后排
+                    return 1;
+                }
+                if(g2.getState()==Group.FINISHED){//完成的往后排
+                    return -1;
+                }
+                int g2Pri = g2.getPriority();
+                int g1Pri = g1.getPriority();
+                if(g1Pri!=g2Pri){
+                    return g2Pri-g1Pri;
+                }
+                if(g2.getOrderlist().size()!=g1.getOrderlist().size()){
+                    return g2.getOrderlist().size()-g1.getOrderlist().size();
+                }
+                return 0;
+            }
+        });
         groupListFragment.setGroupList(groupList);
         groupNumberView.setText("总计"+groupList.size()+"组");
         int finishedGroupNumber = 0;
