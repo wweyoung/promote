@@ -6,13 +6,15 @@ import java.util.Date;
 import java.util.List;
 
 public class HistoryDateGroup implements Serializable {
-    private Date date;
-    private Integer orderNumber;
-    private Integer groupNumber;
-    private Integer finishedOrderNumber;
+    //统计的某一天的任务数据类
 
-    private BigDecimal actPrice;
-    private List<Group> groupList;
+    private Date date;//日期
+    private Integer orderNumber;//任务总数
+    private Integer groupNumber;//任务组总数
+    private Integer finishedOrderNumber;//已完成任务数
+
+    private BigDecimal actPrice;//实际付款
+    private List<Group> groupList;//任务组列表
     public Date getDate() {
         return date;
     }

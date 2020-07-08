@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Shop implements Serializable {
+	//店铺类
+
     @Override
 	public String toString() {
 		return "Shop [id=" + id + ", name=" + name + ", bossid=" + bossid + ", state=" + state + ", boss=" + boss + "]";
@@ -20,17 +22,17 @@ public class Shop implements Serializable {
 
 	private Integer id;
 
-    private String name;
+    private String name;//店铺名
 
-    private Integer bossid;
+    private Integer bossid;//店铺所属老板id
     
-    private String issuer;
+    private String issuer;//运营团队
 
-    private Byte state;
+    private Byte state;//状态
 
-    private Boss boss;
+    private Boss boss;//所属老板
 
-    private List<ShopPrice> priceList;
+    private List<ShopPrice> priceList;//商家佣金规则
     
 	public static byte ACTIVITY = 0;
 	public static byte DELETED = 1;

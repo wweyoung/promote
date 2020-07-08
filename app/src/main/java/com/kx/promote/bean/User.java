@@ -7,6 +7,8 @@ import java.util.List;
 import com.alibaba.fastjson.annotation.JSONField;
 
 public class User implements Serializable {
+    //用户类
+
     @Override
 	public String toString() {
 		return "User [id=" + id + ", user=" + user + ", name=" + name + ", phone=" + phone + ", email=" + email
@@ -15,28 +17,28 @@ public class User implements Serializable {
 
 	private Integer id;
 
-    private String user;
+    private String user;//用户名
     
     @JSONField(serialize=false)  
-    private String password;
+    private String password;//密码
 
-    private String name;
+    private String name;//姓名
 
-    private String phone;
+    private String phone;//电话号
 
-    private String email;
+    private String email;//邮箱
 
-    private Byte state;
+    private Byte state;//状态
 
     private Integer lastnumber;
 
-    private Byte identity;
+    private Byte identity;//身份
     
-    private String note;
+    private String note;//备注
     
     private List<List<Integer>> allotNeedList;
     @JSONField(serialize=false)  
-    private String logincode;
+    private String logincode;//登录身份码
 
     private BigDecimal fee;
 

@@ -4,25 +4,32 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class File implements Serializable {
+    //文件类
     private Integer id;
 
-    private Byte type;
+    private Byte type;//类型
 
-    private String url;
+    private String url;//资源地址
 
-    private Integer referid;
+    private Integer referid;//引用的相关的id
     
-    private Date time;
+    private Date time;//上传时间
 
-    private Byte position;
-	public final static byte USER_IMAGE = 0;
-	public final static byte GOODS_IMAGE = 1;
-	public final static byte ORDER_IMAGE = 2;
-	public final static byte GROUP_IMAGE = 3;
-	public final static int NULL_REFER = 0;
-	public final static byte LOCAL = 0;
-	public final static byte QINIU = 1;
-	public final static byte NOT_EXIST = 10;
+    private Byte position;//文件位置
+
+    //类型：
+	public final static byte USER_IMAGE = 0;//用户头像
+	public final static byte GOODS_IMAGE = 1;//商品主图
+	public final static byte ORDER_IMAGE = 2;//任务凭证
+	public final static byte GROUP_IMAGE = 3;//任务组任务凭证
+
+    //引用
+	public final static int NULL_REFER = 0;//没有引用
+
+    //位置
+	public final static byte LOCAL = 0;//服务器本地
+	public final static byte QINIU = 1;//七牛云
+	public final static byte NOT_EXIST = 10;//不存在
 
     
     public File() {

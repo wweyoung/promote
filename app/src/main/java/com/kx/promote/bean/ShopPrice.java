@@ -4,9 +4,11 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 public class ShopPrice implements Serializable {
-    private Integer id;
+    //店铺佣金规则类
 
-    private Integer shopid;
+    private Integer id;//规则id
+
+    private Integer shopid;//商家id
 
     private BigDecimal max;
 

@@ -5,31 +5,33 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class Need implements Serializable {
+    //淘宝商家需求
+
     private Integer id;
 
-    private Integer shopid;
+    private Integer shopid;//店铺id
 
-    private String keyword;
+    private String keyword;//关键词
 
-    private Integer imageid;
+    private Integer imageid;//商品主图文件id
 
-    private BigDecimal price;
+    private BigDecimal price;//预付款
 
-    private Integer allnumber;
+    private Integer allnumber;//一共要刷的单数
     
-    private Integer nownumber;
+    private Integer nownumber;//已经分配给业务员的单数
 
-    private Integer finishednumber;
+    private Integer finishednumber;//业务员们做完的单数
 
-	private String note;
+	private String note;//需求备注信息
 
-	private Byte priority;
+	private Byte priority;//需求优先级，越高越优先
 	
-    private Byte state;
+    private Byte state;//状态
 
-    private Date time;
+    private Date time;//时间
     
-    private Shop shop;
+    private Shop shop;//店铺
     
     public final static byte ACTIVITY = 0;//正常
 	public final static byte CANCELED = 1;//撤回

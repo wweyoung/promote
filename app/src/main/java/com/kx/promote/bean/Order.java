@@ -8,6 +8,8 @@ import java.util.List;
 import com.alibaba.fastjson.annotation.JSONField;
 
 public class Order implements Serializable {
+	//任务类
+
     @Override
 	public String toString() {
 		return "Order [id=" + id + ", groupid=" + groupid + ", needid=" + needid + ", state=" + state + ", price="
@@ -16,32 +18,32 @@ public class Order implements Serializable {
 
 	private Integer id;
 
-    private Integer groupid;
+    private Integer groupid;//所属任务组id
 
-    private Integer needid;
+    private Integer needid;//商家需求id
 
-    private Byte state;
+    private Byte state;//任务状态
 
-    private BigDecimal price;
+    private BigDecimal price;//实际付款
 
-    private String no;
+    private String no;//淘宝订单编号
 
-    private BigDecimal shopFee;
+    private BigDecimal shopFee;//商家佣金
     
-    private BigDecimal userFee;
+    private BigDecimal userFee;//业务员佣金
     
-    private Group group;
+    private Group group;//任务组
     
-    private Need need;
+    private Need need;//商家需求
     
     private List<String> imagelist;
     
-	public final static byte PREPARE = 0;
-	public final static byte DOING = 1;
-	public final static byte FILLIN = 2;
-	public final static byte FINISHED = 3;
-	public final static byte UNDO = 4;
-	public final static byte CANCELED = 10;
+	public final static byte PREPARE = 0;//未开始（管理员还没有正式开始任务）
+	public final static byte DOING = 1;//进行中（任务进行中）
+	public final static byte FILLIN = 2;//待补充（提交了任务但是填写的信息不完整）
+	public final static byte FINISHED = 3;//已完成
+	public final static byte UNDO = 4;//未做（由于搜索不到关键词等原因放弃了任务）
+	public final static byte CANCELED = 10;//撤回（管理员撤回了任务）
 	
     public Integer getId() {
         return id;

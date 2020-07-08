@@ -9,21 +9,23 @@ import java.util.List;
 import com.alibaba.fastjson.annotation.JSONField;
 
 public class Group implements Serializable {
+    //任务组类
+
     private Integer id;
 
-    private Integer userid;
+    private Integer userid;//任务组所属业务员的id
 
-    private Byte state;
+    private Byte state;//任务组状态
 
-    private String customer;
+    private String customer;//淘宝会员名
 
-    private String note;
+    private String note;//做任务时备注的信息
 
-    private Date time;
+    private Date time;//任务时间
     
-    private Date protecttime;
+    private Date protecttime;//保护时间
 
-    private Date submittime;
+    private Date submittime;//交单时间
 
     public Date getSubmittime() {
         return submittime;
@@ -39,11 +41,11 @@ public class Group implements Serializable {
     
     private List<String> imagelist;
     
-	public final static byte PREPARE = 0;
-	public final static byte DOING = 1;
-	public final static byte FILLIN = 2;
-	public final static byte FINISHED = 3;
-	public final static byte DELETED = 10;
+	public final static byte PREPARE = 0;//未开始
+	public final static byte DOING = 1;//进行中
+	public final static byte FILLIN = 2;//待补充
+	public final static byte FINISHED = 3;//已完成（当所有Order都已完成Group才会已完成）
+	public final static byte DELETED = 10;//已撤回
     public Integer getId() {
         return id;
     }

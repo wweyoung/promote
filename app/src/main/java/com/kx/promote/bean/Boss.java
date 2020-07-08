@@ -3,6 +3,7 @@ package com.kx.promote.bean;
 import java.io.Serializable;
 
 public class Boss implements Serializable {
+    //老板信息类
     @Override
 	public String toString() {
 		return "Boss [id=" + id + ", name=" + name + ", phone=" + phone + ", state=" + state + "]";
@@ -14,10 +15,10 @@ public class Boss implements Serializable {
 
     private String phone;
 
-    private Byte state;
+    private Byte state;//状态
 
-	public static byte ACTIVITY = 0;
-	public static byte DELETED = 1;
+	public static byte ACTIVITY = 0;//正常
+	public static byte DELETED = 1;//已被删除
 
     public Integer getId() {
         return id;
